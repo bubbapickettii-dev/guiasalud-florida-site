@@ -1,0 +1,104 @@
+{% extends "agent_base.html" %}{% block title %}Dashboard - {{ b.name }}{% endblock %}
+{% block topbar %}<span class="tri"><span><b>${{ '%.2f'|format(meta.balance) }}</b><em>Available balance</em></span><span><b>${{ '%.2f'|format(todayspend|abs) }}</b><em>Today's spend</em></span><span><b>{{ pend.n }} / ${{ '%.2f'|format(pend.usd) }}</b><em>Pending payments</em></span></span><a class="btn sm" href="/agent/{{ token }}/billing">+ Add Credit</a>{% endblock %}
+{% block shell %}{% set LBL = {'NEW':'New','VIEWED':'Viewed','CONTACTED':'Contacted','APPOINTMENT':'Appointment','SOLD':'Sold','NOT_QUALIFIED':'Not qualified','RETURNED':'Filed for return','RETURN_REQUESTED':'Return requested','BAD_INFO':'Bad info','DNC':'Do not contact','OTHER':'Other'} %}
+{% if desk_err == 'notapplied' %}<div class="note" style="border-left:4px solid #b00"><b>That action could not be recorded</b> (unknown status, or the lead is not on your desk). Nothing was changed.</div>
+{% elif desk_msg == 'saved' %}<div class="note good" style="border-left:4px solid #1a7"><b>Status saved.</b> The lead's history and your ledger reflect it immediately.</div>{% endif %}
+<div class="dsk-hrow"><h1 style="font-size:22px;margin:0">Welcome back{% if b.contact_name %}, {{ b.contact_name.split(' ')[0] }}{% endif %}</h1>
+<span class="mini"><b>{{ b.name }}</b> · account <code>{{ b.id }}</code>{% if b.is_demo %} · <span class="pill TEST">TEST ACCOUNT</span> rehearsal data, not real money{% endif %}</span></div>
+<p class="mini" style="margin:0 0 4px;max-width:900px">
+<b>Your account state:</b> balance <b>${{ '%.2f'|format(meta.balance) }}</b> ·
+{{ 'credit enforcement ON — a lead reaches your desk only while your balance covers its price' if meta.enforcing else 'credit enforcement is OFF for this account (ledger-only): leads can be delivered without prepaid credits' }}
+· per-lead price {% for t_, p in meta.prices %}{{ 'tier' if loop.first }} {{ t_ }} ${{ '%.2f'|format(p) }}{{ ', ' if not loop.last }}{% endfor %}
+· capacity {{ meta.today }}/{{ meta.daily_cap or '—' }} leads today{% if meta.monthly_cap %} ({{ meta.month }}/{{ meta.monthly_cap }} this month){% endif %}.
+</p>
+<div class="dsk-hrow" style="margin:0 0 10px;gap:8px">
+<a class="btn sm" href="/agent/{{ token }}/leads" style="text-decoration:none">Review my leads{% if desk_counts and desk_counts.get('NEW') %} ({{ desk_counts['NEW'] }} new){% endif %}</a>
+<a class="btn sm ghost" href="/agent/{{ token }}/billing" style="text-decoration:none">Account &amp; billing</a>
+<span class="mini">Every delivery is charged once, at delivery, at your tier price.</span>
+</div>
+<div class="dsk-hrow" style="margin-top:-8px"><span class="mini">Overview corrected <b>{{ now()[:16].replace('T',' ') }} UTC</b> · <a href="/agent/{{ token }}" title="Recalculate figures from the recorded ledger">⟲ refresh</a>.</span></div>
+{% if flow == 'blocked' %}<div class="note" style="border-left:4px solid #b00"><b>Your balance is ${{ '%.2f'|format(meta.balance) }} — credit enforcement is ON, so no new leads can be delivered to your desk until you add credits.</b> Leads already delivered stay available below. <a href="/agent/{{ token }}/billing">Add credits →</a></div>
+{% elif flow == 'low' %}<div class="note" style="border-left:4px solid #b84"><b>Low balance: ${{ '%.2f'|format(meta.balance) }}</b> — less than your cheapest per-lead price{% if meta.enforcing %}; delivery pauses when the balance reaches $0{% endif %}. <a href="/agent/{{ token }}/billing">Add credits →</a></div>
+{% elif flow == 'cap_daily' %}<div class="note" style="border-left:4px solid #b84"><b>Daily cap reached: {{ meta.today }} of {{ meta.daily_cap }} real leads delivered today</b> — No new leads can be sent to you until tomorrow. No action needed — limits reset at midnight. Contact the operator to raise the cap.</div>
+{% elif flow == 'cap_monthly' %}<div class="note" style="border-left:4px solid #b84"><b>Monthly purchase limit reached: {{ meta.month }} of {{ meta.monthly_cap }} real leads this month</b> — no new leads until next month. Contact the operator to raise the cap.</div>
+{% elif flow == 'overdraft' %}<div class="note" style="border-left:4px solid #b00"><b>Ledger overdrawn by ${{ '%.2f'|format(-meta.balance) }}</b> — {% if meta.enforcing %}no new leads are delivered while the ledger is negative.{% else %}this account is in ledger-only mode, so delivery is not currently blocked — settle it before activation.{% endif %} Contact us to settle, or add credits to bring the balance positive.</div>{% endif %}
+
+<div class="panelcard">
+<div class="panel-row"><div><h2 style="font-size:17px;margin:0">Financial overview</h2><span class="mini">Your prepaid credits, spending, and pending payments</span></div>
+<a class="btn sm ghost" href="/agent/{{ token }}/billing">Billing ledger & packages →</a></div>
+<div class="finrow">
+<div class="fincard"><span class="dot good"></span><div><b>${{ '%.2f'|format(meta.balance) }}</b><em>Available balance{% if meta.is_demo %} — demo account (TEST data){% endif %}</em></div></div>
+<div class="fincard"><span class="dot amber"></span><div><b>${{ '%.2f'|format(todayspend|abs) }}</b><em>Today's spending</em></div></div>
+<div class="fincard"><span class="dot mute"></span><div><b>${{ '%.2f'|format(pend.usd) }}</b><em>Pending allocation ({{ pend.n }} unpaid)</em></div></div>
+</div>
+<p class="mini" style="margin:8px 0 0"><b>Account:</b> balance <b>${{ '%.2f'|format(meta.balance) }}</b> · {{ 'credit enforcement ON — a lead is routed to you only while your balance covers its price' if meta.enforcing else 'credit enforcement currently OFF (ledger-only mode)' }} · your per-lead prices: {% for t_, p in meta.prices %}tier {{ t_ }} ${{ '%.2f'|format(p) }}{{ ' · ' if not loop.last }}{% endfor %} · your purchase limits: {{ meta.today }} delivered today / {{ meta.daily_cap or '—' }} leads/day{% if meta.monthly_cap %} · {{ meta.month }}/{{ meta.monthly_cap }} leads this month{% endif %} · every lead is <b>exclusive to you</b> — one consumer, one consent, never re-sold · <a href="/agent/{{ token }}/billing">Account &amp; billing / buy credits</a></p>
+<div class="panel-row" style="margin:12px 0 2px"><b>Recent transactions ({{ txns|length }})</b></div>
+{% if txns %}<div class="txnlist">{% for t in txns %}<div class="txn"><span class="small">{{ t.ts[5:16].replace('T',' ') }}</span><span>{{ {'PACKAGE_PURCHASE':'Credit pack','LEAD_CHARGE':'Lead delivered','LEAD_CREDIT':'Lead returned (credited)','ADJUSTMENT':'Adjustment'}.get(t.kind, t.kind) }}</span>
+<b class="{{ 'good' if t.amount >= 0 else 'bad' }}">{{ '+' if t.amount >= 0 else '-' }}${{ '%.2f'|format(t.amount if t.amount >= 0 else -t.amount) }}</b>{% if t.is_test %}<span class="pill TEST">TEST</span>{% else %}<span class="pill done">recorded</span>{% endif %}{% if t.lead_id %}<a class="mini" href="/agent/{{ token }}/lead/{{ t.lead_id }}">{{ t.lead_id }}</a>{% endif %}</div>{% endfor %}</div>
+<p class="mini" style="margin:4px 0 0">Every entry is a recorded event on your account — TEST-marked entries are rehearsal traffic, never real money. <a href="/agent/{{ token }}/billing">Full ledger, packages & purchases →</a></p>
+{% else %}<p class="mini">No transactions yet — charges appear here when leads are delivered to you.</p>{% endif %}
+</div>
+
+<div class="statcards">
+<div class="statcard"><span class="lbl">Leads received today</span><b>{{ stat_today.n }}</b><span class="mini">{{ 'No leads delivered yet today' if not stat_today.n else 'delivered so far today' }}</span></div>
+<div class="statcard"><span class="lbl">Active markets (14d)</span><b><a href="/agent/{{ token }}/markets" style="text-decoration:none;color:inherit">{{ active_camps }}</a></b><span class="mini">{% if active_camps %}<a href="/agent/{{ token }}/markets">campaigns delivering to you →</a>{% else %}no campaigns have delivered to you yet{% endif %}</span></div>
+<div class="statcard"><span class="lbl">Leads this week</span><b>{{ stat_week.n }}</b>{% if stat_delta.week is not none %}<span class="delta {{ 'dn' if stat_delta.week < 0 else 'up' }}">{{ '+' if stat_delta.week >= 0 else '↓' }}{{ '%.1f' % stat_delta.week }}% vs last week</span>{% else %}<span class="mini">— no deliveries yet</span>{% endif %}</div>
+<div class="statcard"><span class="lbl">Avg cost per lead (week)</span><b>{{ '$' ~ ('%.2f'|format(stat_week.avg)) if stat_week.avg is not none else '—' }}</b>{% if stat_delta.avg is not none %}<span class="delta {{ 'dn' if stat_delta.avg < 0 else 'up' }}">{{ '+' if stat_delta.avg >= 0 else '↓' }}{{ '%.1f' % stat_delta.avg }}% vs prev week</span>{% else %}<span class="mini">— no deliveries yet</span>{% endif %}</div>
+<div class="statcard"><span class="lbl">Follow-ups due</span><b>{% if due_n %}<a href="/agent/{{ token }}/leads?due=1&days=0" style="text-decoration:none;color:inherit">{{ due_n }}</a>{% else %}0{% endif %}</b><span class="mini">{% if due_n %}<a href="/agent/{{ token }}/leads?due=1&days=0">dated today or overdue →</a>{% else %}no follow-up dates reached{% endif %}</span></div>
+<div class="statcard"><span class="lbl">CRM delivery (latest attempt per lead)</span><b>{{ dl_health.sent }}</b><span class="mini">{% if dl_health.failed %}<span style="color:#b00"><b>{{ dl_health.failed|length }} failed</b></span> — {% for l in dl_health.failed[:3] %}<a href="/agent/{{ token }}/lead/{{ l.lead_id }}">{{ l.lead_id[-8:] }}</a>{{ ', ' if not loop.last }}{% endfor %}{% if dl_health.failed|length > 3 %} +{{ dl_health.failed|length - 3 }} more{% endif %}: automatic retries are budgeted first, then <i>Retry CRM delivery now</i> on each lead page re-posts the same recorded payload{% else %}{% if dl_health.sent %}every latest attempt accepted{% else %}no CRM posts recorded yet{% endif %} · delivery method: {{ dl_health.method }}{% endif %}</span></div>
+</div>
+
+<div class="panelcard">
+<div class="panel-row"><div><h2 style="font-size:17px;margin:0">Recent matches</h2><span class="mini">Leads most recently delivered to your desk — credited to your account automatically.</span></div>
+<a class="btn sm ghost" href="/agent/{{ token }}/leads">All leads on your desk →</a></div>
+{% if not leads %}
+<div class="note"><b>Your desk is empty</b> — that is the true state, not an error. Leads appear here as soon as the engine records a consumer's consent naming your agency; nothing is withheld. <a href="/agent/{{ token }}/markets">Markets page →</a> · <a href="/agent/{{ token }}/billing">Account &amp; billing →</a></div>
+{% else %}
+<div class="dsk-hrow tabsrow" style="margin-bottom:6px">
+<a class="tabbtn {{ 'on' if not f }}" href="/agent/{{ token }}">All ({{ desk_counts['ALL'] }})</a>
+{% for s in ['NEW','VIEWED','CONTACTED','APPOINTMENT','SOLD','NOT_QUALIFIED','RETURNED'] if desk_counts.get(s) %}
+<a class="tabbtn {{ 'on' if f == s }}" href="/agent/{{ token }}?f={{ s }}">{{ {'NEW':'New','VIEWED':'Viewed','CONTACTED':'Contacted','APPOINTMENT':'Appointment','SOLD':'Sold','NOT_QUALIFIED':'Not qualified','RETURNED':'Filed for return'}[s] }} ({{ desk_counts[s] }})</a>
+{% endfor %}
+</div>
+{% if f and not desk_rows %}
+<div class="note">No lead holds the status "{{ LBL.get(f, f) }}" in the current view. <a href="/agent/{{ token }}">Show the whole desk →</a></div>
+{% else %}
+<div class="hscroll"><table>
+<tr><th>Name</th><th>Contact</th><th>Campaign</th><th>Received</th><th>Tier</th><th>Status</th><th>Return window</th></tr>
+{% for l in desk_rows %}{% set tr = desk_prev.get(l.lead_id, {}) %}<tr>
+<td><a href="/agent/{{ token }}/lead/{{ l.lead_id }}"><b>{{ l.first_name }} {{ l.last_name }}</b></a>{% if l.is_test %} <span class="pill TEST">TEST</span>{% endif %}<br><span class="mini">{{ l.zip }} · {{ l.state }}</span>
+<span class="mini small">More about this lead: <b>{{ tr.get('headline', '') }}</b>{% if tr.get('detail') %} — {{ tr.detail }}{% endif %}</span>
+<span class="mini"><b>Household:</b> {{ l.household_size or '—' }} · income band {{ l.income_band or '—' }} · age {{ l.age_range or '—' }} · situation {{ l.enrollment_situation or '—' }} · consent version {{ l.consent_version or '—' }}</span></td>
+<td><b style="font-size:15px">{{ l.phone|pphone }}</b><br><span class="mini">{{ desk_prov.get(l.lead_id, '') }}</span><br><span class="mini">{{ l.email or '—' }}</span></td>
+<td class="small">{{ l.campaign or '—' }}</td>
+<td class="small">{{ (l.delivered_at or l.created_at)[5:16].replace('T',' ') }}</td>
+<td><span class="pill">{{ l.tier }}</span> {% if l.price %}${{ '%.2f'|format(l.price) }}{% endif %}</td>
+<td><span class="pill {{ {'SOLD':'A','RETURNED':'C','BAD_INFO':'C','DNC':'C'}.get(l.agent_status,'B') }}">{{ LBL.get(l.agent_status, l.agent_status) }}</span></td>
+<td class="mini">{{ desk_hints.get(l.lead_id, '') }}</td>
+</tr>{% endfor %}
+</table></div><p class="mini" style="margin:4px 0 0">Open a lead for full details, one-click outcomes and the return button{% if not f %} — or use a status tab above to work one bucket at a time{% endif %}.</p>
+{% endif %}
+{% endif %}
+<p class="mini" style="margin:10px 0 0"><b>Before you call:</b> {{ call_rules }}</p>
+</div>
+
+<div class="dsk-two">
+<div class="panelcard"><h2 style="font-size:16px;margin:0 0 6px">Markets you stand in right now</h2>
+<span class="mini">Your routing eligibility exactly as the engine records it — what matches you can still receive.</span>
+<ul class="mini" style="margin:8px 0 0;padding-left:18px">
+<li><b>Coverage area:</b> {{ meta.states|join(', ') if meta.states else '— none on file —' }}</li>
+<li><b>Per-lead prices:</b> {% for t_, p in meta.prices %}tier {{ t_ }} ${{ '%.2f'|format(p) }}{{ ', ' if not loop.last }}{% endfor %}</li>
+<li><b>Today's capacity:</b> {{ meta.today }}/{{ meta.daily_cap or '—' }}{% if meta.monthly_cap %} · this month {{ meta.month }}/{{ meta.monthly_cap }}{% endif %}</li>
+<li><b>New-lead flow:</b> {{ {'on':'open — you can receive matches','low':'paused when balance hits your next price','blocked':'paused — balance needs credits','overdraft':'paused — ledger overdrawn','cap_daily':'paused — daily cap reached','cap_monthly':'paused — monthly cap reached'}[flow] }}</li>
+<li><b>Every lead exclusive</b> — one consumer, one consent, never re-sold.</li>
+</ul></div>
+<div class="panelcard"><h2 style="font-size:16px;margin:0 0 6px">Your work record — what the engine sees</h2>
+<span class="mini">Recorded facts only; nothing is promised for the next delivery.</span>
+<ul class="mini" style="margin:8px 0 0;padding-left:18px">
+<li><b>Leads sold (recorded by you):</b> {{ sold30 }} in the last 30 days.</li>
+{% if unworked %}<li><b>{{ unworked }} lead(s) delivered more than 3 days ago are still unworked</b> — open and record your first contact. <a href="/agent/{{ token }}/leads?f=NEW">View them →</a></li>{% else %}<li><b>No unworked leads</b> older than 3 days — clean record.</li>{% endif %}
+{% if rets7d %}<li><b>{{ rets7d }} return(s) in the last 7 days</b> — cleaner records rank higher for new-lead delivery.</li>{% endif %}
+{% if own %}<li><b>Platform view of your recent outcomes:</b> {{ own.n }} delivered in the last {{ own.window_days }} days{% if own.penalty %} — {{ own.penalty }} returned / bad-info / never-contacted after the grace window{% if own.rank == 2 %}. <b>New-lead delivery is paused until the record improves.</b>{% elif own.rank == 1 %}; new leads go to buyers with cleaner records first.{% endif %}{% endif %}</li>{% endif %}
+</ul></div>
+</div>
+{% endblock %}

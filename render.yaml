@@ -1,0 +1,33 @@
+# Render blueprint for the PAID production service (NOT deployed). Deploying = publishing; do it only
+# when you decide to go live and to start collecting consumer data.
+#
+# For the FREE public website (assigned onrender.com URL, read-only public preview) use
+# render-free.yaml instead: the free plan keeps no disk, so it can host the pages but not the
+# records. Both files are explained in docs/RENDER_DEPLOY.md.
+services:
+  - type: web
+    name: lead-engine
+    runtime: python        # Render's current key (`env:` is the deprecated spelling)
+    plan: starter          # free tier sleeps (cold starts kill ad conversion) and has no persistent disk (SQLite would lose leads)
+    buildCommand: pip install -r requirements-prod.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 30 --access-logfile -
+    healthCheckPath: /healthz
+    envVars:
+      - {key: LEADENGINE_ENV, value: production}
+      - {key: ADMIN_TOKEN, generateValue: true}
+      - {key: ALLOW_INDEXING, value: "0"}
+      - {key: LEADENGINE_LIVE_DELIVERY, value: "0"}
+      - {key: LEADENGINE_DB, value: /var/data/leads.db}
+      - {key: LEADENGINE_STORAGE, value: persistent}   # /var/data is the mounted disk: records survive deploys
+      - {key: BASE_URL, sync: false}                   # optional: RENDER_EXTERNAL_URL is used when unset
+      - {key: BRAND, value: "Gia Salud"}
+      - {key: LEGAL_ENTITY, value: "Gia Salud"}
+      - {key: LOCATION, value: "Miami, Florida"}
+      - {key: FOUNDED, value: "Miami, Florida"}
+      - {key: SUPPORT_EMAIL, sync: false}               # only once a real inbox exists and is verified
+      - {key: MAILING_ADDRESS, sync: false}             # optional: not required for this website configuration
+      - {key: SMTP_HOST, sync: false}
+      - {key: SMTP_USER, sync: false}
+      - {key: SMTP_PASS, sync: false}
+      - {key: SMTP_FROM, sync: false}
+    disk: {name: data, mountPath: /var/data, sizeGB: 1}

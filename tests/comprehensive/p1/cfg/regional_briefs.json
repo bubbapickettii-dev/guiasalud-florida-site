@@ -1,0 +1,612 @@
+[
+ {
+  "city": "Miami",
+  "county": "Miami-Dade",
+  "new_self_employed_12mo": 11501,
+  "segments": [
+   [
+    "business",
+    5700,
+    50
+   ],
+   [
+    "beauty",
+    2836,
+    25
+   ],
+   [
+    "realtor",
+    1743,
+    15
+   ],
+   [
+    "trucking",
+    773,
+    7
+   ],
+   [
+    "health_1099",
+    449,
+    4
+   ]
+  ],
+  "top_zips": [
+   "33186",
+   "33155",
+   "33165",
+   "33126",
+   "33131"
+  ],
+  "lead_segment": "business",
+  "language": "ES-first test + EN",
+  "language_basis": "INFERENCE: Miami-Dade county; verify with Census ACS table C16001 before spending",
+  "angle": "self_employed",
+  "angle_es": "es_self_employed",
+  "partners": "CPAs/bookkeepers, chambers, SBDC, coworking spaces",
+  "content": [
+   "health-insurance-self-employed",
+   "do-i-qualify-for-help-paying-health-insurance"
+  ],
+  "channels": "CPA client newsletter insert; chamber newsletters; local search page",
+  "paid_geo": "Meta: Miami city pin, 15-mile minimum radius (Special Ad Category). Google: city/ZIP geo allowed."
+ },
+ {
+  "city": "Hialeah",
+  "county": "Miami-Dade",
+  "new_self_employed_12mo": 2015,
+  "segments": [
+   [
+    "beauty",
+    791,
+    39
+   ],
+   [
+    "business",
+    614,
+    30
+   ],
+   [
+    "trucking",
+    281,
+    14
+   ],
+   [
+    "realtor",
+    229,
+    11
+   ],
+   [
+    "health_1099",
+    100,
+    5
+   ]
+  ],
+  "top_zips": [
+   "33012",
+   "33015",
+   "33018",
+   "33010",
+   "33013"
+  ],
+  "lead_segment": "beauty",
+  "language": "ES-first test + EN",
+  "language_basis": "INFERENCE: Miami-Dade county; verify with Census ACS table C16001 before spending",
+  "angle": "self_employed",
+  "angle_es": "es_self_employed",
+  "partners": "Salon-suite operators, beauty schools, supply stores",
+  "content": [
+   "freelancer-health-insurance-options",
+   "how-much-does-health-insurance-cost"
+  ],
+  "channels": "Counter card QR at suites/supply stores; IG/TikTok booth-renter content; Spanish creator collabs",
+  "paid_geo": "Meta: Hialeah city pin, 15-mile minimum radius (Special Ad Category). Google: city/ZIP geo allowed."
+ },
+ {
+  "city": "West Palm Beach",
+  "county": "Palm Beach",
+  "new_self_employed_12mo": 1140,
+  "segments": [
+   [
+    "beauty",
+    607,
+    53
+   ],
+   [
+    "realtor",
+    319,
+    28
+   ],
+   [
+    "trucking",
+    126,
+    11
+   ],
+   [
+    "health_1099",
+    49,
+    4
+   ],
+   [
+    "business",
+    39,
+    3
+   ]
+  ],
+  "top_zips": [
+   "33415",
+   "33401",
+   "33406",
+   "33409",
+   "33411"
+  ],
+  "lead_segment": "beauty",
+  "language": "EN-first, ES variant",
+  "language_basis": "INFERENCE: default; verify with Census ACS table C16001",
+  "angle": "self_employed",
+  "angle_es": "es_self_employed",
+  "partners": "Salon-suite operators, beauty schools, supply stores",
+  "content": [
+   "freelancer-health-insurance-options",
+   "how-much-does-health-insurance-cost"
+  ],
+  "channels": "Counter card QR at suites/supply stores; IG/TikTok booth-renter content; Spanish creator collabs",
+  "paid_geo": "Meta: West Palm Beach city pin, 15-mile minimum radius (Special Ad Category). Google: city/ZIP geo allowed."
+ },
+ {
+  "city": "Homestead",
+  "county": "Miami-Dade",
+  "new_self_employed_12mo": 979,
+  "segments": [
+   [
+    "beauty",
+    327,
+    33
+   ],
+   [
+    "business",
+    287,
+    29
+   ],
+   [
+    "realtor",
+    174,
+    18
+   ],
+   [
+    "trucking",
+    132,
+    13
+   ],
+   [
+    "health_1099",
+    59,
+    6
+   ]
+  ],
+  "top_zips": [
+   "33033",
+   "33032",
+   "33030",
+   "33035",
+   "33034"
+  ],
+  "lead_segment": "beauty",
+  "language": "ES-first test + EN",
+  "language_basis": "INFERENCE: Miami-Dade county; verify with Census ACS table C16001 before spending",
+  "angle": "self_employed",
+  "angle_es": "es_self_employed",
+  "partners": "Salon-suite operators, beauty schools, supply stores",
+  "content": [
+   "freelancer-health-insurance-options",
+   "how-much-does-health-insurance-cost"
+  ],
+  "channels": "Counter card QR at suites/supply stores; IG/TikTok booth-renter content; Spanish creator collabs",
+  "paid_geo": "Meta: Homestead city pin, 15-mile minimum radius (Special Ad Category). Google: city/ZIP geo allowed."
+ },
+ {
+  "city": "Boca Raton",
+  "county": "Palm Beach",
+  "new_self_employed_12mo": 941,
+  "segments": [
+   [
+    "beauty",
+    426,
+    45
+   ],
+   [
+    "realtor",
+    361,
+    38
+   ],
+   [
+    "trucking",
+    55,
+    6
+   ],
+   [
+    "business",
+    55,
+    6
+   ],
+   [
+    "health_1099",
+    44,
+    5
+   ]
+  ],
+  "top_zips": [
+   "33433",
+   "33428",
+   "33431",
+   "33432",
+   "33487"
+  ],
+  "lead_segment": "beauty",
+  "language": "EN-first, ES variant",
+  "language_basis": "INFERENCE: default; verify with Census ACS table C16001",
+  "angle": "self_employed",
+  "angle_es": "es_self_employed",
+  "partners": "Salon-suite operators, beauty schools, supply stores",
+  "content": [
+   "freelancer-health-insurance-options",
+   "how-much-does-health-insurance-cost"
+  ],
+  "channels": "Counter card QR at suites/supply stores; IG/TikTok booth-renter content; Spanish creator collabs",
+  "paid_geo": "Meta: Boca Raton city pin, 15-mile minimum radius (Special Ad Category). Google: city/ZIP geo allowed."
+ },
+ {
+  "city": "Fort Lauderdale",
+  "county": "Broward",
+  "new_self_employed_12mo": 846,
+  "segments": [
+   [
+    "beauty",
+    405,
+    48
+   ],
+   [
+    "realtor",
+    269,
+    32
+   ],
+   [
+    "trucking",
+    84,
+    10
+   ],
+   [
+    "business",
+    47,
+    6
+   ],
+   [
+    "health_1099",
+    41,
+    5
+   ]
+  ],
+  "top_zips": [
+   "33312",
+   "33301",
+   "33304",
+   "33308",
+   "33311"
+  ],
+  "lead_segment": "beauty",
+  "language": "EN-first, ES variant",
+  "language_basis": "INFERENCE: default; verify with Census ACS table C16001",
+  "angle": "self_employed",
+  "angle_es": "es_self_employed",
+  "partners": "Salon-suite operators, beauty schools, supply stores",
+  "content": [
+   "freelancer-health-insurance-options",
+   "how-much-does-health-insurance-cost"
+  ],
+  "channels": "Counter card QR at suites/supply stores; IG/TikTok booth-renter content; Spanish creator collabs",
+  "paid_geo": "Meta: Fort Lauderdale city pin, 15-mile minimum radius (Special Ad Category). Google: city/ZIP geo allowed."
+ },
+ {
+  "city": "Doral",
+  "county": "Miami-Dade",
+  "new_self_employed_12mo": 782,
+  "segments": [
+   [
+    "business",
+    408,
+    52
+   ],
+   [
+    "beauty",
+    179,
+    23
+   ],
+   [
+    "realtor",
+    126,
+    16
+   ],
+   [
+    "trucking",
+    46,
+    6
+   ],
+   [
+    "health_1099",
+    23,
+    3
+   ]
+  ],
+  "top_zips": [
+   "33178",
+   "33166",
+   "33172",
+   "33122",
+   "33126"
+  ],
+  "lead_segment": "business",
+  "language": "ES-first test + EN",
+  "language_basis": "INFERENCE: Miami-Dade county; verify with Census ACS table C16001 before spending",
+  "angle": "self_employed",
+  "angle_es": "es_self_employed",
+  "partners": "CPAs/bookkeepers, chambers, SBDC, coworking spaces",
+  "content": [
+   "health-insurance-self-employed",
+   "do-i-qualify-for-help-paying-health-insurance"
+  ],
+  "channels": "CPA client newsletter insert; chamber newsletters; local search page",
+  "paid_geo": "Meta: Doral city pin, 15-mile minimum radius (Special Ad Category). Google: city/ZIP geo allowed."
+ },
+ {
+  "city": "Hollywood",
+  "county": "Broward",
+  "new_self_employed_12mo": 717,
+  "segments": [
+   [
+    "beauty",
+    391,
+    55
+   ],
+   [
+    "realtor",
+    161,
+    22
+   ],
+   [
+    "trucking",
+    78,
+    11
+   ],
+   [
+    "business",
+    60,
+    8
+   ],
+   [
+    "health_1099",
+    27,
+    4
+   ]
+  ],
+  "top_zips": [
+   "33020",
+   "33021",
+   "33024",
+   "33019",
+   "33023"
+  ],
+  "lead_segment": "beauty",
+  "language": "EN-first, ES variant",
+  "language_basis": "INFERENCE: default; verify with Census ACS table C16001",
+  "angle": "self_employed",
+  "angle_es": "es_self_employed",
+  "partners": "Salon-suite operators, beauty schools, supply stores",
+  "content": [
+   "freelancer-health-insurance-options",
+   "how-much-does-health-insurance-cost"
+  ],
+  "channels": "Counter card QR at suites/supply stores; IG/TikTok booth-renter content; Spanish creator collabs",
+  "paid_geo": "Meta: Hollywood city pin, 15-mile minimum radius (Special Ad Category). Google: city/ZIP geo allowed."
+ },
+ {
+  "city": "Coral Gables",
+  "county": "Miami-Dade",
+  "new_self_employed_12mo": 671,
+  "segments": [
+   [
+    "business",
+    328,
+    49
+   ],
+   [
+    "health_1099",
+    189,
+    28
+   ],
+   [
+    "beauty",
+    78,
+    12
+   ],
+   [
+    "realtor",
+    68,
+    10
+   ],
+   [
+    "trucking",
+    8,
+    1
+   ]
+  ],
+  "top_zips": [
+   "33134",
+   "33146",
+   "33143",
+   "33156",
+   "33133"
+  ],
+  "lead_segment": "business",
+  "language": "ES-first test + EN",
+  "language_basis": "INFERENCE: Miami-Dade county; verify with Census ACS table C16001 before spending",
+  "angle": "self_employed",
+  "angle_es": "es_self_employed",
+  "partners": "CPAs/bookkeepers, chambers, SBDC, coworking spaces",
+  "content": [
+   "health-insurance-self-employed",
+   "do-i-qualify-for-help-paying-health-insurance"
+  ],
+  "channels": "CPA client newsletter insert; chamber newsletters; local search page",
+  "paid_geo": "Meta: Coral Gables city pin, 15-mile minimum radius (Special Ad Category). Google: city/ZIP geo allowed."
+ },
+ {
+  "city": "Deerfield Beach",
+  "county": "Broward",
+  "new_self_employed_12mo": 644,
+  "segments": [
+   [
+    "health_1099",
+    394,
+    61
+   ],
+   [
+    "beauty",
+    148,
+    23
+   ],
+   [
+    "realtor",
+    64,
+    10
+   ],
+   [
+    "trucking",
+    25,
+    4
+   ],
+   [
+    "business",
+    13,
+    2
+   ]
+  ],
+  "top_zips": [
+   "33441",
+   "33442",
+   "33064"
+  ],
+  "lead_segment": "health_1099",
+  "language": "EN-first, ES variant",
+  "language_basis": "INFERENCE: default; verify with Census ACS table C16001",
+  "angle": "self_employed",
+  "angle_es": "es_self_employed",
+  "partners": "ABA agencies, home-health and therapy staffing agencies",
+  "content": [
+   "1099-worker-health-insurance",
+   "health-insurance-between-jobs"
+  ],
+  "channels": "Agency onboarding guide; Behavior Technician communities; Google search on 1099 terms",
+  "paid_geo": "Meta: Deerfield Beach city pin, 15-mile minimum radius (Special Ad Category). Google: city/ZIP geo allowed."
+ },
+ {
+  "city": "Pembroke Pines",
+  "county": "Broward",
+  "new_self_employed_12mo": 506,
+  "segments": [
+   [
+    "beauty",
+    230,
+    45
+   ],
+   [
+    "realtor",
+    141,
+    28
+   ],
+   [
+    "business",
+    57,
+    11
+   ],
+   [
+    "trucking",
+    43,
+    8
+   ],
+   [
+    "health_1099",
+    35,
+    7
+   ]
+  ],
+  "top_zips": [
+   "33024",
+   "33029",
+   "33025",
+   "33028",
+   "33027"
+  ],
+  "lead_segment": "beauty",
+  "language": "EN-first, ES variant",
+  "language_basis": "INFERENCE: default; verify with Census ACS table C16001",
+  "angle": "self_employed",
+  "angle_es": "es_self_employed",
+  "partners": "Salon-suite operators, beauty schools, supply stores",
+  "content": [
+   "freelancer-health-insurance-options",
+   "how-much-does-health-insurance-cost"
+  ],
+  "channels": "Counter card QR at suites/supply stores; IG/TikTok booth-renter content; Spanish creator collabs",
+  "paid_geo": "Meta: Pembroke Pines city pin, 15-mile minimum radius (Special Ad Category). Google: city/ZIP geo allowed."
+ },
+ {
+  "city": "Lake Worth",
+  "county": "Palm Beach",
+  "new_self_employed_12mo": 500,
+  "segments": [
+   [
+    "beauty",
+    307,
+    61
+   ],
+   [
+    "realtor",
+    114,
+    23
+   ],
+   [
+    "trucking",
+    37,
+    7
+   ],
+   [
+    "business",
+    24,
+    5
+   ],
+   [
+    "health_1099",
+    18,
+    4
+   ]
+  ],
+  "top_zips": [
+   "33467",
+   "33463",
+   "33461",
+   "33460",
+   "33462"
+  ],
+  "lead_segment": "beauty",
+  "language": "EN-first, ES variant",
+  "language_basis": "INFERENCE: default; verify with Census ACS table C16001",
+  "angle": "self_employed",
+  "angle_es": "es_self_employed",
+  "partners": "Salon-suite operators, beauty schools, supply stores",
+  "content": [
+   "freelancer-health-insurance-options",
+   "how-much-does-health-insurance-cost"
+  ],
+  "channels": "Counter card QR at suites/supply stores; IG/TikTok booth-renter content; Spanish creator collabs",
+  "paid_geo": "Meta: Lake Worth city pin, 15-mile minimum radius (Special Ad Category). Google: city/ZIP geo allowed."
+ }
+]

@@ -1,0 +1,90 @@
+{
+ "_doc": "The consumer bridge: copy for /i/<code>, the page a person lands on when they follow a link from a public discussion. It exists because sending cold traffic straight into the /check form asks for effort before it explains anything. Situations are chosen from the prospect's own stated need. Facts only: no eligibility promises, no prices, no '$0 plan' claims, no government look. Every block ends at the same place: the consumer's own free check.",
+ "situations": {
+  "lost_coverage": {
+   "eyebrow_en": "Coverage ended or ending",
+   "eyebrow_es": "Cobertura terminada o por terminar",
+   "title_en": "Losing job-based coverage? You usually have a 60-day window.",
+   "title_es": "¿Pierdes la cobertura de tu trabajo? Normalmente tienes 60 días.",
+   "intro_en": "When a job ends, the health plan that came with it usually ends with it. Losing coverage opens a Special Enrollment Period: in most cases you have 60 days from the loss to enroll in a Marketplace plan. This free check shows your dates and whether your income falls in the range that gets help paying premiums. No account, no sales call.",
+   "intro_es": "Cuando termina un trabajo, normalmente termina también el plan médico que venía con él. Perder la cobertura abre un Periodo Especial de Inscripción: en la mayoría de los casos tienes 60 días desde la pérdida para inscribirte en un plan del Mercado. Este chequeo gratis te muestra tus fechas y si tu ingreso cae en el rango que recibe ayuda con las primas. Sin cuenta y sin llamadas de venta.",
+   "bullets_en": ["Your enrollment window, based on the date coverage ends", "Whether your household income is in the range that gets premium help", "The official sites to compare plans yourself"],
+   "bullets_es": ["Tu periodo de inscripción, según la fecha en que termina la cobertura", "Si el ingreso de tu hogar está en el rango que recibe ayuda con la prima", "Los sitios oficiales para comparar planes por tu cuenta"],
+   "angle_en": "life_change",
+   "angle_es": "es_life_change"
+  },
+  "cobra": {
+   "eyebrow_en": "COBRA is expensive",
+   "eyebrow_es": "COBRA es caro",
+   "title_en": "Paying full price for COBRA? Compare it with a Marketplace plan.",
+   "title_es": "¿Pagando COBRA completo? Compáralo con un plan del Mercado.",
+   "intro_en": "COBRA keeps the same plan, but you pay the whole premium yourself, and it runs out. A Marketplace plan is a different network and a different price, sometimes with help paying the premium. This free check shows your 2027 window and whether your income qualifies for that help, so you can compare before you decide. Nothing is sent anywhere unless you ask.",
+   "intro_es": "COBRA mantiene el mismo plan, pero pagas la prima completa tú mismo, y se acaba. Un plan del Mercado es otra red y otro precio, a veces con ayuda para pagar la prima. Este chequeo gratis te muestra tu periodo 2027 y si tu ingreso califica para esa ayuda, para que compares antes de decidir. No se envía nada a nadie si no lo pides.",
+   "bullets_en": ["What your enrollment window looks like in 2027", "Whether your income is in the range for premium help", "What to compare: deductible, network, prescriptions"],
+   "bullets_es": ["Cómo se ve tu periodo de inscripción en 2027", "Si tu ingreso está en el rango para ayuda con la prima", "Qué comparar: deducible, red de médicos, recetas"],
+   "angle_en": "timing",
+   "angle_es": "es_check"
+  },
+  "cost": {
+   "eyebrow_en": "Premiums too high",
+   "eyebrow_es": "Primas muy altas",
+   "title_en": "If the premium is the problem, check the income side first.",
+   "title_es": "Si el problema es la prima, revisa primero el ingreso.",
+   "intro_en": "How much help you get with a Marketplace premium depends on your household income and size, not on a sales pitch. This free check puts your income against the 2027 ranges and shows your enrollment window. It takes about two minutes, and it does not ask for your name, phone or email to show the result.",
+   "intro_es": "Cuánta ayuda recibes con la prima del Mercado depende del ingreso y del tamaño de tu hogar, no de un vendedor. Este chequeo gratis compara tu ingreso con los rangos de 2027 y muestra tu periodo de inscripción. Toma unos dos minutos y no pide nombre, teléfono ni correo para mostrarte el resultado.",
+   "bullets_en": ["Your income against the 2027 help ranges", "Your enrollment dates", "The difference between a Marketplace plan and a private plan"],
+   "bullets_es": ["Tu ingreso frente a los rangos de ayuda de 2027", "Tus fechas de inscripción", "La diferencia entre un plan del Mercado y un plan privado"],
+   "angle_en": "savings",
+   "angle_es": "es_check"
+  },
+  "self_employed": {
+   "eyebrow_en": "Self-employed or 1099",
+   "eyebrow_es": "Por cuenta propia o 1099",
+   "title_en": "No employer plan? Your income decides what you pay.",
+   "title_es": "¿Sin plan del empleador? Tu ingreso decide cuánto pagas.",
+   "intro_en": "Realtors, drivers, stylists, contractors: when the W-2 job ends, the employer plan goes with it. As a 1099 worker you buy your own coverage, and the Marketplace is where the income-based help lives. This free check shows your window and your range in about two minutes.",
+   "intro_es": "Agentes de bienes raíces, choferes, estilistas, contratistas: cuando termina el trabajo W-2, el plan del empleador se va con él. Como trabajador 1099 compras tu propia cobertura, y el Mercado es donde está la ayuda según el ingreso. Este chequeo gratis muestra tu periodo y tu rango en unos dos minutos.",
+   "bullets_en": ["Your 2027 enrollment window as a 1099 worker", "Whether your income is in the help range", "What documentation you will need to enroll"],
+   "bullets_es": ["Tu periodo de inscripción 2027 como trabajador 1099", "Si tu ingreso está en el rango de ayuda", "Qué documentos necesitas para inscribirte"],
+   "angle_en": "self_employed",
+   "angle_es": "es_self_employed"
+  },
+  "enrollment": {
+   "eyebrow_en": "Open Enrollment",
+   "eyebrow_es": "Inscripción Abierta",
+   "title_en": "Open Enrollment runs November 1 to January 15. Check your dates.",
+   "title_es": "La Inscripción Abierta va del 1 de noviembre al 15 de enero.",
+   "intro_en": "For 2027 coverage in Florida: enroll by December 15 and coverage starts January 1. Enroll December 16 to January 15 and it starts February 1. This free check shows your own window and whether your income is in the range that gets help paying the premium.",
+   "intro_es": "Para la cobertura de 2027 en Florida: inscríbete antes del 15 de diciembre y la cobertura empieza el 1 de enero. Del 16 de diciembre al 15 de enero, empieza el 1 de febrero. Este chequeo gratis muestra tu periodo y si tu ingreso está en el rango que recibe ayuda con la prima.",
+   "bullets_en": ["Your dates, not a generic calendar", "Whether your income is in the help range", "Official sources to confirm before you decide"],
+   "bullets_es": ["Tus fechas, no un calendario genérico", "Si tu ingreso está en el rango de ayuda", "Fuentes oficiales para confirmar antes de decidir"],
+   "angle_en": "timing",
+   "angle_es": "es_check"
+  },
+  "family": {
+   "eyebrow_en": "Covering your family",
+   "eyebrow_es": "Cubrir a tu familia",
+   "title_en": "Covering a spouse or kids? Household size changes the price.",
+   "title_es": "¿Cubres a tu pareja o hijos? El tamaño del hogar cambia el precio.",
+   "intro_en": "Two adults and two children is a different income range from one adult, and the difference decides how much help you get. This free check asks a few questions, shows your 2027 window, and ends with the official sites so you can compare plans yourself.",
+   "intro_es": "Dos adultos y dos niños es un rango de ingreso distinto al de un solo adulto, y esa diferencia decide cuánta ayuda recibes. Este chequeo gratis hace unas preguntas, muestra tu periodo 2027 y termina con los sitios oficiales para que compares planes por tu cuenta.",
+   "bullets_en": ["Help ranges for your household size", "Your enrollment window", "The cost question most people miss: deductible vs premium"],
+   "bullets_es": ["Rangos de ayuda según el tamaño de tu hogar", "Tu periodo de inscripción", "La pregunta de costo que casi todos pasan por alto: deducible vs prima"],
+   "angle_en": "family",
+   "angle_es": "es_family"
+  },
+  "coverage": {
+   "eyebrow_en": "Free coverage check",
+   "eyebrow_es": "Chequeo gratis de cobertura",
+   "title_en": "See your 2027 health coverage options in about two minutes.",
+   "title_es": "Mira tus opciones de cobertura 2027 en unos dos minutos.",
+   "intro_en": "A few questions and you get your enrollment window plus whether your income falls in the range that gets help paying premiums. Free, no obligation, and nobody calls you unless you ask and give permission.",
+   "intro_es": "Unas preguntas y obtienes tu periodo de inscripción y si tu ingreso cae en el rango que recibe ayuda con las primas. Gratis, sin compromiso, y nadie te llama si no lo pides y das permiso.",
+   "bullets_en": ["Your enrollment window", "Whether your income is in the help range", "Official sources to confirm the details"],
+   "bullets_es": ["Tu periodo de inscripción", "Si tu ingreso está en el rango de ayuda", "Fuentes oficiales para confirmar los detalles"],
+   "angle_en": "health_check",
+   "angle_es": "es_check"
+  }
+ },
+ "_rules": "No block may promise eligibility, a price, a $0 plan, or a government affiliation. Every block states the free check, the two-minute effort, and that contact only happens if the person asks."
+}

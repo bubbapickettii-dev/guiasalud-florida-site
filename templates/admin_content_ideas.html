@@ -1,0 +1,38 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1300px;padding:16px 16px 40px">
+<h2>Content ideas — from reviewed intent signals to draft EN/ES briefs</h2>
+<p class="small" style="border:1px solid #444;padding:8px"><b>How this works:</b> recurring coverage
+questions the public openly discusses become <b>demand evidence</b> for a content page. This view builds a
+<b>draft brief</b> per topic — title, hook, 3-beat script, and the call-to-action that points interested
+consumers at our own coverage-check page. It never drafts outreach to a person and never creates pages by
+itself: every published page has to be added to <code>config/content.json</code> by hand under the existing
+guardrail (education only, ends at the Check, no plan/carrier comparisons without a license).</p>
+<p class="small"><b>NEEDS_MORE_EVIDENCE</b> = fewer than 3 reviewed signals back the topic — draft it, but
+wait for more before publishing. <b>READY_TO_DRAFT</b> = recurring across at least 3 independent public posts.</p>
+{% for b in ideas %}
+<table style="margin-bottom:14px">
+ <tr><th colspan="2" style="text-align:left">{{ b.topic }} — {{ b.topic_label }}
+   <span class="pill">{{ b.state }}</span></th></tr>
+ <tr><td class="small" style="width:30%"><b>Evidence</b><br>{{ b.evidence.count }} reviewed signal(s) ·
+    langs: {{ b.evidence.langs|join(', ') }}<br>newest: {{ b.evidence.newest }}
+    <ul class="small">{% for s in b.evidence.sample %}<li><a href="{{ s.url }}" rel="noopener" target="_blank">{{ s.title }}</a></li>{% endfor %}</ul>
+    <b>angle:</b> {{ b.angle }} (Check link: <code>/check?a={{ b.angle }}</code>)</td>
+  <td>
+    <table style="width:100%">
+     <tr><th style="text-align:left">EN draft</th><th style="text-align:left">ES draft</th></tr>
+     <tr><td class="small"><b>{{ b.draft_en.title }}</b><br><i>{{ b.draft_en.hook }}</i>
+       <ol class="small">{% for x in b.draft_en.beats %}<li>{{ x }}</li>{% endfor %}</ol>
+       CTA: {{ b.draft_en.cta }}</td>
+      <td class="small"><b>{{ b.draft_es.title }}</b><br><i>{{ b.draft_es.hook }}</i>
+       <ol class="small">{% for x in b.draft_es.beats %}<li>{{ x }}</li>{% endfor %}</ol>
+       CTA: {{ b.draft_es.cta }}</td></tr>
+     <tr><td colspan="2" class="small">Existing pages for this angle: EN {{ b.existing_en_pages|join(', ') or '—' }} · ES {{ b.existing_es_pages|join(', ') or '—' }}
+       {% if b.existing_en_pages %}→ prefer <b>refreshing/tying-in</b> an existing page;
+       {% else %}→ new page slug proposal: <code>{{ b.proposed_slug }}</code>{% endif %}</td></tr>
+    </table>
+  </td>
+ </tr>
+</table>
+{% else %}<p class="small">No reviewed signals yet — the loop is: collect
+(<code>tools/signals_watch.py fetch --network</code>) → review with evidence notes here → ideas appear.</p>{% endfor %}
+</div>{% endblock %}

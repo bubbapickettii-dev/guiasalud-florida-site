@@ -1,0 +1,23 @@
+{% extends "agent_base.html" %}{% block title %}Markets - {{ b.name }}{% endblock %}
+{% block shell %}<div class="dsk-hrow"><h1 style="font-size:22px;margin:0">Markets delivering to you</h1><span class="mini">Every campaign recorded on your desk — volume, spend and status mix come straight from the leads ledger, never a forecast.</span></div>
+<p class="mini" style="margin-top:2px">The platform decides routing — your status recording keeps your fit fresh for these markets.</p>
+{% if not rows %}
+<div class="panelcard"><b>No markets are delivering to you yet.</b> That is the true state — not an error. New campaigns appear here the first time a consent names your agency. <a href="/agent/{{ token }}/billing">Set your delivery &amp; credits →</a></div>
+{% else %}
+<div class="hscroll"><table>
+<tr><th>Campaign</th><th>Leads (all time)</th><th>Recorded spend</th><th>Avg / lead</th><th>Unworked</th><th>Sold</th><th>Last delivery (UTC)</th><th>Download</th></tr>
+{% for r in rows %}<tr>
+<td><b>{{ r.campaign or '—' }}</b></td>
+<td><b>{{ r.n }}</b>{% if r.test_n %} <span class="pill TEST">TEST</span>{% endif %}</td>
+<td>${{ '%.2f'|format(r.usd) }}</td>
+<td>{{ '${%.2f}'|format(r.avg) if r.avg is not none else '—' }}</td>
+<td>{{ r.unworked }}{% if r.unworked %} · <a class="mini" href="/agent/{{ token }}/leads?q={{ r.campaign|urlencode }}&f=NEW">work them →</a>{% endif %}</td>
+<td>{{ r.sold }}</td>
+<td class="small">{{ (r.last_delivery or '—')[5:16].replace('T',' ') }}</td>
+<td><a class="btn sm ghost" href="/agent/{{ token }}/leads.csv?q={{ r.campaign|urlencode }}&days=0">CSV</a></td>
+</tr>{% endfor %}
+<tr><th>Total</th><th>{{ total_n }}</th><th>${{ '%.2f'|format(total_usd) }}</th><th>{% if total_n %}${{ '%.2f'|format(total_usd / total_n) }}{% else %}—{% endif %}</th><th colspan="4"></th></tr>
+</table></div>
+<p class="mini">Download button honors the search box on the leads page — scoped to your desk only.</p>
+{% endif %}
+{% endblock %}

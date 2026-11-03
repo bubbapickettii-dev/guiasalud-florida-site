@@ -1,0 +1,161 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1400px;padding:16px 16px 40px">
+<h2>Imported contacts — records we hold, not consent we have</h2>
+<p class="small">Third-party records (datasets, exports, licensed sources) live in <code>imported_contacts</code> in the lead database, <b>never</b> in <code>leads</code>. A row here is evidence that we possess a contact — nothing more. There is no call, email, DM, export or sell action on this page. The only way a row becomes eligible is <b>linking it to the same person's own <a href="/check">/check</a> submission</b>, whose consent row already exists.</p>
+
+<div class="kpis" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin:8px 0">
+ <div class="kpi"><span>records held (unique)</span><b>{{ rep.unique }}</b></div>
+ <div class="kpi"><span>with a phone or email</span><b>{{ rep.has_contact }}</b></div>
+ <div class="kpi"><span>phones</span><b>{{ rep.with_phone }}</b></div>
+ <div class="kpi"><span>emails</span><b>{{ rep.with_email }}</b></div>
+ <div class="kpi"><span>consumer contacts</span><b>{{ rep.consumer_contacts }}</b></div>
+ <div class="kpi"><span>individual providers</span><b>{{ rep.by_type.get('PROVIDER', 0) }}</b></div>
+ <div class="kpi"><span>provider organisations</span><b>{{ rep.by_type.get('PROVIDER_ORG', 0) }}</b></div>
+ <div class="kpi"><span>verified real</span><b>{{ rep.by_data_status.get('VERIFIED_REAL', 0) }}</b></div>
+ <div class="kpi"><span>unverified</span><b>{{ rep.by_data_status.get('UNVERIFIED', 0) }}</b></div>
+ <div class="kpi"><span>synthetic</span><b>{{ rep.by_data_status.get('SYNTHETIC', 0) }}</b></div>
+ <div class="kpi"><span>unusable phone values</span><b>{{ rep.invalid_phones }}</b></div>
+ <div class="kpi"><span>not eligible</span><b>{{ rep.by_eligibility.get('NOT_ELIGIBLE', 0) }}</b></div>
+ <div class="kpi"><span>use-limited only</span><b>{{ rep.by_eligibility.get('USE_LIMITED', 0) }}</b></div>
+ <div class="kpi"><span>linked to own consent</span><b>{{ rep.eligible }}</b></div>
+ <div class="kpi"><span>duplicate attempts kept</span><b>{{ rep.duplicates }}</b></div>
+ <div class="kpi"><span>lead rows not consumer-submitted</span><b>{{ rep.lead_rows_not_consumer_submitted }}</b></div>
+</div>
+<p class="mini">Two separate questions, two separate columns: <b>data status</b> = is it a real person/organisation (VERIFIED_REAL from an authoritative registry, UNVERIFIED from an unattested export, SYNTHETIC generated); <b>eligibility</b> = may we use it for marketing (almost never, and never automatically). A real record we may not call is the normal, expected state.</p>
+<p class="mini"><b>Why none of this is sellable yet:</b> routing (<code>engine/route.py</code>) reads only <code>leads</code>, and a <code>leads</code> row's phone must be <code>CONSUMER_SUBMITTED</code> — a database trigger refuses anything else. So an imported number cannot enter a sale. The counter above is a live audit of that guarantee and must stay <b>0</b>. "{{ rep.routable_imported }}" imported row(s) point at a lead without being linked to its consent.</p>
+
+{% if msg %}<div class="note" style="border-left:4px solid #1a7"><b>{{ msg }}</b></div>{% endif %}
+
+<h3 style="margin:16px 0 4px">Sources held</h3>
+{% if rep.sources %}
+<div style="overflow-x:auto"><table>
+<tr><th>Source</th><th>Licence / terms recorded</th><th class="num">Records</th><th class="num">With contact</th><th>First seen</th><th>Last seen</th></tr>
+{% for s in rep.sources %}<tr><td><b>{{ s.source_id }}</b>{% if s.source_name %}<br><span class="mini">{{ s.source_name }}</span>{% endif %}</td>
+<td class="small">{% if s.license %}{{ s.license }}{% else %}<span class="pill bad">none recorded</span> <span class="mini">— every record stays NOT_ELIGIBLE</span>{% endif %}</td>
+<td class="num">{{ s.total }}</td><td class="num">{{ s.with_contact or 0 }}</td>
+<td class="mini">{{ (s.first_seen or '')[:16] }}</td><td class="mini">{{ (s.last_seen or '')[:16] }}</td></tr>{% endfor %}
+</table></div>
+{% else %}<p class="small">Nothing imported yet. Paste a CSV below, or run <code>python tools/import_contacts.py import --source &lt;id&gt; --file &lt;export.csv&gt;</code>.</p>{% endif %}
+
+<h3 style="margin:16px 0 4px">Registry</h3>
+<form method="get" action="/admin/contacts" class="small" style="margin:8px 0;display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+ <select name="eligibility"><option value="">any eligibility</option>
+  {% for e in eligibility %}<option value="{{ e }}" {{ 'selected' if f.eligibility==e }}>{{ e|replace('_',' ')|lower }}</option>{% endfor %}</select>
+ <select name="source"><option value="">any source</option>
+  {% for s in rep.sources %}<option value="{{ s.source_id }}" {{ 'selected' if f.source==s.source_id }}>{{ s.source_id }}</option>{% endfor %}</select>
+ <select name="type"><option value="">any type</option>
+  {% for t in types %}<option value="{{ t }}" {{ 'selected' if f.type==t }}>{{ t|lower }}</option>{% endfor %}</select>
+ <select name="data_status"><option value="">any data status</option>
+  {% for s in statuses %}<option value="{{ s }}" {{ 'selected' if f.data_status==s }}>{{ s|replace('_',' ')|lower }}</option>{% endfor %}</select>
+ <select name="contact"><option value="">any contact state</option>
+  <option value="HAS_CONTACT" {{ 'selected' if f.contact=='HAS_CONTACT' }}>has phone/email</option>
+  <option value="NO_CONTACT" {{ 'selected' if f.contact=='NO_CONTACT' }}>no contact in source</option></select>
+ <select name="dup"><option value="UNIQUE" {{ 'selected' if f.dup=='UNIQUE' }}>unique originals</option>
+  <option value="DUPLICATE" {{ 'selected' if f.dup=='DUPLICATE' }}>duplicate attempts</option>
+  <option value="" {{ 'selected' if f.dup=='' }}>both</option></select>
+ <input name="q" value="{{ f.q }}" placeholder="name / email / phone" style="max-width:180px">
+ <button type="submit">filter</button>
+</form>
+
+<div style="overflow-x:auto"><table>
+<tr><th>#</th><th>Record</th><th>Contact held</th><th>Provenance</th><th>Eligibility &amp; why</th><th>Operator</th></tr>
+{% for r in rows %}
+<tr>
+ <td class="small">{{ r.id }}<br><span class="mini">{{ r.record_type|lower }}<br>{{ (r.imported_at or '')[:10] }}{% if r.dup_status=='DUPLICATE' %}<br><span class="pill bad">dup of #{{ r.dup_of }}</span>{% endif %}{% if r.is_test %}<br><span class="pill TEST">TEST</span>{% endif %}</span></td>
+ <td class="small" style="max-width:220px"><b>{{ r.full_name or '(no name)' }}</b>
+   {% if r.telegram %}<br><span class="mini">telegram: @{{ r.telegram }}</span>{% endif %}
+   {% if r.city or r.state %}<br><span class="mini">{{ r.city }}{{ ', ' if r.city and r.state }}{{ r.state }} {{ r.zip }}</span>{% endif %}
+ </td>
+ <td class="small" style="max-width:200px">
+   {% if r.phone %}<b>{{ r.phone }}</b>{% if r.phone_e164 %}<br><span class="mini">{{ r.phone_e164 }}</span>{% endif %}{% else %}<span class="mini">no phone</span>{% endif %}
+   <br>{% if r.email %}{{ r.email }}{% else %}<span class="mini">no email</span>{% endif %}
+ </td>
+ <td class="small" style="max-width:300px"><b>{{ r.source_id }}</b>{% if r.source_name %} <span class="mini">{{ r.source_name }}</span>{% endif %}
+   {% if r.source_url %}<br><a href="{{ r.source_url }}" rel="noopener" target="_blank">open source &#8599;</a>{% endif %}
+   {% if r.source_record_id %}<br><span class="mini">record id: {{ r.source_record_id }}</span>{% endif %}
+   <br><span class="mini">collected: {{ r.collected_at or 'not stated by source' }}</span>
+   <br><span class="mini">{% if r.license %}licence: {{ r.license }}{% else %}<span style="color:#b00">no licence recorded</span>{% endif %}</span>
+   {% set ev = r.evidence_data or {} %}
+   {% if ev.matched_lead %}<br><span class="mini">also has its own submission: <a href="/admin/lead/{{ ev.matched_lead }}?token={{ token }}">{{ ev.matched_lead[-8:] }}</a> (consent NOT inherited)</span>{% endif %}
+   <details><summary class="mini">source fields</summary><div class="mini" style="word-break:break-all">{{ r.source_fields }}</div></details>
+ </td>
+ <td class="small" style="max-width:330px">
+   {% if r.data_status == 'VERIFIED_REAL' %}<span class="pill good">real</span>
+   {% elif r.data_status == 'SYNTHETIC' %}<span class="pill bad">synthetic</span>
+   {% elif r.data_status == 'REJECTED' %}<span class="pill bad">rejected</span>
+   {% else %}<span class="pill" style="background:#fff3cd">unverified</span>{% endif %}
+   {% set q = r.quality_data or {} %}
+   {% if q.has_name and not q.has_phone and not q.has_email %}<span class="mini">no contact</span>{% endif %}
+   {% if q.phone_raw %}<span class="mini" style="color:#b00">unusable phone: {{ q.phone_raw }}</span>{% endif %}
+   {% if q.shared_channel %}<span class="mini">shared channel (kept as its own record)</span>{% endif %}
+   {% if q.org_name %}<span class="mini">organisation name</span>{% endif %}
+   <br>
+   {% if r.marketing_eligibility == 'ELIGIBLE_CONSENTED' %}<span class="pill QUALIFIED">consented</span>
+   {% elif r.marketing_eligibility == 'USE_LIMITED' %}<span class="pill" style="background:#fff3cd">use-limited</span>
+   {% else %}<span class="pill bad">not eligible</span>{% endif %}
+   <br><span class="mini">{{ r.why }}</span>
+   {% if r.permitted_uses %}<br><span class="mini">permitted: {{ r.permitted_uses }}</span>{% endif %}
+   {% if r.lead_id %}<br><span class="mini">lead: <a href="/admin/lead/{{ r.lead_id }}?token={{ token }}">{{ r.lead_id[-8:] }}</a></span>{% endif %}
+   {% if r.eligibility_reason %}<br><span class="mini" style="color:#555">{{ r.eligibility_reason[:220] }}</span>{% endif %}
+ </td>
+ <td class="small" style="max-width:320px">
+   <form method="post" action="{{ url_for('admin_contacts_attest', cid=r.id) }}" style="margin:0 0 6px">
+     <select name="status">
+      <option value="VERIFIED_REAL">real — I checked this record is a person/org</option>
+      <option value="UNVERIFIED">unverified — leave it as held-only</option>
+      <option value="REJECTED">rejected — not a real record</option>
+     </select>
+     <input name="note" placeholder="what you checked + where (required)" size="34">
+     <button type="submit" title="Judgement about authenticity only. It cannot grant marketing permission.">attest</button>
+   </form>
+   {% if r.marketing_eligibility != 'ELIGIBLE_CONSENTED' %}
+   <form method="post" action="{{ url_for('admin_contacts_use', cid=r.id) }}" style="margin:0 0 6px">
+     <input name="uses" placeholder="use the licence permits (e.g. inbound reply only)" size="30">
+     <input name="note" placeholder="evidence (url / clause)" size="30">
+     <button type="submit" title="Records a NON-marketing permitted use. Cannot make the record consented or sellable.">record use</button>
+   </form>
+   <form method="post" action="{{ url_for('admin_contacts_promote', cid=r.id) }}" style="margin:0">
+     <input name="lead_id" placeholder="lead_id of this person's own /check submission" size="34">
+     <input name="note" placeholder="note" size="18">
+     <button type="submit" title="Refused unless that lead exists, has a consent row, and its own submitted phone/email matches this record.">link to own consent</button>
+   </form>
+   <span class="mini">Linking proves the person submitted themselves. It creates nothing and cannot be done by an import.</span>
+   {% else %}
+   <span class="mini">Eligible: this person's own consented submission is linked. The lead pipeline owns it now.</span>
+   {% endif %}
+ </td>
+</tr>
+{% else %}
+<tr><td colspan="6" class="small">No rows match. Import an export above, or clear the filters.</td></tr>
+{% endfor %}
+</table></div>
+
+<h3 style="margin:20px 0 4px">Import an export</h3>
+<p class="small" style="margin:2px 0 6px">Paste a CSV (header row required). Any of these column names are understood: <code>name/full_name/title</code>, <code>first_name</code>, <code>last_name</code>, <code>email</code>, <code>phone/mobile</code>, <code>telegram/username</code>, <code>city</code>, <code>state</code>, <code>zip</code>, <code>url/profile_url/website</code>, <code>date/signup_date</code>, <code>id</code>. Everything else is kept verbatim on the row. Duplicates are stored as inert DUPLICATE rows — the original's phone, email, provenance and eligibility are immutable, so a re-import can never overwrite consent evidence.</p>
+<form method="post" action="{{ url_for('admin_contacts_import') }}" style="display:grid;gap:6px;max-width:820px">
+ <div style="display:flex;gap:6px;flex-wrap:wrap">
+  <input name="source_id" placeholder="source id (required, e.g. licensed-panel-2026-04)" required style="flex:1;min-width:230px">
+  <input name="source_name" placeholder="source name" style="flex:1;min-width:180px">
+  <select name="record_type">{% for t in types %}<option value="{{ t }}" {{ 'selected' if t=='CONSUMER' }}>{{ t|lower }}</option>{% endfor %}</select>
+ </div>
+ <div style="display:flex;gap:6px;flex-wrap:wrap">
+  <input name="source_url" placeholder="dataset / provenance URL" style="flex:1;min-width:260px">
+  <input name="license" placeholder="licence or terms basis (e.g. 'CC-BY-4.0', 'vendor agreement §3')" style="flex:1;min-width:260px">
+ </div>
+ <input name="license_note" placeholder="licence note / permitted-use clause (optional)">
+ <input name="batch" placeholder="batch label (optional)">
+ <textarea name="csv" rows="7" placeholder="name,email,phone,state,collected_at&#10;Jane Example,jane@example.com,3055550142,FL,2026-03-11" style="font-family:monospace;font-size:12px"></textarea>
+ <label class="mini"><input type="checkbox" name="test" value="1"> mark this batch as TEST data (never counts as real)</label>
+ <div><button type="submit">Import as NOT_ELIGIBLE records</button> <span class="mini">No row can arrive consented; no lead or consent is ever created here.</span></div>
+</form>
+
+{% if rep.batches %}
+<h3 style="margin:20px 0 4px">Recent import batches</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Batch</th><th>Source</th><th>Licence</th><th class="num">Read</th><th class="num">Imported</th><th class="num">Dup</th><th class="num">Rejected</th><th>When</th></tr>
+{% for b in rep.batches %}<tr><td class="mini">{{ b.batch }}</td><td class="small">{{ b.source_id }}</td>
+<td class="small">{{ b.license or '—' }}</td><td class="num">{{ b.received }}</td><td class="num">{{ b.imported }}</td>
+<td class="num">{{ b.duplicates }}</td><td class="num">{{ b.rejected }}</td><td class="mini">{{ (b.ts or '')[:16] }}</td></tr>{% endfor %}
+</table></div>
+{% endif %}
+</div>{% endblock %}

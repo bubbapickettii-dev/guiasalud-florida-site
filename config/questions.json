@@ -1,0 +1,366 @@
+{
+ "coverage_for": {
+  "label": "Who do you want to protect?",
+  "type": "choice",
+  "options": [
+   [
+    "me_spouse_kids",
+    "My spouse & kids"
+   ],
+   [
+    "me_kids",
+    "My kids"
+   ],
+   [
+    "me_spouse",
+    "My spouse / partner"
+   ],
+   [
+    "me",
+    "Just my final expenses / debts"
+   ]
+  ]
+ },
+ "work_type": {
+  "label": "What kind of work do you do now?",
+  "type": "choice",
+  "options": [
+   [
+    "realtor",
+    "Real estate"
+   ],
+   [
+    "beauty",
+    "Beauty / barber"
+   ],
+   [
+    "health",
+    "Healthcare / wellness"
+   ],
+   [
+    "trucking",
+    "Trucking / driving"
+   ],
+   [
+    "business",
+    "My own business"
+   ],
+   [
+    "other_1099",
+    "Other 1099 / freelance"
+   ]
+  ]
+ },
+ "age_range": {
+  "label": "Your age",
+  "type": "choice",
+  "options": [
+   [
+    "18-29",
+    "18-29"
+   ],
+   [
+    "30-39",
+    "30-39"
+   ],
+   [
+    "40-49",
+    "40-49"
+   ],
+   [
+    "50-59",
+    "50-59"
+   ],
+   [
+    "60-69",
+    "60-69"
+   ],
+   [
+    "70-85",
+    "70-85"
+   ]
+  ],
+  "label_es": "Su edad",
+  "options_es": [
+   [
+    "18-29",
+    "18-29"
+   ],
+   [
+    "30-39",
+    "30-39"
+   ],
+   [
+    "40-49",
+    "40-49"
+   ],
+   [
+    "50-59",
+    "50-59"
+   ],
+   [
+    "60-69",
+    "60-69"
+   ],
+   [
+    "70-85",
+    "70-85"
+   ]
+  ]
+ },
+ "state": {
+  "label": "Which state do you live in?",
+  "type": "state",
+  "label_es": "¿En qué estado vive?"
+ },
+ "dependents": {
+  "label": "Does anyone depend on your income?",
+  "type": "choice",
+  "options": [
+   [
+    "yes",
+    "Yes"
+   ],
+   [
+    "no",
+    "No"
+   ],
+   [
+    "soon",
+    "Soon (baby on the way / getting married)"
+   ]
+  ]
+ },
+ "coverage_amount": {
+  "label": "About how much coverage are you thinking?",
+  "type": "choice",
+  "options": [
+   [
+    "lt100k",
+    "Under $100k"
+   ],
+   [
+    "100-250k",
+    "$100k-$250k"
+   ],
+   [
+    "250-500k",
+    "$250k-$500k"
+   ],
+   [
+    "500k-1m",
+    "$500k-$1M"
+   ],
+   [
+    "1m+",
+    "$1M+"
+   ],
+   [
+    "unsure",
+    "Not sure - help me figure it out"
+   ]
+  ]
+ },
+ "fe_amount": {
+  "label": "How much would you like to leave for final expenses?",
+  "type": "choice",
+  "options": [
+   [
+    "5-10k",
+    "$5k-$10k"
+   ],
+   [
+    "10-15k",
+    "$10k-$15k"
+   ],
+   [
+    "15-25k",
+    "$15k-$25k"
+   ],
+   [
+    "25k+",
+    "$25k+"
+   ],
+   [
+    "unsure",
+    "Not sure"
+   ]
+  ]
+ },
+ "mortgage_balance": {
+  "label": "About how much is left on your mortgage?",
+  "type": "choice",
+  "options": [
+   [
+    "lt150k",
+    "Under $150k"
+   ],
+   [
+    "150-300k",
+    "$150k-$300k"
+   ],
+   [
+    "300-500k",
+    "$300k-$500k"
+   ],
+   [
+    "500k+",
+    "$500k+"
+   ]
+  ]
+ },
+ "tobacco": {
+  "label": "Have you used tobacco or nicotine in the last 12 months?",
+  "type": "choice",
+  "options": [
+   [
+    "no",
+    "No"
+   ],
+   [
+    "yes",
+    "Yes"
+   ]
+  ]
+ },
+ "health_rating": {
+  "label": "How would you describe your overall health?",
+  "type": "choice",
+  "options": [
+   [
+    "excellent",
+    "Excellent"
+   ],
+   [
+    "good",
+    "Good"
+   ],
+   [
+    "fair",
+    "Fair"
+   ],
+   [
+    "conditions",
+    "I have some health conditions"
+   ]
+  ]
+ },
+ "timeframe": {
+  "label": "When would you like coverage in place?",
+  "type": "choice",
+  "options": [
+   [
+    "asap",
+    "As soon as possible"
+   ],
+   [
+    "30d",
+    "Within 30 days"
+   ],
+   [
+    "1-3m",
+    "In 1-3 months"
+   ],
+   [
+    "research",
+    "Just researching"
+   ]
+  ]
+ },
+ "also_health": {
+  "label": "Do you also need HEALTH coverage now that you're self-employed?",
+  "type": "choice",
+  "options": [
+   [
+    "yes",
+    "Yes, show me options"
+   ],
+   [
+    "no",
+    "No, I'm covered"
+   ]
+  ]
+ },
+ "health_who": {
+  "label": "Who needs health coverage?",
+  "type": "choice",
+  "options": [
+   [
+    "me",
+    "Just me"
+   ],
+   [
+    "me_spouse",
+    "Me + spouse/partner"
+   ],
+   [
+    "me_kids",
+    "Me + kids"
+   ],
+   [
+    "family",
+    "My whole family"
+   ]
+  ],
+  "label_es": "¿Quién necesita seguro médico?",
+  "options_es": [
+   [
+    "me",
+    "Solo yo"
+   ],
+   [
+    "me_spouse",
+    "Yo + mi pareja"
+   ],
+   [
+    "me_kids",
+    "Yo + mis hijos"
+   ],
+   [
+    "family",
+    "Toda mi familia"
+   ]
+  ]
+ },
+ "health_timeframe": {
+  "label": "What's your situation?",
+  "type": "choice",
+  "options": [
+   [
+    "asap",
+    "I lost (or am losing) coverage"
+   ],
+   [
+    "jan1",
+    "I need a plan starting Jan 1"
+   ],
+   [
+    "renewal",
+    "Reviewing my current Marketplace plan"
+   ],
+   [
+    "research",
+    "Just researching"
+   ]
+  ],
+  "label_es": "¿Cuál es su situación?",
+  "options_es": [
+   [
+    "asap",
+    "Perdí (o voy a perder) mi cobertura"
+   ],
+   [
+    "jan1",
+    "Necesito un plan desde el 1 de enero"
+   ],
+   [
+    "renewal",
+    "Estoy revisando mi plan actual del Mercado"
+   ],
+   [
+    "research",
+    "Solo estoy investigando"
+   ]
+  ]
+ }
+}

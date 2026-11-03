@@ -1,0 +1,32 @@
+[
+ {
+  "experiment_id": "X013",
+  "name": "Bubba's IG (EN) - redirected to the 2027 carrier-exit card",
+  "angle": "plan_change",
+  "audience": "2027 re-shoppers (carrier exits / rate shock)",
+  "landing_page": "/learn/florida-health-plan-changes-2027",
+  "demand_trigger": "Discontinuation letters (Cigna, Molina, Sunshine) arriving Oct-Nov; HealthCare.gov will move non-choosers to a different company",
+  "content_concept": "IG story: 'Got a letter saying your plan is ending? If you do nothing you'll be moved to a company you didn't pick.' Link sticker /go/x013?c=story; Reel with the same hook. Was: 1099 fighters/trainers (no deadline, no trigger).",
+  "learning": "2026-10-05 REDIRECTED (no data yet): the 1099-trainer angle has no event and no deadline; the same IG reach is spent on a dated, concrete trigger (plan ending + auto-move). Channel stays separate so Bubba's own audience is measured on its own."
+ },
+ {
+  "experiment_id": "X014",
+  "status": "KILLED",
+  "learning": "2026-10-05 KILLED before launch (no data): AI-presenter shorts for a generic 1099 audience compete with every agency on Reels and carry no trigger. Replaced by real-trigger content (X016 carrier exits, X018 job loss, X021 January shock)."
+ },
+ {
+  "experiment_id": "X015",
+  "status": "KILLED",
+  "learning": "2026-10-05 KILLED before launch (no spend): generic 'self-employed / Obamacare 2027' keywords are the most contested auction in the category (lead aggregators bid there). Any paid test moves to a trigger audience (Meta Special Ad Category boost of the ES carrier-exit card, ~$50, needs approval)."
+ },
+ {
+  "experiment_id": "X018",
+  "pages": "/layoffs,/layoffs/*,/learn/laid-off-florida-health-insurance,/aprende/me-despidieron-seguro-medico-florida,/learn/cobra-ending-18-months-florida,/aprende/cobra-se-termina-18-meses-florida",
+  "content_concept": "Hub + one page per WARN layoff (13 events), 60-day window computed from the effective date, closure = no-COBRA warning; COBRA 18-month exhaustion pages (spring-2025 WARN cohort exhausts Oct 2026-Jan 2027); Spanish companions; WARN watcher drafts new pages"
+ },
+ {
+  "experiment_id": "X020",
+  "status": "KILLED",
+  "learning": "2026-10-05 MERGED into X021 (no data): the late-OEP page alone is a date fact; combined with the auto-move 'network shock' it answers the problem people actually have Jan 1-15."
+ }
+]

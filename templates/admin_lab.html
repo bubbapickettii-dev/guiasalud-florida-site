@@ -1,0 +1,38 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1400px;padding:16px 16px 40px">
+<h2>Distribution Lab</h2>
+<p class="small">Every acquisition test gets its own tracking link. Numbers come only from real events, leads and agent statuses. Evidence: <span class="pill UNTESTED">UNTESTED</span> no data · <span class="pill TEST">TEST DATA ONLY</span> fake submissions only · <span class="pill LIVE">LIVE - NO LEADS YET</span> real visits, no qualified lead · <span class="pill VALIDATED">VALIDATED</span> produced a real qualified lead. No benchmarks are assumed anywhere.</p>
+<details><summary>+ New acquisition experiment (the tracking link works the moment you save)</summary>
+<form method="post" class="grid2" style="margin-top:10px">
+<label class="mini">Experiment ID (blank = next X###)<input class="t" name="experiment_id" placeholder="X016"></label>
+<label class="mini">Name<input class="t" name="name" required placeholder="AI explainer ES - 1099 Miami"></label>
+<label class="mini">Audience (market-intelligence segment)<select class="t" name="audience">{% for s in segments %}<option>{{ s }}</option>{% endfor %}<option value="">(other)</option></select></label>
+<label class="mini">Demand trigger (blank = from playbook)<input class="t" name="demand_trigger" placeholder="Became 1099 / lost job coverage / OEP deadline"></label>
+<label class="mini">Channel<select class="t" name="channel">{% for c in channels %}<option value="{{ c.id }}">{{ c.channel[:70] }}</option>{% endfor %}</select></label>
+<label class="mini">utm_source (platform)<input class="t" name="source" placeholder="instagram, tiktok, google..."></label>
+<label class="mini">utm_medium<input class="t" name="medium" placeholder="story, reel, organic, cpc..."></label>
+<label class="mini">Content concept<input class="t" name="content_concept" placeholder="what the post/ad/resource is"></label>
+<label class="mini">Creative ID (utm_content)<input class="t" name="creative" placeholder="story-1, reel-a..."></label>
+<label class="mini">Offer / CTA (exact words)<input class="t" name="offer_cta" placeholder="Tap the link: free 60-second 2027 Health Coverage Check"></label>
+<label class="mini">Check angle<select class="t" name="angle">{% for k,a in angles.items() %}<option value="{{ k }}">{{ k }} ({{ a.lang|upper }}) - {{ a.headline[:50] }}</option>{% endfor %}</select></label>
+<label class="mini">Landing page (blank = Check with the angle; or e.g. /learn/1099-worker-health-insurance)<input class="t" name="landing_page" placeholder="/check?a=..."></label>
+<label class="mini">Phone-step wording<select class="t" name="phone_variant"><option value="">A/B split per visitor</option>{% for k,v in phone_copy.items() %}<option value="{{ k }}">{{ k }} - {{ v.label }}</option>{% endfor %}</select></label>
+<label class="mini">Campaign<input class="t" name="campaign" placeholder="oep-2027-health (default)"></label>
+<label class="mini">Partner (optional)<select class="t" name="partner_id"><option value="">-</option>{% for p in partners %}<option value="{{ p.partner_id }}">{{ p.display_name }}</option>{% endfor %}</select></label>
+<label class="mini">Start date<input class="t" name="start_date" type="date"></label><label class="mini">End date<input class="t" name="end_date" type="date"></label>
+<label class="mini">Planned cost ($)<input class="t" name="cost" type="number" step="0.01" value="0"></label>
+<label class="mini">Hypothesis<input class="t" name="hypothesis" placeholder="If X then Y because Z"></label>
+<div><button class="btn" style="padding:10px">Create experiment + tracking link</button></div></form></details>
+<p class="small"><a href="/qa?on=1" target="_blank">Mark this browser as a QA device</a> before clicking your own live links, so they never count as real traffic.</p>
+<p><a href="/admin/lab.csv?token={{ token }}">Download lab CSV</a></p>
+<div style="overflow-x:auto"><table><tr><th>ID</th><th>Experiment</th><th>Evidence</th><th>Tracking link / QR</th><th class="num">Cost</th><th class="num">Clicks</th><th class="num">LP visits</th><th class="num">Form starts</th><th class="num">Check done</th><th class="num">Phone step viewed</th><th class="num">Phones submitted</th><th class="num">Valid phones</th><th class="num">Consented phone leads</th><th class="num">All submissions</th><th class="num">Qualified</th><th class="num">Invalid</th><th class="num">Feedback</th><th class="num">Appts</th><th class="num">Sales</th><th class="num">Cost / phone lead</th><th class="num">CPQL</th><th class="num">Revenue</th><th class="num">Revenue / lead</th><th class="num">ROI</th><th>Test data</th><th>Update</th></tr>
+{% for r in rows %}{% set e=r.experiment %}{% set m=r.real %}{% set code=e.experiment_id|lower %}<tr>
+<td><a href="/admin/lab/{{ e.experiment_id }}?token={{ token }}"><b>{{ e.experiment_id }}</b></a><br><span class="mini">{{ e.status }}</span></td>
+<td><b>{{ e.name }}</b><br><span class="mini">{{ e.channel }} · {{ e.angle }} · {{ (e.language or 'en')|upper }}{% if e.partner_id %} · {{ e.partner_id }}{% endif %}<br>{{ e.hypothesis or '' }}</span>{% if e.learning %}<br><span class="mini"><b>Learning:</b> {{ e.learning }}</span>{% endif %}</td>
+<td><span class="pill {{ r.evidence.split(' ')[0] }}">{{ r.evidence }}</span></td>
+<td class="mini">{{ base }}/go/{{ code }}<br><a href="/qr.png?u=/go/{{ code }}" target="_blank">QR</a> · <a href="{{ e.landing_page }}" target="_blank">page</a></td>
+<td class="num">{{ '%.0f'|format(m.cost) }}</td><td class="num">{{ m.clicks }}</td><td class="num">{{ m.landing_page_visits }}</td><td class="num">{{ m.form_starts }}</td><td class="num">{{ m.check_completions }}</td><td class="num">{{ m.phone_step_views }}</td><td class="num">{{ m.phones_submitted }}</td><td class="num">{{ m.valid_phones }}</td><td class="num"><b>{{ m.consented_phone_leads }}</b></td><td class="num">{{ m.form_completions }}</td><td class="num">{{ m.qualified_leads }}</td><td class="num">{{ m.invalid_leads }}</td><td class="num">{{ m.agent_feedback }}</td><td class="num">{{ m.appointments }}</td><td class="num">{{ m.sales }}</td>
+<td class="num">{{ m.cost_per_phone_lead if m.cost_per_phone_lead is not none else '-' }}</td><td class="num">{{ m.cost_per_qualified_lead if m.cost_per_qualified_lead is not none else '-' }}</td><td class="num">{{ m.lead_value }}</td><td class="num">{{ m.revenue_per_lead if m.revenue_per_lead is not none else '-' }}</td><td class="num">{{ m.roi if m.roi is not none else '-' }}</td>
+<td class="mini">{% if r.test.form_completions %}{{ r.test.landing_page_visits }} visits / {{ r.test.form_completions }} forms / {{ r.test.qualified_leads }} qual (TEST){% else %}-{% endif %}</td>
+<td><form method="post" style="margin:0;min-width:180px"><input type="hidden" name="update" value="{{ e.experiment_id }}"><select class="t" name="status">{% for s in statuses %}<option {{ 'selected' if e.status==s }}>{{ s }}</option>{% endfor %}</select><input class="t" name="cost" type="number" step="0.01" value="{{ e.cost }}" title="actual spend"><input class="t" name="learning" value="{{ e.learning or '' }}" placeholder="learning"><button class="sb">Save</button></form></td></tr>{% endfor %}</table></div>
+</div>{% endblock %}

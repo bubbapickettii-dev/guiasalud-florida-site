@@ -1,0 +1,68 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1400px;padding:16px 16px 40px">
+<h2>Buyers pipeline - prospect follow-up queue</h2> <a class="btn sm ghost" href="/admin/buyer-pipeline.csv?token={{ token }}" style="float:right" title="The queue below, with recorded blockers and next steps, as a CSV">Download CSV</a>
+<p class="mini">The selling side: what the operator actually did with each prospective health agency between
+application and activation. Nothing here contacts anyone — it records what already happened, so the deal lives in
+the product, not in someone's head. Demo placeholder buyers are not tracked; activation still happens on
+<a href="/admin?token={{ token }}#onboard">Overview → Buyers</a> with its own verification gates.</p>
+<div class="kpis" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin:10px 0">
+{% for k,label in [('OVERDUE','Overdue'),('DUE_TODAY','Due today'),('PILOT_READY','Pilot ready to run'),
+                   ('AWAITING_FIRST_STEP','Awaiting first step'),('SCHEDULED','Upcoming'),('RECENT','Recent')] %}
+<div class="kpi"><span>{{ label }}</span><b style="font-size:20px">{{ counts.get(k, 0) }}</b></div>
+{% endfor %}
+</div>
+{% if saved %}<div class="note good" style="border-left:4px solid #1a7">{{ saved }}</div>{% endif %}
+{% if errs %}<div class="note bad" style="border-left:4px solid #b00">{{ errs|join(' · ') }}</div>{% endif %}
+
+<h3 style="margin:14px 0 4px">The commercial funnel in one view <a href="/admin/prospects?token={{ token }}">→ Buyer prospects</a></h3>
+<div class="kpis" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin:8px 0">
+<div class="kpi"><span>Prospects recorded</span><b style="font-size:20px">{{ pcounts.TOTAL }}</b></div>
+<div class="kpi"><span>Qualified (+ readiness)</span><b style="font-size:20px">{{ pcounts.QUALIFIED }}</b></div>
+<div class="kpi"><span>Ready for onboarding</span><b style="font-size:20px">{{ pcounts.READY_FOR_ONBOARDING }}</b></div>
+<div class="kpi"><span>Onboarding started</span><b style="font-size:20px">{{ pcounts.ONBOARDING_STARTED }}</b></div>
+<div class="kpi"><span>Real buyers — inactive</span><b style="font-size:20px">{{ inactive_real }}</b> <span class="mini">(cannot receive leads)</span></div>
+<div class="kpi"><span>Real buyers — ACTIVE</span><b style="font-size:20px">{{ active_real }}</b> <span class="mini">(routing-eligible only)</span></div>
+</div>
+<p class="mini">A draft is never routing-eligible and an ACTIVE buyer still fails when its recorded blockers say so — those are
+listed per row below, verbatim from the routing engine. Prospects + buyers are the SAME deal described twice; nothing
+was “contacted”, “interested”, “verified” or “agreed” unless the underlying records say so.</p>
+
+<h3 style="margin:14px 0 4px" id="funnel">Where buyers flow — from the RECORD, not a funnel diagram</h3>
+<p class="mini" style="margin:0 0 6px">Each stage counts the people who were ever recorded on it, who still stand there, and who moved onward — with the recorded median days standing. Applications that were declined or paused are shown as exits; nothing is extrapolated from missing outreach.</p>
+<div style="overflow-x:auto"><table style="max-width:900px">
+<tr><th>Stage</th><th class="num">Reached</th><th class="num">There now</th><th class="num">Moved on</th><th class="num">Median days in stage</th></tr>
+{% for s in funnel.ladder %}<tr><td>{{ s.label }}</td><td class="num">{{ s.reached }}</td><td class="num"><b>{{ s.now }}</b></td><td class="num">{{ s.onward }}</td><td class="num">{{ s.days if s.days is not none else '-' }}</td></tr>{% endfor %}
+<tr><td><b>Activated buyer</b> <span class="pill done">success</span></td><td class="num">{{ funnel.exits.activated_ever }}</td><td class="num"><b>{{ funnel.exits.activated }}</b></td><td class="num">-</td><td class="num">-</td></tr>
+</table></div>
+<p class="mini">{{ funnel.arrived }} prospect(s) arrived · {{ funnel.exits.declined }} declined · {{ funnel.exits.paused }} paused · stalled at application: {{ funnel.stalled }}</p>
+
+{% if not rows %}
+<p class="small" style="margin:16px 0">No prospect buyers tracked yet. A buyer appears here as soon as it exists as a
+non-demo record — an agency applying at <a href="/for-agents">For agents</a> lands here automatically
+(<b>Application received</b>), or save a draft on the onboarding form and it shows up the same way.</p>
+{% endif %}
+
+<div style="overflow-x:auto"><table>
+<tr><th>Prospect</th><th>Stage</th><th>Last outreach</th><th>Next follow-up</th><th>Recorded blockers</th><th>Record next step</th></tr>
+{% for r in rows %}
+<tr id="{{ r.buyer.id }}"><td><a href="/admin/buyer-pipeline/{{ r.buyer.id }}?token={{ token }}"><b>{{ r.buyer.name or r.buyer.id }}</b></a><br>
+<span class="mini">{{ r.buyer.id }}{% if r.contact_email %} · {{ r.contact_name }} · {{ r.contact_email }}{% endif %}</span>
+{% if r.buyer.converted_from_prospect %}<br><span class="mini">via prospect <a href="/admin/prospects/{{ r.buyer.converted_from_prospect.prospect_id }}?token={{ token }}">#{{ r.buyer.converted_from_prospect.prospect_id }}</a></span>{% endif %}
+{% if r.note %}<br><span class="small">{{ r.note[:100] }}</span>{% endif %}<br>
+<span class="pill {{ 'bad' if r.bucket=='OVERDUE' else '' }}">{{ r.bucket|replace('_',' ')|lower }}</span></td>
+<td><span class="pill">{{ stg_label[r.stage] }}</span></td>
+<td class="mini">{{ (r.last_outreach_at or '-')[5:16].replace('T',' ') }}{% if r.outreach_method %} · {{ r.outreach_method }}{% endif %}
+{% if r.last_note %}<br>→ {{ r.last_note[:100] }}{% endif %}</td>
+<td class="mini">{{ r.next_followup or '-' }}</td>
+<td class="mini">{% if r.blocked_line %}{{ r.blocked_line }}{% if r.next_hint %}<br>next: {{ r.next_hint }}{% endif %}{% else %}-{% endif %}</td>
+<td><form method="post" action="/admin/buyer-pipeline/{{ r.buyer.id }}/action" style="display:flex;gap:4px;flex-wrap:wrap;margin:0">
+<input class="t" name="next_followup" type="date" style="max-width:150px" title="Schedule the next follow-up (YYYY-MM-DD)">
+<select class="t" name="method" style="max-width:110px"><option value="">method</option>{% for m in methods %}<option>{{ m }}</option>{% endfor %}</select>
+<select class="t" name="stage" style="max-width:180px"><option value="">stage</option>{% for s in stages %}{% if s != r.stage %}<option>{{ s }}</option>{% endif %}{% endfor %}</select>
+<input class="t quick" name="note" placeholder="note / what was said" style="max-width:170px">
+<button class="sb">Save</button></form></td></tr>
+{% endfor %}</table></div>
+<p class="mini">Stages: {{ stages|map('lower')|join(' → ') }}. Recorded blockers are the SAME eligibility lines the
+routing engine computes (activation, pricing, verification) — the pipeline never marks a prospect ready that the
+engine still refuses. Dates are promises to yourself: overdue rows float to the top.</p>
+</div>{% endblock %}

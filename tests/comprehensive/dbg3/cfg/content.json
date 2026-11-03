@@ -1,0 +1,1059 @@
+{
+ "guardrail": "Educational only: dates, eligibility rules, how subsidies work. Never describe a specific plan/carrier's benefits, compare specific products, recommend a policy, or quote prices - that is 'solicitation' under Fla. Stat. 626.112(1)(b) and requires a license. Every page ends at the Health Coverage Check.",
+ "pages": [
+  {
+   "slug": "health-insurance-self-employed",
+   "lang": "en",
+   "angle": "self_employed",
+   "q": "Can I get health insurance if I'm self-employed?",
+   "a": [
+    "Yes. If you're self-employed in Florida, you can buy an individual plan through the Health Insurance Marketplace. You don't need an employer.",
+    "Whether you get help paying the premium depends on your estimated household income for the year. For 2027, premium tax credits generally apply between 100% and 400% of the poverty level. The extra subsidies that went above 400% ended after 2025.",
+    "2027 subsidy range (100%-400% of the 2026 poverty guidelines): 1 person $15,960-$63,840 · 2 people $21,640-$86,560 · 3 people $27,320-$109,280 · 4 people $33,000-$132,000.",
+    "Timing matters. Open Enrollment for 2027 runs November 1, 2026 to January 15, 2027, and you need to enroll by December 15 for coverage that starts January 1. If you just lost job-based coverage, you usually have 60 days to enroll through a Special Enrollment Period.",
+    "Self-employed people who aren't eligible for an employer plan (their own or a spouse's) may be able to deduct health insurance premiums. Ask your tax professional."
+   ],
+   "src": [
+    "https://www.healthcare.gov/self-employed/",
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/",
+    "https://www.healthcare.gov/glossary/federal-poverty-level-fpl/"
+   ],
+   "script": {
+    "hook": "Self-employed in Florida and no health insurance? Here's the date that matters.",
+    "beats": [
+     "You don't need an employer: Marketplace plans are open to you.",
+     "Help with premiums depends on your 2027 income, and the extra subsidies ended after 2025.",
+     "Enroll by Dec 15 for Jan 1 coverage."
+    ],
+    "cta": "Free 60-second check, link in bio."
+   }
+  },
+  {
+   "slug": "when-can-i-enroll-health-insurance",
+   "lang": "en",
+   "angle": "timing",
+   "q": "When can I enroll in health insurance?",
+   "a": [
+    "For 2027 coverage, Open Enrollment runs from November 1, 2026 to January 15, 2027.",
+    "Enroll by December 15 for coverage starting January 1. If you enroll between December 16 and January 15, coverage starts February 1 (after you pay the first premium).",
+    "Outside Open Enrollment, you need a qualifying life event, like losing other coverage, moving, getting married, having a baby or turning 26. You usually have 60 days after the event to enroll.",
+    "You can apply for Medicaid or CHIP at any time of year."
+   ],
+   "src": [
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/",
+    "https://www.healthcare.gov/coverage-outside-open-enrollment/special-enrollment-period/"
+   ],
+   "script": {
+    "hook": "Missed the health insurance deadline? You might not have.",
+    "beats": [
+     "Open Enrollment: Nov 1 - Jan 15.",
+     "Dec 15 = coverage on Jan 1.",
+     "Lost coverage? You usually get 60 days."
+    ],
+    "cta": "Check your window in 60 seconds."
+   }
+  },
+  {
+   "slug": "how-much-does-health-insurance-cost",
+   "lang": "en",
+   "angle": "savings",
+   "q": "How much does health insurance cost in Florida?",
+   "a": [
+    "There's no single price. Your premium depends on your age, where you live (ZIP code and county), how many people are covered, tobacco use and the plan's metal level.",
+    "What you actually pay also depends on income. Premium tax credits lower the monthly premium for households in the eligible range.",
+    "2027 subsidy range (100%-400% of the 2026 poverty guidelines): 1 person $15,960-$63,840 · 2 people $21,640-$86,560 · 3 people $27,320-$109,280 · 4 people $33,000-$132,000.",
+    "Anyone who quotes you a price without asking these questions is guessing. The free check shows your enrollment window and subsidy range. A licensed agent can then pull real plans and prices for your ZIP code."
+   ],
+   "src": [
+    "https://www.healthcare.gov/lower-costs/",
+    "https://www.healthcare.gov/glossary/federal-poverty-level-fpl/"
+   ],
+   "script": {
+    "hook": "'How much is health insurance?' The honest answer has 5 parts.",
+    "beats": [
+     "Age, ZIP, household size, tobacco, plan level.",
+     "Then income decides how much help you get.",
+     "2027: help generally stops at 400% of poverty level."
+    ],
+    "cta": "Check your subsidy range free."
+   }
+  },
+  {
+   "slug": "do-i-qualify-for-help-paying-health-insurance",
+   "lang": "en",
+   "angle": "savings",
+   "q": "Do I qualify for help paying for health insurance?",
+   "a": [
+    "For 2027 coverage, premium tax credits are generally available when household income is between 100% and 400% of the federal poverty level, and you don't have access to other qualifying coverage.",
+    "2027 subsidy range (100%-400% of the 2026 poverty guidelines): 1 person $15,960-$63,840 · 2 people $21,640-$86,560 · 3 people $27,320-$109,280 · 4 people $33,000-$132,000.",
+    "The enhanced credits that removed the 400% cap expired at the end of 2025. As of this writing, Congress had not extended them.",
+    "Florida has not expanded Medicaid. Many adults below 100% of the poverty level don't qualify for Marketplace credits, and adults without children generally can't get Florida Medicaid. A licensed agent or a free Navigator can review options.",
+    "Credits are based on your estimated income for the year and reconciled on your tax return, so update your application if your income changes."
+   ],
+   "src": [
+    "https://www.healthcare.gov/glossary/federal-poverty-level-fpl/",
+    "https://www.irs.gov/affordable-care-act/individuals-and-families/eligibility-for-the-premium-tax-credit",
+    "https://www.healthcare.gov/lower-costs/"
+   ],
+   "script": {
+    "hook": "If you make under $63,840 (single), read this before Dec 15.",
+    "beats": [
+     "2027 help generally applies between 100% and 400% of the poverty level.",
+     "Family of 4: up to $132,000.",
+     "Over that, no credit in 2027."
+    ],
+    "cta": "See where you land, link in bio."
+   }
+  },
+  {
+   "slug": "lost-employer-health-insurance",
+   "lang": "en",
+   "angle": "life_change",
+   "q": "What happens if I lose my employer health insurance?",
+   "a": [
+    "Losing job-based coverage is a qualifying life event. You usually have 60 days to enroll in a Marketplace plan through a Special Enrollment Period, and you can often apply before the coverage ends.",
+    "You may also be offered COBRA, which continues your employer plan but usually at the full cost. Compare it with Marketplace options, where premium tax credits may apply depending on income.",
+    "If you choose COBRA and later drop it voluntarily outside Open Enrollment, that usually doesn't open a Special Enrollment Period, so decide early.",
+    "Don't wait past 60 days: after that, you'd usually have to wait for Open Enrollment."
+   ],
+   "src": [
+    "https://www.healthcare.gov/coverage-outside-open-enrollment/special-enrollment-period/",
+    "https://www.healthcare.gov/unemployed/cobra-coverage/"
+   ],
+   "script": {
+    "hook": "Laid off? You have 60 days. Here's what most people get wrong.",
+    "beats": [
+     "Losing job coverage opens a 60-day window.",
+     "COBRA isn't your only option.",
+     "Dropping COBRA later usually doesn't reopen the window."
+    ],
+    "cta": "Check your window now."
+   }
+  },
+  {
+   "slug": "health-insurance-between-jobs",
+   "lang": "en",
+   "angle": "life_change",
+   "q": "Can I get health insurance between jobs?",
+   "a": [
+    "Yes. If you lose job-based coverage, you can usually enroll in a Marketplace plan within 60 days through a Special Enrollment Period. Coverage can begin soon after you pick a plan.",
+    "Other routes: COBRA from your former employer, or joining a spouse's or parent's plan (if you're under 26) when their plan allows mid-year changes after your coverage ends.",
+    "If your income for the year will be lower because of the gap, update your estimate. You may qualify for more help with premiums."
+   ],
+   "src": [
+    "https://www.healthcare.gov/coverage-outside-open-enrollment/special-enrollment-period/",
+    "https://www.healthcare.gov/unemployed/cobra-coverage/"
+   ],
+   "script": {
+    "hook": "Between jobs and uninsured? Don't wait for your new job's plan.",
+    "beats": [
+     "60-day window after losing coverage.",
+     "Lower income this year can mean more help.",
+     "Under 26? A parent's plan may be an option."
+    ],
+    "cta": "60-second check, link in bio."
+   }
+  },
+  {
+   "slug": "1099-worker-health-insurance",
+   "lang": "en",
+   "angle": "self_employed",
+   "q": "How does health insurance work if I'm a 1099 worker?",
+   "a": [
+    "As a 1099 worker you buy your own coverage, usually through the Marketplace. You estimate your household income for the year (for 1099 work, roughly your net profit) and that estimate sets any premium tax credit.",
+    "Because 1099 income changes, update your Marketplace application when it does. Credits paid in advance are reconciled when you file taxes, so a big income jump can mean paying some back.",
+    "2027 subsidy range (100%-400% of the 2026 poverty guidelines): 1 person $15,960-$63,840 · 2 people $21,640-$86,560 · 3 people $27,320-$109,280 · 4 people $33,000-$132,000.",
+    "Enroll during Open Enrollment (Nov 1 - Jan 15, by Dec 15 for Jan 1) or within 60 days of losing other coverage."
+   ],
+   "src": [
+    "https://www.healthcare.gov/self-employed/",
+    "https://www.healthcare.gov/glossary/federal-poverty-level-fpl/",
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/"
+   ],
+   "script": {
+    "hook": "1099 and paying for health insurance with no help? Check this number.",
+    "beats": [
+     "Your estimated NET income sets your help.",
+     "Update it when your income changes.",
+     "It's reconciled at tax time."
+    ],
+    "cta": "See your range free."
+   }
+  },
+  {
+   "slug": "freelancer-health-insurance-options",
+   "lang": "en",
+   "angle": "self_employed",
+   "q": "What health insurance options do freelancers have?",
+   "a": [
+    "Freelancers in Florida usually have a few routes: an individual Marketplace plan (with premium tax credits if income is in range), a spouse's or partner's employer plan if eligible, a parent's plan if under 26, or COBRA right after leaving a job.",
+    "Marketplace eligibility for help depends on estimated household income. For 2027, help generally stops above 400% of the poverty level.",
+    "2027 subsidy range (100%-400% of the 2026 poverty guidelines): 1 person $15,960-$63,840 · 2 people $21,640-$86,560 · 3 people $27,320-$109,280 · 4 people $33,000-$132,000.",
+    "A licensed agent can compare actual plans and networks for your ZIP code, which is where the real differences show up."
+   ],
+   "src": [
+    "https://www.healthcare.gov/self-employed/",
+    "https://www.healthcare.gov/glossary/federal-poverty-level-fpl/"
+   ],
+   "script": {
+    "hook": "Freelancers: the 4 ways to get health insurance (most people know 1).",
+    "beats": [
+     "Marketplace plan.",
+     "Spouse/partner job plan.",
+     "Under 26: parent's plan. Right after a job: COBRA."
+    ],
+    "cta": "Check yours in 60 seconds."
+   }
+  },
+  {
+   "slug": "seguro-medico-trabajo-por-cuenta-propia",
+   "angle": "es_self_employed",
+   "q": "¿Puedo tener seguro médico si trabajo por mi cuenta?",
+   "a": [
+    "Sí. Si trabajas por tu cuenta en Florida, puedes comprar un plan individual en el Mercado de Seguros Médicos. No necesitas un empleador.",
+    "Si recibes ayuda con la prima depende de tu ingreso estimado del hogar para el año. Para 2027, el crédito fiscal generalmente aplica entre el 100% y el 400% del nivel de pobreza. Los subsidios extra por encima del 400% terminaron después de 2025.",
+    "Rango de subsidio 2027 (100%-400% de las guías de pobreza 2026): 1 persona $15,960-$63,840 · 2 personas $21,640-$86,560 · 3 personas $27,320-$109,280 · 4 personas $33,000-$132,000.",
+    "La fecha importa: la Inscripción Abierta para 2027 va del 1 de noviembre de 2026 al 15 de enero de 2027, y debes inscribirte antes del 15 de diciembre para cobertura desde el 1 de enero. Si acabas de perder la cobertura de un trabajo, normalmente tienes 60 días.",
+    "Si trabajas por tu cuenta y no tienes acceso a un plan de empleador (tuyo o de tu pareja), podrías deducir las primas. Pregúntale a tu contador."
+   ],
+   "script": {
+    "hook": "¿Trabajas por tu cuenta y no tienes seguro médico? Esta es la fecha clave.",
+    "beats": [
+     "No necesitas un empleador: el Mercado está abierto para ti.",
+     "La ayuda depende de tu ingreso 2027; los subsidios extra terminaron en 2025.",
+     "Inscríbete antes del 15 de diciembre para el 1 de enero."
+    ],
+    "cta": "Chequeo gratis de 60 segundos en mi bio."
+   },
+   "lang": "es",
+   "src": [
+    "https://www.healthcare.gov/self-employed/",
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/",
+    "https://www.healthcare.gov/glossary/federal-poverty-level-fpl/"
+   ]
+  },
+  {
+   "slug": "cuando-puedo-inscribirme-seguro-medico",
+   "angle": "es_check",
+   "q": "¿Cuándo me puedo inscribir en un seguro médico?",
+   "a": [
+    "Para la cobertura 2027, la Inscripción Abierta va del 1 de noviembre de 2026 al 15 de enero de 2027.",
+    "Inscríbete antes del 15 de diciembre para que la cobertura empiece el 1 de enero. Si te inscribes entre el 16 de diciembre y el 15 de enero, empieza el 1 de febrero (después de pagar la primera prima).",
+    "Fuera de esas fechas necesitas un evento de vida que califique, como perder otra cobertura, mudarte, casarte, tener un bebé o cumplir 26. Normalmente tienes 60 días después del evento.",
+    "Puedes solicitar Medicaid o CHIP en cualquier momento del año."
+   ],
+   "script": {
+    "hook": "¿Crees que ya pasó la fecha del seguro médico? Tal vez no.",
+    "beats": [
+     "Inscripción Abierta: 1 nov - 15 ene.",
+     "15 de diciembre = cobertura el 1 de enero.",
+     "¿Perdiste tu seguro? Normalmente tienes 60 días."
+    ],
+    "cta": "Revisa tu periodo en 60 segundos."
+   },
+   "lang": "es",
+   "src": [
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/",
+    "https://www.healthcare.gov/coverage-outside-open-enrollment/special-enrollment-period/"
+   ]
+  },
+  {
+   "slug": "cuanto-cuesta-seguro-medico-florida",
+   "angle": "es_check",
+   "q": "¿Cuánto cuesta un seguro médico en Florida?",
+   "a": [
+    "No hay un solo precio. La prima depende de tu edad, dónde vives (código postal y condado), cuántas personas se cubren, si usas tabaco y el nivel del plan.",
+    "Lo que pagas también depende del ingreso: el crédito fiscal baja la prima mensual para los hogares en el rango que califica.",
+    "Rango de subsidio 2027 (100%-400% de las guías de pobreza 2026): 1 persona $15,960-$63,840 · 2 personas $21,640-$86,560 · 3 personas $27,320-$109,280 · 4 personas $33,000-$132,000.",
+    "Si alguien te da un precio sin hacerte estas preguntas, está adivinando. El chequeo gratis te muestra tu periodo de inscripción y tu rango de subsidio. Después, un agente con licencia puede buscar planes y precios reales para tu código postal."
+   ],
+   "script": {
+    "hook": "'¿Cuánto cuesta el seguro médico?' La respuesta honesta tiene 5 partes.",
+    "beats": [
+     "Edad, código postal, tamaño del hogar, tabaco y nivel del plan.",
+     "Luego el ingreso decide cuánta ayuda recibes.",
+     "En 2027 la ayuda generalmente termina en el 400% del nivel de pobreza."
+    ],
+    "cta": "Revisa tu rango gratis."
+   },
+   "lang": "es",
+   "src": [
+    "https://www.healthcare.gov/lower-costs/",
+    "https://www.healthcare.gov/glossary/federal-poverty-level-fpl/"
+   ]
+  },
+  {
+   "slug": "califico-ayuda-pagar-seguro-medico",
+   "angle": "es_check",
+   "q": "¿Califico para ayuda para pagar el seguro médico?",
+   "a": [
+    "Para la cobertura 2027, el crédito fiscal generalmente aplica cuando el ingreso del hogar está entre el 100% y el 400% del nivel federal de pobreza y no tienes acceso a otra cobertura que califique.",
+    "Rango de subsidio 2027 (100%-400% de las guías de pobreza 2026): 1 persona $15,960-$63,840 · 2 personas $21,640-$86,560 · 3 personas $27,320-$109,280 · 4 personas $33,000-$132,000.",
+    "Los créditos mejorados que quitaban el límite del 400% terminaron al final de 2025. Al momento de escribir esto, el Congreso no los había extendido.",
+    "Florida no ha expandido Medicaid. Muchos adultos por debajo del 100% del nivel de pobreza no reciben créditos del Mercado, y los adultos sin hijos generalmente no califican para Medicaid en Florida. Un agente con licencia o un Navegador gratuito puede revisar opciones.",
+    "El crédito se basa en tu ingreso estimado y se concilia en tu declaración de impuestos, así que actualiza tu solicitud si tu ingreso cambia."
+   ],
+   "script": {
+    "hook": "Si ganas menos de $63,840 (una persona), mira esto antes del 15 de diciembre.",
+    "beats": [
+     "En 2027 la ayuda aplica entre el 100% y el 400% del nivel de pobreza.",
+     "Familia de 4: hasta $132,000.",
+     "Por encima de eso, no hay crédito en 2027."
+    ],
+    "cta": "Mira dónde estás, enlace en mi bio."
+   },
+   "lang": "es",
+   "src": [
+    "https://www.healthcare.gov/glossary/federal-poverty-level-fpl/",
+    "https://www.irs.gov/affordable-care-act/individuals-and-families/eligibility-for-the-premium-tax-credit",
+    "https://www.healthcare.gov/lower-costs/"
+   ]
+  },
+  {
+   "slug": "perdi-seguro-medico-del-trabajo",
+   "angle": "es_life_change",
+   "q": "¿Qué pasa si pierdo el seguro médico de mi trabajo?",
+   "a": [
+    "Perder la cobertura del trabajo es un evento de vida que califica. Normalmente tienes 60 días para inscribirte en un plan del Mercado con un Periodo Especial de Inscripción, y muchas veces puedes solicitar antes de que termine tu cobertura.",
+    "También te pueden ofrecer COBRA, que continúa el plan de tu empleador pero normalmente a costo completo. Compáralo con el Mercado, donde podría aplicar el crédito fiscal según tu ingreso.",
+    "Si eliges COBRA y luego lo dejas voluntariamente fuera de la Inscripción Abierta, normalmente no se abre un Periodo Especial, así que decide temprano.",
+    "No esperes más de 60 días: después normalmente tendrías que esperar la Inscripción Abierta."
+   ],
+   "script": {
+    "hook": "¿Te despidieron? Tienes 60 días. Esto es lo que casi todos hacen mal.",
+    "beats": [
+     "Perder el seguro del trabajo abre un periodo de 60 días.",
+     "COBRA no es tu única opción.",
+     "Dejar COBRA después normalmente no reabre el periodo."
+    ],
+    "cta": "Revisa tu periodo ahora."
+   },
+   "lang": "es",
+   "src": [
+    "https://www.healthcare.gov/coverage-outside-open-enrollment/special-enrollment-period/",
+    "https://www.healthcare.gov/unemployed/cobra-coverage/"
+   ]
+  },
+  {
+   "slug": "seguro-medico-entre-trabajos",
+   "angle": "es_life_change",
+   "q": "¿Puedo tener seguro médico entre trabajos?",
+   "a": [
+    "Sí. Si pierdes la cobertura del trabajo, normalmente puedes inscribirte en un plan del Mercado dentro de 60 días con un Periodo Especial de Inscripción.",
+    "Otras opciones: COBRA de tu antiguo empleador, o el plan de tu pareja o de tus padres (si tienes menos de 26), cuando ese plan permite cambios a mitad de año después de que termina tu cobertura.",
+    "Si tu ingreso del año va a ser más bajo por el tiempo sin trabajo, actualiza tu estimado: podrías calificar para más ayuda con la prima."
+   ],
+   "script": {
+    "hook": "¿Entre trabajos y sin seguro? No esperes al plan del nuevo trabajo.",
+    "beats": [
+     "60 días después de perder la cobertura.",
+     "Menos ingreso este año puede significar más ayuda.",
+     "¿Menos de 26? El plan de tus padres puede ser una opción."
+    ],
+    "cta": "Chequeo de 60 segundos en mi bio."
+   },
+   "lang": "es",
+   "src": [
+    "https://www.healthcare.gov/coverage-outside-open-enrollment/special-enrollment-period/",
+    "https://www.healthcare.gov/unemployed/cobra-coverage/"
+   ]
+  },
+  {
+   "slug": "seguro-medico-trabajador-1099",
+   "angle": "es_self_employed",
+   "q": "¿Cómo funciona el seguro médico si trabajo como 1099?",
+   "a": [
+    "Como trabajador 1099 compras tu propia cobertura, normalmente en el Mercado. Estimas el ingreso de tu hogar para el año (para trabajo 1099, más o menos tu ganancia neta) y ese estimado define cualquier crédito fiscal.",
+    "Como el ingreso 1099 cambia, actualiza tu solicitud del Mercado cuando cambie. Los créditos adelantados se concilian en tus impuestos; si tu ingreso sube mucho, podrías devolver una parte.",
+    "Rango de subsidio 2027 (100%-400% de las guías de pobreza 2026): 1 persona $15,960-$63,840 · 2 personas $21,640-$86,560 · 3 personas $27,320-$109,280 · 4 personas $33,000-$132,000.",
+    "Inscríbete en la Inscripción Abierta (1 nov - 15 ene; antes del 15 de diciembre para el 1 de enero) o dentro de 60 días de perder otra cobertura."
+   ],
+   "script": {
+    "hook": "¿Eres 1099 y pagas el seguro médico sin ayuda? Revisa este número.",
+    "beats": [
+     "Tu ingreso NETO estimado define tu ayuda.",
+     "Actualízalo cuando cambie.",
+     "Se concilia en los impuestos."
+    ],
+    "cta": "Mira tu rango gratis."
+   },
+   "lang": "es",
+   "src": [
+    "https://www.healthcare.gov/self-employed/",
+    "https://www.healthcare.gov/glossary/federal-poverty-level-fpl/",
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/"
+   ]
+  },
+  {
+   "slug": "opciones-seguro-medico-freelancers",
+   "angle": "es_self_employed",
+   "q": "¿Qué opciones de seguro médico tienen los freelancers?",
+   "a": [
+    "Los freelancers en Florida normalmente tienen varias opciones: un plan individual del Mercado (con crédito fiscal si el ingreso está en el rango), el plan del trabajo de tu pareja si califica, el plan de tus padres si tienes menos de 26, o COBRA justo después de dejar un trabajo.",
+    "La ayuda del Mercado depende del ingreso estimado del hogar. Para 2027, la ayuda generalmente termina por encima del 400% del nivel de pobreza.",
+    "Rango de subsidio 2027 (100%-400% de las guías de pobreza 2026): 1 persona $15,960-$63,840 · 2 personas $21,640-$86,560 · 3 personas $27,320-$109,280 · 4 personas $33,000-$132,000.",
+    "Un agente con licencia puede comparar planes y redes reales para tu código postal, que es donde se ven las diferencias de verdad."
+   ],
+   "script": {
+    "hook": "Freelancers: las 4 formas de tener seguro médico (casi todos conocen 1).",
+    "beats": [
+     "Plan del Mercado.",
+     "El plan del trabajo de tu pareja.",
+     "Menos de 26: plan de tus padres. Justo después de un trabajo: COBRA."
+    ],
+    "cta": "Revisa las tuyas en 60 segundos."
+   },
+   "lang": "es",
+   "src": [
+    "https://www.healthcare.gov/self-employed/",
+    "https://www.healthcare.gov/glossary/federal-poverty-level-fpl/"
+   ]
+  },
+  {
+   "slug": "life-insurance-after-layoff-florida",
+   "lang": "en",
+   "angle": "life_job_loss",
+   "category": "life",
+   "q": "Laid off in Florida? Your work life insurance usually ends too, and you have 31 days to act",
+   "a": [
+    "Most life insurance through work is group coverage. When the job ends, that coverage usually ends too, often on your last day or at the end of that month. Your HR or benefits packet has the exact date.",
+    "Florida law (section 627.566) gives you the right to convert group life coverage into an individual policy if you apply within 31 days after it ends, without a health exam. The new policy can't be for more than the coverage you lost.",
+    "Converting isn't always the best deal. A converted policy is usually permanent-type coverage priced at your current age, so it can cost much more than a new term policy. If you're healthy, a new term policy is often cheaper; if you have health issues, the no-exam conversion can be the safer route. Some employers also offer 'portability' that keeps term coverage at group rates - ask HR before the 31 days run out.",
+    "If the whole company shut down and the group policy itself ended, Florida law (section 627.567) only guarantees conversion if you were insured for at least 5 years, and the insurer can limit it to $10,000. In a closure, plan on replacing the coverage yourself.",
+    "What to do this week: find your coverage amount and end date, write down your family's monthly expenses and debts, and compare conversion with a new policy before day 31. A licensed life insurance agent can do that comparison with you; their help doesn't cost you anything."
+   ],
+   "src": [
+    "https://m.flsenate.gov/Statutes/627.566",
+    "https://m.flsenate.gov/Statutes/627.567"
+   ],
+   "reviewed": "2026-10-08",
+   "share": true,
+   "kind": "life",
+   "life_campaign": "work-life-insurance-ending",
+   "life_campaign_id": "work-life-ends",
+   "cta_head": "How much coverage does your family actually need?",
+   "cta_sub": "30-second estimate, plus your 31-day deadline. A licensed life agent only if you ask.",
+   "cta_btn": "See how much coverage I need",
+   "script": {
+    "hook": "Got laid off? Your work life insurance probably ended with your job - and the clock is 31 days.",
+    "beats": [
+     "Group life usually ends with the job.",
+     "Florida gives 31 days to convert, no health exam.",
+     "A new term policy can be cheaper if you're healthy."
+    ],
+    "cta": "See how much coverage I need"
+   }
+  },
+  {
+   "slug": "seguro-de-vida-despues-de-despido-florida",
+   "lang": "es",
+   "angle": "life_job_loss",
+   "category": "life",
+   "q": "¿Te despidieron en Florida? El seguro de vida del trabajo normalmente también termina, y tienes 31 días",
+   "a": [
+    "La mayoría de los seguros de vida del trabajo son de grupo. Cuando termina el empleo, esa cobertura normalmente termina también, muchas veces el último día o al final de ese mes. Tu paquete de beneficios o Recursos Humanos tiene la fecha exacta.",
+    "La ley de Florida (sección 627.566) te da el derecho de convertir el seguro de vida de grupo en una póliza individual si lo solicitas dentro de los 31 días después de que termina, sin examen médico. La póliza nueva no puede ser por más de la cobertura que perdiste.",
+    "Convertir no siempre es lo más barato. La póliza convertida normalmente es de tipo permanente y se cobra según tu edad actual, así que puede costar mucho más que una póliza a término nueva. Si estás saludable, una póliza a término nueva suele salir más barata; si tienes problemas de salud, la conversión sin examen puede ser la opción más segura. Algunos empleadores también ofrecen 'portabilidad', que mantiene la cobertura a término con tarifas de grupo; pregunta a Recursos Humanos antes de que pasen los 31 días.",
+    "Si la empresa cerró por completo y la póliza de grupo terminó, la ley de Florida (sección 627.567) solo garantiza la conversión si estuviste asegurado al menos 5 años, y la aseguradora puede limitarla a $10,000. Si tu empresa cerró, piensa en reemplazar la cobertura por tu cuenta.",
+    "Qué hacer esta semana: busca tu monto de cobertura y la fecha en que termina, apunta los gastos mensuales y deudas de tu familia, y compara la conversión con una póliza nueva antes del día 31. Un agente de seguros de vida con licencia puede hacer esa comparación contigo, sin costo para ti."
+   ],
+   "src": [
+    "https://m.flsenate.gov/Statutes/627.566",
+    "https://m.flsenate.gov/Statutes/627.567"
+   ],
+   "reviewed": "2026-10-08",
+   "share": true,
+   "kind": "life",
+   "life_campaign": "seguro-de-vida-del-trabajo",
+   "life_campaign_id": "work-life-ends-es",
+   "cta_head": "¿Cuánta cobertura necesita tu familia de verdad?",
+   "cta_sub": "Cálculo en 30 segundos y tu fecha límite de 31 días. Un agente de vida con licencia solo si lo pides.",
+   "cta_btn": "Ver cuánta cobertura necesito",
+   "script": {
+    "hook": "¿Te despidieron? Tu seguro de vida del trabajo probablemente terminó con el empleo, y tienes 31 días.",
+    "beats": [
+     "El seguro de vida de grupo termina con el empleo.",
+     "Florida da 31 días para convertirlo, sin examen.",
+     "Una póliza nueva puede salir más barata si estás saludable."
+    ],
+    "cta": "Ver cuánta cobertura necesito"
+   }
+  },
+  {
+   "slug": "leaving-military-life-insurance-florida",
+   "lang": "en",
+   "angle": "life_job_loss",
+   "category": "life",
+   "q": "Leaving the military in Florida? Your SGLI life insurance has two deadlines: 120 days and 240 days",
+   "a": [
+    "SGLI, the group life insurance you have on active duty, doesn't follow you into civilian life on its own. The VA gives you options, and each one has a clock that starts the day you separate.",
+    "240 days (about 8 months): if you apply for Veterans' Group Life Insurance (VGLI) within 240 days of separation, the VA says it won't consider your health conditions when deciding whether you're eligible. After 240 days you have to submit evidence of good health. The outside limit is 1 year and 120 days after you leave service, and you need to have had SGLI while on active duty of 31 days or more. VGLI covers $10,000 to $500,000, based on the SGLI coverage you had when you left.",
+    "120 days (about 4 months): the VA also says you can convert SGLI into a permanent policy from a private company if you apply within 120 days of separation, and you don't have to prove good health to get standard premium rates.",
+    "How they differ: VGLI is term coverage. Its premiums depend on your age bracket and rise as you move into older brackets. A permanent private policy usually costs more at the start, but the price stays the same for as long as you keep it. Neither is automatically better; it depends on your health, your budget and how long your family needs the coverage. A new policy bought on the open market is a third option, and it is the one where health questions matter most, so it is worth looking at while you're still within the no-health-review windows.",
+    "What to do this week: find your separation date and write both deadlines on the calendar (120 days and 240 days from that date), find your SGLI amount on your last Leave and Earnings Statement, and list what your family would need to cover (mortgage, rent, childcare, debts). A licensed life insurance agent can walk through the options with you at no cost to you; the VA also answers questions directly.",
+    "We are not affiliated with the VA, the Department of Defense or TRICARE. Check your own dates with your separation paperwork, milConnect or the VA."
+   ],
+   "src": [
+    "https://www.va.gov/life-insurance/options-eligibility/vgli/",
+    "https://www.va.gov/resources/life-insurance-if-you-have-preexisting-conditions/"
+   ],
+   "reviewed": "2026-10-08",
+   "share": true,
+   "kind": "life",
+   "life_campaign": "leaving-military-life-insurance",
+   "life_campaign_id": "military-life-ends",
+   "cta_head": "How much coverage does your family actually need?",
+   "cta_sub": "30-second estimate. Use it before your 120- and 240-day dates pass. A licensed life agent only if you ask.",
+   "cta_btn": "See how much coverage I need",
+   "script": {
+    "hook": "Leaving the military? Your life insurance has two deadlines and the second one is the one that matters for your health.",
+    "beats": [
+     "SGLI doesn't follow you out on its own.",
+     "Within 120 days you can convert to a private permanent policy with no health proof.",
+     "Within 240 days you can get VGLI and the VA ignores your health conditions.",
+     "After that, health questions come back."
+    ],
+    "cta": "Free guide with both dates: link in bio."
+   }
+  },
+  {
+   "slug": "leaving-military-health-insurance-florida",
+   "lang": "en",
+   "angle": "life_change",
+   "q": "Leaving the military in Florida? What happens to your TRICARE and your family's health coverage",
+   "a": [
+    "Military health coverage ends on a date, and the options that follow have their own deadlines. Which ones apply to you depends on how you separate, so check your own paperwork.",
+    "TRICARE: eligibility for you and your family generally ends when you separate. TRICARE says the Transitional Assistance Management Program (TAMP) provides 180 days of health care benefits after regular TRICARE benefits end, with no premiums, for certain groups, such as people involuntarily separating under honorable conditions, some Guard and Reserve members who served more than 30 consecutive days on a contingency mission, and a few others. TAMP is not for everyone: your eligibility is set by your service and shows in DEERS (check milConnect).",
+    "After TAMP, or if you don't qualify for it: the Continued Health Care Benefit Program (CHCBP) is premium-based continuation coverage run by Humana Military. For most separating service members it lasts up to 18 months, and TRICARE's general rule is that you must apply within 60 days of losing TRICARE coverage (60 days of losing TAMP, if you had it). Missing that deadline can close the door, so put the date on a calendar.",
+    "Marketplace: TRICARE counts as minimum essential coverage under federal law (26 U.S.C. 5000A), and losing minimum essential coverage is generally a reason for a Special Enrollment Period, which can start up to 60 days before coverage ends and runs for 60 days after. HealthCare.gov's own page lists examples such as job-based coverage but doesn't name TRICARE, so confirm your window with HealthCare.gov or a licensed agent before relying on it. Enrolling before your coverage ends avoids a gap.",
+    "VA health care is for the veteran, and generally doesn't cover a spouse or children. If you have family members, plan their coverage separately.",
+    "What to do this week: find your separation date and your TAMP status in milConnect, write down the date 60 days before TRICARE/TAMP ends, list your family's doctors and prescriptions, and compare options before that date. A licensed agent can check which Marketplace plans include your doctors and medicines at no cost to you, because agents are paid by the insurance companies.",
+    "We are not affiliated with the VA, the Department of Defense or TRICARE. Check your own dates with your separation paperwork, milConnect or the VA."
+   ],
+   "src": [
+    "https://tricare.mil/tamp",
+    "https://tricare.mil/CHCBP",
+    "https://www.law.cornell.edu/uscode/text/26/5000A",
+    "https://www.healthcare.gov/coverage-outside-open-enrollment/special-enrollment-period/"
+   ],
+   "reviewed": "2026-10-08",
+   "share": true,
+   "kind": "wave2",
+   "script": {
+    "hook": "Leaving the military? Your family's health coverage has a deadline most people find out about too late.",
+    "beats": [
+     "TRICARE ends when you separate. TAMP gives some groups 180 more days.",
+     "CHCBP is paid continuation coverage: apply within 60 days.",
+     "A Marketplace plan is the other option; enrolling before coverage ends avoids a gap."
+    ],
+    "cta": "Free guide: link in bio."
+   }
+  },
+  {
+   "slug": "florida-health-plan-changes-2027",
+   "lang": "en",
+   "angle": "plan_change",
+   "q": "Florida health plans in 2027: who's leaving, how much prices are going up, and what to do",
+   "a": [
+    "Cigna (Cigna Health & Life and Cigna HMO) is the one insurer confirmed to be leaving Florida's individual Marketplace for 2027. If your plan is with Cigna, it ends December 31, 2026, and you should get a letter about it by November 1. Two other names you may have heard: Ambetter's parent company, Centene, is moving members of its Sunshine State Health Plan entity to an Ambetter plan (the brand continues in Florida, but the plan, network and price can change), and Molina has said it is cutting back its marketplace states without naming them, so a Molina member should wait for a letter before assuming anything.",
+    "What happens if you do nothing: HealthCare.gov says that if your company isn't offering plans next year, it will re-enroll you in a plan with a different insurance company. You keep coverage, but that plan may not include your doctors or your medicines, and many people only find out at their first appointment or pharmacy visit in January. Sunshine State Health Plan members are expected to move to Ambetter (same parent company).",
+    "Bought your plan directly from the insurance company instead of HealthCare.gov? Then nobody moves you automatically: when the company leaves, that plan simply ends on December 31. Losing it opens a Special Enrollment Period from 60 days before to 60 days after it ends, but don't wait - choose by December 15 so there's no gap on January 1.",
+    "Prices: Florida insurers asked for an average increase of about 15.9% for 2027, with requests from about 4% to 39% depending on the company. Final 2027 prices show up on HealthCare.gov when Open Enrollment opens November 1.",
+    "Help paying premiums: the extra subsidies that ran from 2021 to 2025 ended. Under current law, premium tax credits for 2027 generally apply when household income is between 100% and 400% of the poverty level: $15,960 to $63,840 for one person, $33,000 to $132,000 for a family of four.",
+    "Deadlines: Open Enrollment runs November 1, 2026 to January 15, 2027. Choose a plan by December 15 for coverage that starts January 1.",
+    "What to do now: keep the letter, write down your doctors and prescriptions, and compare 2027 plans in November, before December 15. A licensed agent can check which plans include your doctors and medicines. Licensed agents are paid by the insurance companies, so their help doesn't cost you anything."
+   ],
+   "src": [
+    "https://acasignups.net/rate_changes/2027/fl",
+    "https://www.healthcare.gov/keep-or-change-plan/",
+    "https://www.healthinsurance.org/blog/health-insurance-premium-increases-for-2027-proposed-rates-by-state-and-what-consumers-should-know/",
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/",
+    "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines"
+   ],
+   "reviewed": "2026-10-08",
+   "share": true,
+   "kind": "wave2",
+   "script": {
+    "hook": "Cigna is leaving Florida's Marketplace in 2027. Is your plan with Cigna?",
+    "beats": [
+     "Cigna plans end Dec 31.",
+     "Most other prices are going up for 2027.",
+     "Pick a new plan by Dec 15 so there's no gap on Jan 1."
+    ],
+    "cta": "Free 60-second check: what to do before Dec 15."
+   }
+  },
+  {
+   "slug": "cambios-seguro-medico-florida-2027",
+   "lang": "es",
+   "angle": "es_plan_change",
+   "q": "Seguro médico en Florida 2027: qué compañías se van, cuánto suben los precios y qué hacer",
+   "a": [
+    "Cigna (Cigna Health & Life y Cigna HMO) es la única aseguradora confirmada que sale del Mercado individual de Florida en 2027. Si tu plan es con Cigna, termina el 31 de diciembre de 2026 y debes recibir una carta antes del 1 de noviembre. Otros nombres que quizás hayas oído: Centene, la empresa matriz de Ambetter, pasa a los miembros de su entidad Sunshine State Health Plan a un plan Ambetter (la marca sigue en Florida, pero el plan, la red y el precio pueden cambiar), y Molina dijo que reducirá sus estados en el Mercado sin nombrarlos; si tienes Molina, espera tu carta antes de suponer algo.",
+    "Qué pasa si no haces nada: CuidadoDeSalud.gov dice que si tu compañía no ofrece planes el próximo año, te inscribirá en un plan de otra compañía de seguros. Sigues con cobertura, pero ese plan puede no incluir a tus médicos ni tus medicinas, y mucha gente se entera en enero, en su primera cita o en la farmacia. A los miembros de Sunshine State Health Plan se espera que los pasen a Ambetter (la misma empresa matriz).",
+    "¿Compraste tu plan directamente con la aseguradora y no en CuidadoDeSalud.gov? Entonces nadie te pasa a otro plan automáticamente: cuando la compañía se va, ese plan simplemente termina el 31 de diciembre. Perderlo abre un Periodo Especial de Inscripción desde 60 días antes hasta 60 días después de que termine, pero no esperes: elige antes del 15 de diciembre para no quedarte sin cobertura el 1 de enero.",
+    "Precios: las aseguradoras de Florida pidieron un aumento promedio de cerca del 15.9% para 2027, con pedidos de entre 4% y 39% según la compañía. Los precios finales aparecen en CuidadoDeSalud.gov cuando abre la Inscripción Abierta el 1 de noviembre.",
+    "Ayuda con la prima: los subsidios extra que hubo de 2021 a 2025 terminaron. Según la ley actual, el crédito fiscal para 2027 generalmente aplica si el ingreso del hogar está entre el 100% y el 400% del nivel de pobreza: de $15,960 a $63,840 para una persona, y de $33,000 a $132,000 para una familia de cuatro.",
+    "Fechas: la Inscripción Abierta va del 1 de noviembre de 2026 al 15 de enero de 2027. Elige un plan antes del 15 de diciembre para que la cobertura empiece el 1 de enero.",
+    "Qué hacer ahora: guarda la carta, apunta tus médicos y medicinas, y compara planes 2027 en noviembre, antes del 15 de diciembre. Un agente con licencia puede revisar qué planes incluyen a tus médicos y medicinas. A los agentes con licencia les pagan las aseguradoras, así que su ayuda no te cuesta nada."
+   ],
+   "src": [
+    "https://acasignups.net/rate_changes/2027/fl",
+    "https://www.healthcare.gov/keep-or-change-plan/",
+    "https://www.healthinsurance.org/blog/health-insurance-premium-increases-for-2027-proposed-rates-by-state-and-what-consumers-should-know/",
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/",
+    "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines"
+   ],
+   "reviewed": "2026-10-08",
+   "share": true,
+   "kind": "wave2",
+   "script": {
+    "hook": "¿Tu seguro médico es con Cigna? En 2027 sale del Mercado de Florida.",
+    "beats": [
+     "Esos planes terminan el 31 de diciembre.",
+     "Casi todos los demás precios suben en 2027.",
+     "Elige un plan nuevo antes del 15 de diciembre."
+    ],
+    "cta": "Chequeo gratis de 60 segundos: qué hacer antes del 15 de diciembre."
+   }
+  },
+  {
+   "slug": "molina-leaving-florida-marketplace-2027",
+   "lang": "en",
+   "angle": "plan_change",
+   "q": "Is Molina leaving Florida's Marketplace in 2027? What Molina members should do",
+   "a": [
+    "Federal rate filings for 2027 list Molina Healthcare of Florida as not offering individual Marketplace plans in Florida, but Molina has not publicly confirmed which states it is leaving, so treat this as likely, not final. Your letter from Molina or the Marketplace (due by November 1) is the answer for your plan, and HealthCare.gov will show the 2027 plans from November 1. If your plan does end, it ends December 31, 2026.",
+    "Bought your plan directly from the insurance company instead of HealthCare.gov? Then nobody moves you automatically: when the company leaves, that plan simply ends on December 31. Losing it opens a Special Enrollment Period from 60 days before to 60 days after it ends, but don't wait - choose by December 15 so there's no gap on January 1.",
+    "If you do nothing, HealthCare.gov will move you to a plan with a different insurance company. HealthCare.gov picks that plan, not you, and it may not include your doctors or medicines. Pick your own 2027 plan during Open Enrollment, before December 15.",
+    "Deadlines: Open Enrollment runs November 1, 2026 to January 15, 2027. Choose a plan by December 15 for coverage that starts January 1.",
+    "Help paying premiums: the extra subsidies that ran from 2021 to 2025 ended. Under current law, premium tax credits for 2027 generally apply when household income is between 100% and 400% of the poverty level: $15,960 to $63,840 for one person, $33,000 to $132,000 for a family of four.",
+    "What to do now: keep the letter, write down your doctors and prescriptions, and compare 2027 plans in November, before December 15. A licensed agent can check which plans include your doctors and medicines. Licensed agents are paid by the insurance companies, so their help doesn't cost you anything."
+   ],
+   "src": [
+    "https://acasignups.net/rate_changes/2027/fl",
+    "https://www.healthcare.gov/keep-or-change-plan/",
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/",
+    "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines"
+   ],
+   "reviewed": "2026-10-08",
+   "share": false,
+   "kind": "wave2",
+   "script": {
+    "hook": "Have a Molina Marketplace plan in Florida? Check your letter.",
+    "beats": [
+     "Federal filings suggest Molina may be leaving Florida's Marketplace for 2027.",
+     "Pick a new plan by Dec 15 for Jan 1 coverage.",
+     "Check your doctors before you switch."
+    ],
+    "cta": "60-second check: your deadline and options."
+   }
+  },
+  {
+   "slug": "molina-se-va-de-florida-2027",
+   "lang": "es",
+   "angle": "es_plan_change",
+   "q": "¿Molina se va del Mercado de Florida en 2027? Qué deben hacer sus miembros",
+   "a": [
+    "Los datos federales de tarifas para 2027 muestran que Molina Healthcare of Florida no ofrecería planes individuales del Mercado en Florida, pero Molina no ha confirmado públicamente en qué estados se va; tómalo como probable, no definitivo. Tu carta de Molina o del Mercado (llega antes del 1 de noviembre) es la respuesta para tu plan, y CuidadoDeSalud.gov mostrará los planes 2027 desde el 1 de noviembre. Si tu plan termina, termina el 31 de diciembre de 2026.",
+    "¿Compraste tu plan directamente con la aseguradora y no en CuidadoDeSalud.gov? Entonces nadie te pasa a otro plan automáticamente: cuando la compañía se va, ese plan simplemente termina el 31 de diciembre. Perderlo abre un Periodo Especial de Inscripción desde 60 días antes hasta 60 días después de que termine, pero no esperes: elige antes del 15 de diciembre para no quedarte sin cobertura el 1 de enero.",
+    "Si tu plan termina y no haces nada, CuidadoDeSalud.gov te pasará a un plan de otra compañía de seguros. Ese plan lo escoge el Mercado, no tú, y puede no incluir a tus médicos ni tus medicinas. Elige tú mismo tu plan 2027 en la Inscripción Abierta, antes del 15 de diciembre.",
+    "Fechas: la Inscripción Abierta va del 1 de noviembre de 2026 al 15 de enero de 2027. Elige un plan antes del 15 de diciembre para que la cobertura empiece el 1 de enero.",
+    "Ayuda con la prima: los subsidios extra que hubo de 2021 a 2025 terminaron. Según la ley actual, el crédito fiscal para 2027 generalmente aplica si el ingreso del hogar está entre el 100% y el 400% del nivel de pobreza: de $15,960 a $63,840 para una persona, y de $33,000 a $132,000 para una familia de cuatro.",
+    "Qué hacer ahora: guarda la carta, apunta tus médicos y medicinas, y compara planes 2027 en noviembre, antes del 15 de diciembre. Un agente con licencia puede revisar qué planes incluyen a tus médicos y medicinas. A los agentes con licencia les pagan las aseguradoras, así que su ayuda no te cuesta nada."
+   ],
+   "src": [
+    "https://acasignups.net/rate_changes/2027/fl",
+    "https://www.healthcare.gov/keep-or-change-plan/",
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/",
+    "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines"
+   ],
+   "reviewed": "2026-10-08",
+   "share": false,
+   "kind": "wave2",
+   "script": {
+    "hook": "¿Tienes Molina del Mercado en Florida? Revisa tu carta.",
+    "beats": [
+     "Los datos federales sugieren que Molina podría salir del Mercado de Florida en 2027.",
+     "Elige un plan nuevo antes del 15 de diciembre.",
+     "Revisa que tus médicos estén incluidos."
+    ],
+    "cta": "Chequeo gratis de 60 segundos: tu fecha límite y tus opciones."
+   }
+  },
+  {
+   "slug": "cigna-leaving-florida-marketplace-2027",
+   "lang": "en",
+   "angle": "plan_change",
+   "q": "Cigna is leaving Florida's Marketplace in 2027. What Cigna members should do",
+   "a": [
+    "Cigna Health & Life and Cigna HMO are not offering individual Marketplace plans in Florida for 2027. If you have a Cigna Marketplace plan, it ends December 31, 2026. Job-based Cigna plans are a different thing and aren't affected by this.",
+    "If you do nothing, HealthCare.gov will move you to a plan with a different insurance company, chosen for you. It may not include your doctors or prescriptions. Pick your own 2027 plan before December 15 and check your doctors first.",
+    "Bought your plan directly from the insurance company instead of HealthCare.gov? Then nobody moves you automatically: when the company leaves, that plan simply ends on December 31. Losing it opens a Special Enrollment Period from 60 days before to 60 days after it ends, but don't wait - choose by December 15 so there's no gap on January 1.",
+    "Deadlines: Open Enrollment runs November 1, 2026 to January 15, 2027. Choose a plan by December 15 for coverage that starts January 1.",
+    "Help paying premiums: the extra subsidies that ran from 2021 to 2025 ended. Under current law, premium tax credits for 2027 generally apply when household income is between 100% and 400% of the poverty level: $15,960 to $63,840 for one person, $33,000 to $132,000 for a family of four.",
+    "What to do now: keep the letter, write down your doctors and prescriptions, and compare 2027 plans in November, before December 15. A licensed agent can check which plans include your doctors and medicines. Licensed agents are paid by the insurance companies, so their help doesn't cost you anything."
+   ],
+   "src": [
+    "https://acasignups.net/rate_changes/2027/fl",
+    "https://www.healthcare.gov/keep-or-change-plan/",
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/",
+    "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines"
+   ],
+   "reviewed": "2026-10-08",
+   "share": true,
+   "kind": "wave2",
+   "script": {
+    "hook": "Have a Cigna Marketplace plan in Florida? It ends December 31.",
+    "beats": [
+     "Cigna is leaving Florida's individual Marketplace for 2027.",
+     "Job-based Cigna plans aren't affected.",
+     "Pick a new plan by Dec 15."
+    ],
+    "cta": "60-second check: your deadline and options."
+   }
+  },
+  {
+   "slug": "cigna-se-va-de-florida-2027",
+   "lang": "es",
+   "angle": "es_plan_change",
+   "q": "Cigna se va del Mercado de Florida en 2027: qué deben hacer sus miembros",
+   "a": [
+    "Cigna Health & Life y Cigna HMO no ofrecerán planes individuales del Mercado en Florida para 2027. Si tienes un plan de Cigna del Mercado, termina el 31 de diciembre de 2026. Los planes de Cigna que da un empleador son otra cosa y no cambian por esto.",
+    "Si no haces nada, CuidadoDeSalud.gov te pasará a un plan de otra compañía, escogido por el Mercado. Puede no incluir a tus médicos ni tus medicinas. Elige tú mismo tu plan 2027 antes del 15 de diciembre y revisa primero tus médicos.",
+    "¿Compraste tu plan directamente con la aseguradora y no en CuidadoDeSalud.gov? Entonces nadie te pasa a otro plan automáticamente: cuando la compañía se va, ese plan simplemente termina el 31 de diciembre. Perderlo abre un Periodo Especial de Inscripción desde 60 días antes hasta 60 días después de que termine, pero no esperes: elige antes del 15 de diciembre para no quedarte sin cobertura el 1 de enero.",
+    "Fechas: la Inscripción Abierta va del 1 de noviembre de 2026 al 15 de enero de 2027. Elige un plan antes del 15 de diciembre para que la cobertura empiece el 1 de enero.",
+    "Ayuda con la prima: los subsidios extra que hubo de 2021 a 2025 terminaron. Según la ley actual, el crédito fiscal para 2027 generalmente aplica si el ingreso del hogar está entre el 100% y el 400% del nivel de pobreza: de $15,960 a $63,840 para una persona, y de $33,000 a $132,000 para una familia de cuatro.",
+    "Qué hacer ahora: guarda la carta, apunta tus médicos y medicinas, y compara planes 2027 en noviembre, antes del 15 de diciembre. Un agente con licencia puede revisar qué planes incluyen a tus médicos y medicinas. A los agentes con licencia les pagan las aseguradoras, así que su ayuda no te cuesta nada."
+   ],
+   "src": [
+    "https://acasignups.net/rate_changes/2027/fl",
+    "https://www.healthcare.gov/keep-or-change-plan/",
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/",
+    "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines"
+   ],
+   "reviewed": "2026-10-08",
+   "share": true,
+   "kind": "wave2",
+   "script": {
+    "hook": "¿Tienes Cigna del Mercado en Florida? Tu plan termina el 31 de diciembre.",
+    "beats": [
+     "Cigna sale del Mercado individual de Florida en 2027.",
+     "Los planes de Cigna del trabajo no cambian.",
+     "Elige un plan nuevo antes del 15 de diciembre."
+    ],
+    "cta": "Chequeo gratis de 60 segundos."
+   }
+  },
+  {
+   "slug": "sunshine-health-ambetter-2027",
+   "lang": "en",
+   "angle": "plan_change",
+   "q": "Sunshine State Health Plan members and Ambetter in 2027: what to check",
+   "a": [
+    "Sunshine State Health Plan is one of the legal entities behind Ambetter in Florida. For 2027, Centene (the parent company) is reported to be moving its Sunshine State Health Plan Marketplace members to an Ambetter plan under a different entity. This is a plan move inside the same company, not an insurer leaving Florida: Ambetter is still sold in Florida. The plan, doctor network, drug list and price can still be different, so check your letter and your 2027 plan before December 15. This move has been reported by a broker site and ACASignups; we could not confirm the details with Centene or Florida regulators.",
+    "Bought your plan directly from the insurance company instead of HealthCare.gov? Then nobody moves you automatically: when the company leaves, that plan simply ends on December 31. Losing it opens a Special Enrollment Period from 60 days before to 60 days after it ends, but don't wait - choose by December 15 so there's no gap on January 1.",
+    "A new plan can mean a different doctor network, drug list and price. Check your 2027 plan's doctors and prescriptions in November, and switch before December 15 if it doesn't fit.",
+    "Deadlines: Open Enrollment runs November 1, 2026 to January 15, 2027. Choose a plan by December 15 for coverage that starts January 1.",
+    "Help paying premiums: the extra subsidies that ran from 2021 to 2025 ended. Under current law, premium tax credits for 2027 generally apply when household income is between 100% and 400% of the poverty level: $15,960 to $63,840 for one person, $33,000 to $132,000 for a family of four.",
+    "What to do now: keep the letter, write down your doctors and prescriptions, and compare 2027 plans in November, before December 15. A licensed agent can check which plans include your doctors and medicines. Licensed agents are paid by the insurance companies, so their help doesn't cost you anything."
+   ],
+   "src": [
+    "https://acasignups.net/rate_changes/2027/fl",
+    "https://www.healthcare.gov/keep-or-change-plan/",
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/",
+    "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines"
+   ],
+   "reviewed": "2026-10-08",
+   "share": false,
+   "kind": "wave2",
+   "script": {
+    "hook": "Ambetter from Sunshine Health: check your 2027 plan.",
+    "beats": [
+     "Your plan may change on Jan 1.",
+     "Check your doctors and medicines in the new plan.",
+     "You can still choose something else until Dec 15."
+    ],
+    "cta": "60-second check: your deadline and options."
+   }
+  },
+  {
+   "slug": "sunshine-health-pasa-a-ambetter-2027",
+   "lang": "es",
+   "angle": "es_plan_change",
+   "q": "Sunshine State Health Plan y Ambetter en 2027: qué revisar",
+   "a": [
+    "Sunshine State Health Plan es una de las entidades legales detrás de Ambetter en Florida. Para 2027, se informa que Centene (la empresa matriz) pasará a sus miembros del Mercado de Sunshine State Health Plan a un plan Ambetter bajo otra entidad. Es un cambio de plan dentro de la misma empresa, no una aseguradora que se va de Florida: Ambetter se sigue vendiendo en Florida. Aun así el plan, la red de médicos, la lista de medicinas y el precio pueden ser distintos, así que revisa tu carta y tu plan 2027 antes del 15 de diciembre. Este cambio lo reportan un sitio de corredores y ACASignups; no pudimos confirmar los detalles con Centene ni con las autoridades de Florida.",
+    "¿Compraste tu plan directamente con la aseguradora y no en CuidadoDeSalud.gov? Entonces nadie te pasa a otro plan automáticamente: cuando la compañía se va, ese plan simplemente termina el 31 de diciembre. Perderlo abre un Periodo Especial de Inscripción desde 60 días antes hasta 60 días después de que termine, pero no esperes: elige antes del 15 de diciembre para no quedarte sin cobertura el 1 de enero.",
+    "Un plan nuevo puede tener otra red de médicos, otra lista de medicinas y otro precio. Revisa en noviembre los médicos y medicinas de tu plan 2027, y cámbiate antes del 15 de diciembre si no te conviene.",
+    "Fechas: la Inscripción Abierta va del 1 de noviembre de 2026 al 15 de enero de 2027. Elige un plan antes del 15 de diciembre para que la cobertura empiece el 1 de enero.",
+    "Ayuda con la prima: los subsidios extra que hubo de 2021 a 2025 terminaron. Según la ley actual, el crédito fiscal para 2027 generalmente aplica si el ingreso del hogar está entre el 100% y el 400% del nivel de pobreza: de $15,960 a $63,840 para una persona, y de $33,000 a $132,000 para una familia de cuatro.",
+    "Qué hacer ahora: guarda la carta, apunta tus médicos y medicinas, y compara planes 2027 en noviembre, antes del 15 de diciembre. Un agente con licencia puede revisar qué planes incluyen a tus médicos y medicinas. A los agentes con licencia les pagan las aseguradoras, así que su ayuda no te cuesta nada."
+   ],
+   "src": [
+    "https://acasignups.net/rate_changes/2027/fl",
+    "https://www.healthcare.gov/keep-or-change-plan/",
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/",
+    "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines"
+   ],
+   "reviewed": "2026-10-08",
+   "share": false,
+   "kind": "wave2",
+   "script": {
+    "hook": "¿Tienes Ambetter de Sunshine Health? Revisa tu plan 2027.",
+    "beats": [
+     "Tu plan puede cambiar el 1 de enero.",
+     "Revisa tus médicos y medicinas en el plan nuevo.",
+     "Puedes elegir otro hasta el 15 de diciembre."
+    ],
+    "cta": "Chequeo gratis de 60 segundos."
+   }
+  },
+  {
+   "slug": "florida-blue-2027-renewal-increase",
+   "lang": "en",
+   "angle": "plan_change",
+   "q": "Florida Blue 2027 renewal letter: why the price went up and what you can do",
+   "a": [
+    "Florida Blue requested 2027 increases of about 26% for its PPO individual plans and about 9.8% for its Health Options (HMO) plans. These were requested rates; your renewal letter shows your actual 2027 price, before any premium tax credit.",
+    "If you do nothing, you're usually renewed into a 2027 plan at the new price. Open Enrollment (November 1 to January 15) is your chance to compare. Choose by December 15 for a plan that starts January 1.",
+    "Help paying premiums: the extra subsidies that ran from 2021 to 2025 ended. Under current law, premium tax credits for 2027 generally apply when household income is between 100% and 400% of the poverty level: $15,960 to $63,840 for one person, $33,000 to $132,000 for a family of four.",
+    "What to do now: keep the letter, write down your doctors and prescriptions, and compare 2027 plans in November, before December 15. A licensed agent can check which plans include your doctors and medicines. Licensed agents are paid by the insurance companies, so their help doesn't cost you anything."
+   ],
+   "src": [
+    "https://moraninsurancegroup.com/blog/florida-blue-2027-rate-increase-renewal",
+    "https://www.healthinsurance.org/blog/health-insurance-premium-increases-for-2027-proposed-rates-by-state-and-what-consumers-should-know/",
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/",
+    "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines"
+   ],
+   "reviewed": "2026-10-08",
+   "share": true,
+   "kind": "wave2",
+   "script": {
+    "hook": "Did your Florida Blue renewal letter just jump?",
+    "beats": [
+     "Florida Blue asked for about 26% more on PPO plans for 2027.",
+     "If you do nothing, you renew at the new price.",
+     "Compare by Dec 15."
+    ],
+    "cta": "60-second check: your window and help range."
+   }
+  },
+  {
+   "slug": "florida-blue-aumento-2027",
+   "lang": "es",
+   "angle": "es_plan_change",
+   "q": "Carta de renovación 2027 de Florida Blue: por qué subió y qué puedes hacer",
+   "a": [
+    "Florida Blue pidió aumentos para 2027 de cerca del 26% en sus planes individuales PPO y de cerca del 9.8% en sus planes Health Options (HMO). Son aumentos solicitados; tu carta de renovación muestra tu precio real de 2027, antes de cualquier crédito fiscal.",
+    "Si no haces nada, normalmente te renuevan en un plan 2027 con el precio nuevo. La Inscripción Abierta (del 1 de noviembre al 15 de enero) es tu oportunidad para comparar. Elige antes del 15 de diciembre para un plan que empiece el 1 de enero.",
+    "Ayuda con la prima: los subsidios extra que hubo de 2021 a 2025 terminaron. Según la ley actual, el crédito fiscal para 2027 generalmente aplica si el ingreso del hogar está entre el 100% y el 400% del nivel de pobreza: de $15,960 a $63,840 para una persona, y de $33,000 a $132,000 para una familia de cuatro.",
+    "Qué hacer ahora: guarda la carta, apunta tus médicos y medicinas, y compara planes 2027 en noviembre, antes del 15 de diciembre. Un agente con licencia puede revisar qué planes incluyen a tus médicos y medicinas. A los agentes con licencia les pagan las aseguradoras, así que su ayuda no te cuesta nada."
+   ],
+   "src": [
+    "https://moraninsurancegroup.com/blog/florida-blue-2027-rate-increase-renewal",
+    "https://www.healthinsurance.org/blog/health-insurance-premium-increases-for-2027-proposed-rates-by-state-and-what-consumers-should-know/",
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/",
+    "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines"
+   ],
+   "reviewed": "2026-10-08",
+   "share": true,
+   "kind": "wave2",
+   "script": {
+    "hook": "¿Te subió la renovación de Florida Blue?",
+    "beats": [
+     "Florida Blue pidió cerca de 26% más en planes PPO para 2027.",
+     "Si no haces nada, renuevas con el precio nuevo.",
+     "Compara antes del 15 de diciembre."
+    ],
+    "cta": "Chequeo gratis de 60 segundos."
+   }
+  },
+  {
+   "slug": "laid-off-florida-health-insurance",
+   "lang": "en",
+   "angle": "life_change",
+   "q": "Laid off in Florida? Your 60-day health coverage plan (COBRA vs Marketplace)",
+   "a": [
+    "Losing job-based health coverage opens a Special Enrollment Period: you usually have 60 days from the day your coverage ends to enroll in a Marketplace plan.",
+    "COBRA lets you keep your employer's plan, but you usually pay the full cost plus up to 2%, which is often far more than you paid as an employee. You generally have 60 days to elect COBRA, and coverage is retroactive if you elect and pay.",
+    "Important: if you take COBRA and later drop it on purpose, that does not open a new Special Enrollment Period. Compare before you decide; you can still switch to a Marketplace plan during Open Enrollment (November 1 to January 15).",
+    "Help paying premiums: the extra subsidies that ran from 2021 to 2025 ended. Under current law, premium tax credits for 2027 generally apply when household income is between 100% and 400% of the poverty level: $15,960 to $63,840 for one person, $33,000 to $132,000 for a family of four.",
+    "What to do now: find the date your employer coverage ends, gather your severance and expected income for the rest of the year, and compare COBRA's price with Marketplace plans before day 60. A licensed agent can run that comparison with you at no cost to you."
+   ],
+   "src": [
+    "https://www.healthcare.gov/coverage-outside-open-enrollment/special-enrollment-period/",
+    "https://www.healthcare.gov/unemployed/cobra-coverage/",
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/",
+    "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines"
+   ],
+   "reviewed": "2026-10-08",
+   "share": true,
+   "kind": "wave2",
+   "script": {
+    "hook": "Got laid off in Florida? You have 60 days to sort out health insurance, and COBRA isn't your only option.",
+    "beats": [
+     "Losing job coverage opens a 60-day window.",
+     "COBRA is usually the full price.",
+     "Dropping COBRA later doesn't reopen the window."
+    ],
+    "cta": "60-second check: your deadline and options."
+   }
+  },
+  {
+   "slug": "me-despidieron-seguro-medico-florida",
+   "lang": "es",
+   "angle": "es_life_change",
+   "q": "¿Te despidieron en Florida? Tu plan de 60 días para el seguro médico (COBRA o el Mercado)",
+   "a": [
+    "Perder el seguro médico del trabajo abre un Periodo Especial de Inscripción: normalmente tienes 60 días desde que termina tu cobertura para inscribirte en un plan del Mercado.",
+    "COBRA te deja mantener el plan de tu empleador, pero normalmente pagas el costo completo más hasta un 2%, que suele ser mucho más de lo que pagabas como empleado. Por lo general tienes 60 días para elegir COBRA, y la cobertura es retroactiva si la eliges y pagas.",
+    "Importante: si tomas COBRA y después la dejas por tu cuenta, eso no abre un nuevo Periodo Especial de Inscripción. Compara antes de decidir; igual puedes cambiarte a un plan del Mercado en la Inscripción Abierta (del 1 de noviembre al 15 de enero).",
+    "Ayuda con la prima: los subsidios extra que hubo de 2021 a 2025 terminaron. Según la ley actual, el crédito fiscal para 2027 generalmente aplica si el ingreso del hogar está entre el 100% y el 400% del nivel de pobreza: de $15,960 a $63,840 para una persona, y de $33,000 a $132,000 para una familia de cuatro.",
+    "Qué hacer ahora: averigua la fecha en que termina tu seguro del trabajo, junta tu liquidación y tu ingreso esperado para el resto del año, y compara el precio de COBRA con los planes del Mercado antes del día 60. Un agente con licencia puede hacer esa comparación contigo sin costo para ti."
+   ],
+   "src": [
+    "https://www.healthcare.gov/coverage-outside-open-enrollment/special-enrollment-period/",
+    "https://www.healthcare.gov/unemployed/cobra-coverage/",
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/",
+    "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines"
+   ],
+   "reviewed": "2026-10-08",
+   "share": true,
+   "kind": "wave2",
+   "script": {
+    "hook": "¿Te despidieron en Florida? Tienes 60 días para resolver tu seguro médico, y COBRA no es tu única opción.",
+    "beats": [
+     "Perder el seguro del trabajo abre un periodo de 60 días.",
+     "COBRA normalmente es el precio completo.",
+     "Dejar COBRA después no reabre el periodo."
+    ],
+    "cta": "Chequeo gratis de 60 segundos."
+   }
+  },
+  {
+   "slug": "moved-to-new-health-plan-january-2027",
+   "lang": "en",
+   "angle": "plan_change",
+   "q": "Moved to a new health plan on January 1? You can still change it until January 15",
+   "a": [
+    "If your Marketplace insurance company left Florida for 2027 (Cigna) and you didn't pick a plan, HealthCare.gov re-enrolled you in a plan with a different insurance company. That new plan started January 1.",
+    "If your doctor's office or pharmacy now says they don't take your new plan, you're not stuck yet: Open Enrollment stays open until January 15. If you choose a different plan by January 15, it starts February 1.",
+    "Missed January 15? HealthCare.gov lists 'your Marketplace plan is discontinued' as a reason for a Special Enrollment Period, which normally lasts 60 days after the old plan ended (around March 1 for plans that ended December 31). Whether it applies when you were already moved to a new plan depends on your case - a licensed agent can check it with you. Acting before January 15 is the safe route.",
+    "Before you switch, check three things in any plan: your doctors, your medicines and the hospital you use.",
+    "A licensed agent can check which 2027 plans include your doctors and medicines and help you switch before January 15. Their help doesn't cost you anything."
+   ],
+   "src": [
+    "https://www.healthcare.gov/keep-or-change-plan/",
+    "https://acasignups.net/rate_changes/2027/fl",
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/",
+    "https://www.healthcare.gov/coverage-outside-open-enrollment/special-enrollment-period/"
+   ],
+   "reviewed": "2026-10-08",
+   "share": true,
+   "kind": "wave2",
+   "script": {
+    "hook": "Your insurance changed on January 1 and your doctor doesn't take it? You have until January 15.",
+    "beats": [
+     "If your company left, HealthCare.gov moved you to another one.",
+     "Open Enrollment is still open until Jan 15.",
+     "A new choice starts Feb 1."
+    ],
+    "cta": "60-second check: your options before Jan 15."
+   }
+  },
+  {
+   "slug": "me-cambiaron-de-seguro-enero-2027",
+   "lang": "es",
+   "angle": "es_plan_change",
+   "q": "¿Te cambiaron de plan médico el 1 de enero? Todavía puedes cambiarlo hasta el 15 de enero",
+   "a": [
+    "Si tu compañía de seguros del Mercado salió de Florida en 2027 (Cigna) y no escogiste un plan, CuidadoDeSalud.gov te inscribió en un plan de otra compañía. Ese plan empezó el 1 de enero.",
+    "Si en el consultorio o la farmacia te dicen que no aceptan tu plan nuevo, todavía no estás atrapado: la Inscripción Abierta sigue hasta el 15 de enero. Si eliges otro plan antes del 15 de enero, empieza el 1 de febrero.",
+    "¿Se te pasó el 15 de enero? CuidadoDeSalud.gov incluye 'tu plan del Mercado fue descontinuado' como razón para un Periodo Especial de Inscripción, que normalmente dura 60 días después de que terminó el plan anterior (alrededor del 1 de marzo si terminó el 31 de diciembre). Si aplica cuando ya te pasaron a otro plan depende de tu caso; un agente con licencia puede revisarlo contigo. Lo seguro es actuar antes del 15 de enero.",
+    "Antes de cambiarte, revisa tres cosas en cualquier plan: tus médicos, tus medicinas y el hospital que usas.",
+    "Un agente con licencia puede revisar qué planes 2027 incluyen a tus médicos y medicinas y ayudarte a cambiar antes del 15 de enero, sin costo para ti."
+   ],
+   "src": [
+    "https://www.healthcare.gov/keep-or-change-plan/",
+    "https://acasignups.net/rate_changes/2027/fl",
+    "https://www.healthcare.gov/quick-guide/dates-and-deadlines/",
+    "https://www.healthcare.gov/coverage-outside-open-enrollment/special-enrollment-period/"
+   ],
+   "reviewed": "2026-10-08",
+   "share": true,
+   "kind": "wave2",
+   "script": {
+    "hook": "¿Te cambiaron de seguro el 1 de enero y tu médico no lo acepta? Tienes hasta el 15 de enero.",
+    "beats": [
+     "Si tu compañía se fue, el Mercado te pasó a otra.",
+     "La Inscripción Abierta sigue hasta el 15 de enero.",
+     "Tu nuevo plan empezaría el 1 de febrero."
+    ],
+    "cta": "Chequeo gratis de 60 segundos."
+   }
+  },
+  {
+   "slug": "cobra-ending-18-months-florida",
+   "lang": "en",
+   "angle": "life_change",
+   "q": "Your COBRA is ending after 18 months: you get a 60-day window to enroll",
+   "a": [
+    "When COBRA runs out because you've used all your months (usually 18), that counts as losing coverage. You can enroll in a Marketplace plan from 60 days before to 60 days after your COBRA ends.",
+    "This is different from dropping COBRA early or not paying: stopping COBRA on purpose, or losing it for non-payment, does not open a Special Enrollment Period.",
+    "If you were laid off in spring 2025 and kept COBRA, your 18 months end in fall 2026 or early 2027, close to Open Enrollment (November 1 to January 15).",
+    "Help paying premiums: the extra subsidies that ran from 2021 to 2025 ended. Under current law, premium tax credits for 2027 generally apply when household income is between 100% and 400% of the poverty level: $15,960 to $63,840 for one person, $33,000 to $132,000 for a family of four.",
+    "A licensed agent can compare Marketplace plans with what you pay for COBRA now. Their help doesn't cost you anything."
+   ],
+   "src": [
+    "https://www.healthcare.gov/coverage-outside-open-enrollment/special-enrollment-period/",
+    "https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-B/part-155/subpart-E/section-155.420",
+    "https://www.healthcare.gov/unemployed/cobra-coverage/",
+    "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines"
+   ],
+   "reviewed": "2026-10-08",
+   "share": true,
+   "kind": "wave2",
+   "script": {
+    "hook": "Your COBRA is about to run out? You get a 60-day window to switch.",
+    "beats": [
+     "Running out of COBRA months counts as losing coverage.",
+     "Dropping it early doesn't.",
+     "You can enroll up to 60 days before it ends."
+    ],
+    "cta": "60-second check: your window."
+   }
+  },
+  {
+   "slug": "cobra-se-termina-18-meses-florida",
+   "lang": "es",
+   "angle": "es_life_change",
+   "q": "Se te termina COBRA después de 18 meses: tienes 60 días para inscribirte",
+   "a": [
+    "Cuando COBRA se acaba porque usaste todos tus meses (normalmente 18), eso cuenta como perder la cobertura. Puedes inscribirte en un plan del Mercado desde 60 días antes hasta 60 días después de que termine COBRA.",
+    "Es distinto a dejar COBRA antes o no pagarla: dejarla por tu cuenta, o perderla por falta de pago, no abre un Periodo Especial de Inscripción.",
+    "Si te despidieron en la primavera de 2025 y te quedaste con COBRA, tus 18 meses terminan en el otoño de 2026 o a principios de 2027, cerca de la Inscripción Abierta (del 1 de noviembre al 15 de enero).",
+    "Ayuda con la prima: los subsidios extra que hubo de 2021 a 2025 terminaron. Según la ley actual, el crédito fiscal para 2027 generalmente aplica si el ingreso del hogar está entre el 100% y el 400% del nivel de pobreza: de $15,960 a $63,840 para una persona, y de $33,000 a $132,000 para una familia de cuatro.",
+    "Un agente con licencia puede comparar los planes del Mercado con lo que pagas de COBRA, sin costo para ti."
+   ],
+   "src": [
+    "https://www.healthcare.gov/coverage-outside-open-enrollment/special-enrollment-period/",
+    "https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-B/part-155/subpart-E/section-155.420",
+    "https://www.healthcare.gov/unemployed/cobra-coverage/",
+    "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines"
+   ],
+   "reviewed": "2026-10-08",
+   "share": true,
+   "kind": "wave2",
+   "script": {
+    "hook": "¿Se te acaba COBRA? Tienes 60 días para cambiarte.",
+    "beats": [
+     "Acabarse los meses de COBRA cuenta como perder cobertura.",
+     "Dejarla antes no cuenta.",
+     "Puedes inscribirte hasta 60 días antes."
+    ],
+    "cta": "Chequeo gratis de 60 segundos."
+   }
+  }
+ ]
+}

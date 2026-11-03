@@ -1,0 +1,44 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1450px;padding:16px 16px 40px">
+<h2>Acquisition funnel: voluntary submissions with valid phone numbers</h2>
+<div class="panelcard" style="margin:0 0 10px">
+<p class="small" style="margin:0 0 4px"><b>Discovery layer (upstream of this funnel):</b>
+{{ sigk.MARKET }} public MARKET records (news, official CMS/healthcare.gov datasets, published pages) ·
+<b>{{ sigk.INTEREST }} INTEREST signals</b> — person-shaped public posts expressing coverage needs.
+<a href="/admin/intel/signals?kind=INTEREST&token={{ token }}">Review interest signals →</a>
+ Both counts live in the separate signals database: nobody in them is contacted, and neither count
+ is ever a lead. Lead counts below start only at the first funnel stage: a person voluntarily
+ visiting THIS site and submitting their own information through the Check.</p>
+{% if interest %}<p class="small" style="margin:4px 0 0">Top unreviewed interest signals:
+{% for r in interest %}<a href="{{ r.url }}" rel="noopener" target="_blank">{{ r.title[:60] }}</a> ({{ r.topic }}, intent {{ r.intent }}){% if not loop.last %} · {% endif %}{% endfor %}</p>{% endif %}
+{% if sigsrc %}<table style="width:auto;margin:8px 0 0"><tr><th class="small">Source</th><th class="num">signals</th><th class="num">NEW</th><th class="num">fresh 30d</th></tr>
+{% for s in sigsrc %}<tr><td class="small">{{ s.source }}</td><td class="num">{{ s.n }}</td><td class="num">{{ s.new }}</td><td class="num">{{ s.fresh }}</td></tr>{% endfor %}</table>
+{% if sigcats %}<p class="small" style="margin:4px 0 0">Fresh-30d INTEREST by shape: {% for cat in sigcats %}<b>{{ cat.intent_cat }}</b> {{ cat.n }}{% if not loop.last %} · {% endif %}{% endfor %}
+(<a href="/admin/intel/signals?kind=INTEREST&intent_cat=shopping&token={{ token }}">review shopping →</a>)</p>{% endif %}{% endif %}
+</div>
+<p class="small">The only numbers that matter here. A lead = a consumer who completed the Check, typed their own phone number and checked the consent naming one licensed agent. Public records, public phones and emails are not in this funnel and never become leads.</p>
+<div class="panelcard" style="margin:0 0 10px">
+<p class="small" style="margin:0"><b>Content layer (this funnel's feed):</b>
+produced <b>{{ content_stats.get('PREPARED', 0) + content_stats.get('APPROVED', 0) + content_stats.get('DEPLOYED', 0) }}</b>
+· approved <b>{{ content_stats.get('APPROVED', 0) }}</b>
+· published-by-operator <b>{{ content_stats.get('DEPLOYED', 0) }}</b>
+· skipped <b>{{ content_stats.get('SKIPPED', 0) }}</b> — <a href="/admin/acquisition?token={{ token }}">open acquisition queue →</a><br>
+<span class="mini">Produced = drafted from reviewed signals. Published = flipped by hand only after the operator actually posted it. Neither count is a website visit; the funnel below only counts visitors who arrive via tracked links.</span></p>
+</div>
+<div class="tabs" style="margin:8px 0">{% for d in dims %}<a class="{{ 'on' if d==dim }}" href="?token={{ token }}&dim={{ d }}&test={{ test }}">{{ 'Total' if d=='all' else d }}</a>{% endfor %}</div>
+<div class="tabs" style="margin:8px 0">{% for t,l in [('real','Real traffic'),('only','TEST DATA')] %}<a class="{{ 'on' if t==test }}" href="?token={{ token }}&dim={{ dim }}&test={{ t }}">{{ l }}</a>{% endfor %}</div>
+{% if test!='real' %}<div class="note">TEST DATA: fake personas from automated tests. Says nothing about real performance.</div>{% endif %}
+{% if not rows %}<p><b>UNTESTED.</b> No {{ 'real ' if test=='real' }}visitors yet. This fills the moment real people arrive from a tracked link.</p>{% else %}
+<div class="panelcard" style="margin:10px 0 14px"><h3 style="margin:0 0 6px;font-size:15px">Where people stop (this {{ 'whole view' if dim=='all' else dim }})</h3>
+{% if not tot.visits %}<p class="small" style="margin:0">No {{ 'real ' if test=='real' }}visitors recorded for this slice yet — there is nothing to leak.</p>{% else %}
+<table><tr><th>Transition</th><th class="num">Reached BEFORE</th><th class="num">Reached AFTER</th><th class="num">Lost here</th><th class="num">Drop %</th></tr>
+{% for d in drops %}<tr><td class="small">{{ labels[d.a] }} → {{ labels[d.b] }}</td><td class="num">{{ d.up }}</td><td class="num">{{ d.dn }}</td>
+<td class="num">{{ d.lost }}</td><td class="num">{% if not d.reachable %}-{% else %}{{ '%.1f'|format(d.drop_pct) }}%{% endif %}</td></tr>{% endfor %}</table>
+<p class="mini" style="margin:4px 0 0">Counts are unique visitors recorded crossing each stage; the biggest drop is where the experience loses people. The number typed into the phone field is stored only after consent, so "phones submitted" is event counts, not stored numbers.</p>
+{% endif %}</div>
+<div style="overflow-x:auto"><table><tr><th>{{ 'Total' if dim=='all' else dim }}</th>{% for s in stages %}<th class="num">{{ labels[s] }}</th>{% endfor %}<th class="num">Visit → phone lead %</th><th class="num">Check → phone %</th><th class="num">Phone valid %</th><th class="num">Email-only inquiries (not sold)</th><th class="num">Bad info</th><th class="num">Revenue</th><th class="num">Revenue / lead</th><th>Evidence</th></tr>
+{% for r in rows %}<tr><td><b>{{ r.k }}</b></td>{% for s in stages %}<td class="num">{{ r[s] }}</td>{% endfor %}
+<td class="num">{{ r.visit_to_phone_lead_pct if r.visit_to_phone_lead_pct is not none else '-' }}</td><td class="num">{{ r.completion_to_phone_pct if r.completion_to_phone_pct is not none else '-' }}</td><td class="num">{{ r.phone_valid_pct if r.phone_valid_pct is not none else '-' }}</td>
+<td class="num">{{ r.email_only_inquiries }}</td><td class="num">{{ r.bad_info }}</td><td class="num">{{ '%.0f'|format(r.revenue) }}</td><td class="num">{{ r.revenue_per_lead if r.revenue_per_lead is not none else '-' }}</td><td><span class="pill {{ ev(r).split(' ')[0] }}">{{ ev(r) }}</span></td></tr>{% endfor %}</table></div>{% endif %}
+<p class="mini" style="margin-top:12px">Phones submitted / valid phones are counted at the contact step as pass/fail events; the number itself is only stored after the consumer consents. Contacted, appointments and sales come from the agent desk.</p>
+</div>{% endblock %}

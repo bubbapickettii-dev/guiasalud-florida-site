@@ -1,0 +1,508 @@
+{
+ "_comment": "Signal-source configuration. Only operators edit this file; nothing auto-fetches (collection is always an explicit CLI action with --network). youtube_channels are public YouTube channel IDs (UC...). webreader.seeds are PUBLIC pages with durable URLs whose content feeds the SAME signal loop (see engine/web_extract.py); places.approved=true is an explicit operator record authorizing per-request Google Places billing — never set by code.",
+ "youtube_channels": [],
+ "max_items_per_source_per_run": 40,
+ "retention_days_irrelevant": 90,
+ "google_news_queries": [
+  "health insurance company leaving marketplace",
+  "ACA marketplace plan discontinued",
+  "aseguradora deja mercado de seguros"
+ ],
+ "webreader": {
+  "max_pages_per_seed": 5,
+  "pause_seconds": 2,
+  "seeds": [
+   {
+    "url": "https://www.healthcare.gov/blog/",
+    "instructions": "Extract recent changes to Marketplace enrollment rules, deadlines, or subsidy amounts. JSON: {topic, facts[], lang}."
+   }
+  ]
+ },
+ "places": {
+  "approved": false,
+  "budget_note": "Set approved:true ONLY with the operator's explicit budget decision; per-request Google Places billing applies."
+ },
+ "reddit_comments": {
+  "enabled": true,
+  "endpoint": "https://api.pullpush.io/reddit/search/comment/",
+  "_note": "COMMENT-depth discovery over the same public PullPush mirror: the actual question often sits in a replies, not the post record. Same author-dropping + taxonomy filter + review gates."
+ },
+ "reddit_comment_queries": [
+  {
+   "sub": "",
+   "terms": [
+    "looking for health insurance",
+    "need health insurance",
+    "health insurance quotes"
+   ],
+   "t": "month",
+   "limit": 40
+  },
+  {
+   "sub": "HealthInsurance",
+   "terms": [
+    "cobra",
+    "cant afford",
+    "can't afford"
+   ],
+   "t": "month",
+   "limit": 40
+  },
+  {
+   "sub": "",
+   "terms": [
+    "seguro medico",
+    "aseguranza",
+    "necesito seguro"
+   ],
+   "t": "month",
+   "limit": 40
+  }
+ ],
+ "mastodon": {
+  "enabled": true,
+  "instance": "https://mastodon.social",
+  "tags": [
+   "healthinsurance",
+   "healthcare",
+   "unemployed",
+   "cobra",
+   "medicaid",
+   "openenrollment",
+   "getcovered"
+  ],
+  "_note": "PUBLIC Mastodon hashtag timelines (credential-free). Person-shaped Fediverse pledges; sparse but real. Edit tags freely."
+ },
+ "bluesky": {
+  "enabled": true,
+  "instance": "https://api.bsky.app",
+  "_note": "PUBLIC Bluesky post search via the anonymous public AppView (app.bsky.feed.searchPosts): no account, no key, quoted phrases + since=<date> recency at the source. Anonymous cursor paging is unreliable, so each query takes the freshest page only. queries support {\"q\": \"...\", \"lang\": \"es\"}."
+ },
+ "lemmy": {
+  "enabled": true,
+  "instances": [
+   "https://lemmy.world"
+  ],
+  "_note": "PUBLIC Lemmy anonymous COMMENT search (/api/v3/search type_=Comments sort=New): no account, no key. Add bigger instances (lemmy.ml, programming.dev) freely — pacing is per-call polite. Rate limits are per-instance operator config."
+ },
+ "stackexchange": {
+  "enabled": true,
+  "sites": [
+   "money",
+   "workplace"
+  ],
+  "queries": {
+   "money": [
+    "cobra",
+    "obamacare",
+    "health insurance marketplace",
+    "premium tax credit",
+    "losing medicaid",
+    "insurance after quitting job",
+    "freelance health insurance"
+   ],
+   "workplace": [
+    "health insurance cobra",
+    "losing employer health insurance"
+   ]
+  },
+  "_note": "Public Stack Exchange API question search — no key needed at this volume; site param appends .stackexchange itself. money.SE is the verified COBRA/marketplace question pool (health.SE is clinical Q&A, not consumer coverage)."
+ },
+ "paid_social": {
+  "_note": "LICENSED third-party collection services for platforms whose own public/API access this network cannot use (Instagram, TikTok, Facebook groups/PAGES, SERP-forum search). The code NEVER charges or activates anything: each service runs only when BOTH gates are open — paid_social.<service>.approved=true is an explicit operator budget record, and the service token exists in the environment (APIFY_TOKEN / BD_DATA_API_TOKEN). Missing either gate = refusal row + zero network.",
+  "apify": {
+   "approved": false,
+   "actors": {
+    "instagram_hashtag": {
+     "actor_id": "apify/instagram-hashtag-scraper",
+     "label": "Instagram hashtags: seguro medico / aseguranza",
+     "input": {
+      "hashtags": [
+       "seguro medico",
+       "aseguranza"
+      ],
+      "resultsType": "posts",
+      "resultsLimit": 60
+     }
+    },
+    "instagram_comments": {
+     "actor_id": "apify/instagram-comment-scraper",
+     "_requires_urls": true,
+     "signal_source": "instagram_comments",
+     "label": "Instagram COMMENTS under posts found by the hashtag actor (second stage)",
+     "input": {
+      "directUrls": [],
+      "resultsLimit": 100,
+      "_operator_note": "paste post/reel URLs from the instagram_hashtag run first — comment actors work on post URLs, not queries"
+     }
+    },
+    "facebook_pages": {
+     "actor_id": "apify/facebook-posts-scraper",
+     "_requires_urls": true,
+     "label": "Facebook PUBLIC pages/groups (operator pastes startUrls)",
+     "input": {
+      "resultsLimit": 40,
+      "_operator_note": "paste public page/group URLs into startUrls"
+     }
+    },
+    "facebook_comments": {
+     "actor_id": "apify/facebook-comments-scraper",
+     "_requires_urls": true,
+     "signal_source": "facebook_comments",
+     "label": "Facebook COMMENTS under public page/group posts (second stage)",
+     "input": {
+      "startUrls": [],
+      "resultsLimit": 100,
+      "_operator_note": "paste post URLs from the facebook_pages run first"
+     }
+    },
+    "tiktok_hashtag": {
+     "actor_id": "clockworks/tiktok-scraper",
+     "label": "TikTok hashtags/keyword: seguro / cobertura medica (maintained by Apify, clockworks account)",
+     "input": {
+      "hashtags": [
+       "seguro medico",
+       "cobertura medica",
+       "aseguranza"
+      ],
+      "resultsPerHashtag": 50
+     }
+    },
+    "tiktok_comments": {
+     "actor_id": "clockworks/tiktok-comments-scraper",
+     "_requires_urls": true,
+     "signal_source": "tiktok_comments",
+     "label": "TikTok COMMENTS under videos found by the hashtag actor (second stage)",
+     "input": {
+      "postURLs": [],
+      "resultsLimit": 100,
+      "_operator_note": "paste video URLs from the tiktok_hashtag run first"
+     }
+    },
+    "serp_forums": {
+     "actor_id": "apify/google-search-scraper",
+     "label": "SERP search per forum/community results (compliant licensed search)",
+     "input": {
+      "queries": [
+       "site:reddit.com OR site:quora.com \"seguro medico\" miami",
+       "\"looking for health insurance\" reddit miami",
+       "site:facebook.com/groups \"seguro medico\" miami"
+      ],
+      "resultsPerPage": 20,
+      "maxPagesPerQuery": 2
+     }
+    }
+   }
+  },
+  "brightdata": {
+   "approved": false,
+   "datasets": {
+    "instagram": {
+     "dataset_id": "",
+     "label": "Instagram posts by hashtag",
+     "inputs": []
+    },
+    "facebook": {
+     "dataset_id": "",
+     "label": "Facebook posts by group/page URL",
+     "inputs": []
+    },
+    "tiktok": {
+     "dataset_id": "",
+     "label": "TikTok profile/tag posts",
+     "inputs": []
+    }
+   }
+  }
+ },
+ "ollama": {
+  "url": "http://127.0.0.1:11434",
+  "model": "",
+  "_model_note": "url = the LOCAL Ollama API (never an external host). model='' means auto-pick:\nthe first INSTALLED model that answers a one-word test prompt. Set OLLAMA_MODEL env\nor paste a name here (see `python tools/collect.py ai-health`) to pin one explicitly."
+ },
+ "reddit": {
+  "enabled": false,
+  "_reason": "both endpoints 403 from this datacenter IP; re-enable when the egress changes"
+ },
+ "reddit_fallback": {
+  "enabled": true,
+  "_reason": "both endpoints 403 from this datacenter IP; re-enable when the egress changes"
+ },
+ "public_profiles": {
+  "_doc": "PUBLIC PROFILE CONTACT SURFACES (tools/public_contacts.py, engine/public_profiles.py). Collects the contact a person PUBLISHED ON THEIR OWN PUBLIC PROFILE (bio / custom fields) on the same credential-free public account that voiced a first-person coverage need. Public contact + public need evidence only; NEVER consent, never a lead, never contacted. Organisation-shaped profiles (agency/broker/llc...) are counted separately and never stored as consumer prospects. Pacing is per-call; a 401/403/429 stops that source for the run.",
+  "enabled": true,
+  "pause_seconds": 1.0,
+  "queries": {
+   "bluesky": [
+    {
+     "q": "\"need health insurance\"",
+     "lang": "en"
+    },
+    {
+     "q": "\"losing my health insurance\"",
+     "lang": "en"
+    },
+    {
+     "q": "\"lost my health insurance\"",
+     "lang": "en"
+    },
+    {
+     "q": "\"cannot afford health insurance\"",
+     "lang": "en"
+    },
+    {
+     "q": "\"self employed\" \"health insurance\"",
+     "lang": "en"
+    },
+    {
+     "q": "\"necesito aseguranza\"",
+     "lang": "es"
+    },
+    {
+     "q": "\"no tengo seguro medico\"",
+     "lang": "es"
+    },
+    {
+     "q": "\"need health coverage\"",
+     "lang": "en"
+    },
+    {
+     "q": "\"looking for health insurance\"",
+     "lang": "en"
+    },
+    {
+     "q": "\"cant afford health insurance\"",
+     "lang": "en"
+    },
+    {
+     "q": "\"lost coverage\" \"my job\"",
+     "lang": "en"
+    },
+    {
+     "q": "\"need insurance\" \"lost my job\"",
+     "lang": "en"
+    },
+    {
+     "q": "\"necesito seguro de salud\"",
+     "lang": "es"
+    },
+    {
+     "q": "\"perdi mi trabajo\" \"seguro\"",
+     "lang": "es"
+    }
+   ],
+   "mastodon": [
+    "healthinsurance",
+    "cobra",
+    "obamacare",
+    "openenrollment",
+    "medicaid"
+   ],
+   "lemmy": [
+    "need health insurance",
+    "losing health insurance",
+    "cobra",
+    "medicaid",
+    "seguro medico"
+   ]
+  },
+  "_terms_note": "Bluesky: public AppView (app.bsky.feed.searchPosts / app.bsky.actor.getProfile), anonymous. Mastodon: public tag timelines + /api/v1/accounts/<id> on the instance configured under mastodon.instance. Lemmy: anonymous /api/v3/search + /api/v3/user on lemmy.instances. All three are pages the platform itself serves to anonymous readers - no login, no key, no bypass. Re-check each platform's terms before increasing volume.",
+  "page_hops": 10,
+  "_page_hops_note": "ONE robots-checked hop to a page the account linked from its own bio, only when the bio itself carries no email/phone, capped at 10 per run. The contact is then labelled contact_origin=profile_link and its evidence names the linked page."
+ },
+ "org_contacts": {
+  "_doc": "ORGANIZATION public-contact discovery (tools/org_pipeline.py): sources where organizations VOLUNTARILY publish contact details for inquiries. Business contacts for outreach REVIEW only - never consumer leads, never contacted automatically. Seeds' robots terms are fetched and stored per run; a robots Disallow or a fetch error skips the seed and records the restriction.",
+  "seeds": [
+   {
+    "url": "https://catholiccharitiesdov.org/contact-us",
+    "org_type": "nonprofit",
+    "lang": "es",
+    "purpose": "diocese office listings published for public inquiries (name/phone/email)"
+   },
+   {
+    "url": "https://www.feedingflorida.org/our-network/florida-food-bank-counties-map/",
+    "org_type": "food_bank",
+    "lang": "en",
+    "purpose": "member food-bank network directory (robots allows, Crawl-delay 10s honored)"
+   },
+   {
+    "url": "https://www.feedingtampabay.org/contact/",
+    "org_type": "food_bank",
+    "lang": "en",
+    "purpose": "department contact emails published for public inquiries"
+   },
+   {
+    "url": "https://cflcc.org/contact-us/",
+    "org_type": "nonprofit",
+    "lang": "es",
+    "purpose": "program office phones published for client inquiries (immigration/housing/refugee services)"
+   },
+   {
+    "url": "https://www.farmshare.org/contact-us",
+    "org_type": "food_bank",
+    "lang": "en",
+    "purpose": "public contact phone/email for food-relief agency coordination"
+   },
+   {
+    "url": "https://www.allfaithsfoodbank.org/contact-us",
+    "org_type": "food_bank",
+    "lang": "en",
+    "purpose": "food bank office phone/email published for public inquiries"
+   },
+   {
+    "url": "https://harrychapinfoodbank.org/contact/",
+    "org_type": "food_bank",
+    "lang": "en",
+    "purpose": "food bank center contact phones published for public inquiries"
+   },
+   {
+    "url": "https://feedingsouthflorida.org/contact-us/",
+    "org_type": "food_bank",
+    "lang": "es",
+    "purpose": "partner-agency and client-services contacts published for public inquiries"
+   }
+  ]
+ },
+ "discovery": {
+  "_doc": "ACTIVE consumer discovery: permitted public pages read for individual people describing a health-coverage need. Intent, state and freshness are graded; a public thread where a reply is allowed is an engagement route even with no published contact. Nothing logs in, bypasses a wall, or contacts anyone.",
+  "enabled": true,
+  "pages_per_board": 3,
+  "max_threads_per_run": 20,
+  "delay_seconds": 1.5,
+  "citydata": {
+   "boards": [
+    "health-insurance"
+   ]
+  },
+  "discourse": {
+   "instances": [],
+   "queries": [
+    "health insurance",
+    "COBRA coverage",
+    "marketplace subsidy",
+    "medicaid application"
+   ],
+   "_note": "public /search.json only; add a community you have checked robots/terms for"
+  },
+  "reddit_archive": {
+   "_note": "Public Reddit archive API (arctic-shift), robots-allowed, credential-free. Two shapes: newest posts per board (firehose, low Florida density) and SUBREDDIT-SCOPED FULL-TEXT search (subreddit+query), which is what targets people this marketplace can serve. reddit.com's own RSS is NOT used: its robots.txt disallows /r/*/.rss even though the feed answers 200.",
+   "per_sub": 100,
+   "subreddits": [
+    "HealthInsurance",
+    "ACA",
+    "insurance",
+    "Medicaid",
+    "obamacare",
+    "povertyfinance",
+    "Assistance",
+    "Unemployment",
+    "florida",
+    "tampa",
+    "Miami",
+    "orlando"
+   ],
+   "per_query": 50,
+   "max_queries": 14,
+   "search_queries": [
+    "florida",
+    "miami",
+    "tampa",
+    "orlando",
+    "jacksonville",
+    "lost job",
+    "cobra",
+    "laid off",
+    "open enrollment",
+    "premium went up",
+    "plan ending",
+    "self employed"
+   ]
+  },
+  "skip_per_board": 4,
+  "websearch": {
+   "_note": "Provider-sanctioned search API only (set BING_SEARCH_KEY, or BRAVE_SEARCH_KEY, or GOOGLE_CSE_KEY+GOOGLE_CSE_CX). Each query pairs a consumer intent phrase with a contact token so the index returns pages where somebody published an address or number NEXT TO the ask. The adapter never reads a search engine's HTML results, never solves a captcha and never retries a 401/403/429.",
+   "provider": "bing",
+   "results_per_query": 10,
+   "queries": [
+    "\"need health insurance\" \"email me\"",
+    "\"lost my job\" \"health insurance\" \"text me\"",
+    "\"can't afford\" \"health insurance\" \"contact me at\"",
+    "\"affordable health coverage\" \"email me at\"",
+    "\"ACA\" \"subsidy\" \"reach me at\"",
+    "\"open enrollment\" \"need help\" \"call me\"",
+    "\"uninsured\" \"health insurance\" \"@gmail.com\"",
+    "\"health plan\" \"my number is\" \"coverage\"",
+    "\"seguro medico\" \"escribeme\" \"cobertura\"",
+    "\"necesito seguro medico\" \"mi numero\""
+   ]
+  },
+  "target_states": [
+   "FL"
+  ],
+  "default_sources": [
+   "reddit_archive_search",
+   "stackexchange",
+   "lemmy",
+   "mastodon",
+   "citydata"
+  ],
+  "stackexchange": {
+   "_note": "Official /2.3 search API, no key at this volume; robots.txt allows /2.3. Questions only.",
+   "sites": [
+    "money",
+    "expatriates"
+   ],
+   "queries": [
+    "health insurance florida",
+    "lost job health insurance",
+    "cobra coverage florida",
+    "marketplace subsidy florida"
+   ],
+   "per_query": 25,
+   "max_queries": 8
+  },
+  "lemmy": {
+   "_note": "Public /api/v3/search read API, anonymous.",
+   "instance": "https://lemmy.world",
+   "queries": [
+    "health insurance",
+    "ACA coverage",
+    "medicaid florida"
+   ],
+   "per_query": 20
+  },
+  "mastodon": {
+   "_note": "Public tag timeline API, anonymous. Low yield expected; classifier filters.",
+   "instance": "https://mastodon.social",
+   "tags": [
+    "healthinsurance",
+    "obamacare",
+    "healthcare"
+   ],
+   "per_tag": 25,
+   "search_queries": [
+    "need health insurance",
+    "looking for health insurance",
+    "lost my health insurance",
+    "can't afford health insurance",
+    "health insurance florida",
+    "obamacare enrollment",
+    "necesito seguro medico",
+    "no tengo seguro medico"
+   ],
+   "per_query": 20
+  },
+  "max_age_days": 180
+ },
+
+ "identity": {
+  "_doc": "IDENTITY RESOLUTION (engine/identity.py, tools/discovery.py enrich). For a consumer-intent prospect it reads the SAME public account's other public posts/comments (permitted archive API) plus the platform profile and, only when probes=true, a short allowlist of public profile surfaces keyed by the same handle. A name is stored only from explicit self-identification and only VERIFIED when two independent sources agree; a phone only when the same identity published it with ownership wording and is not a toll-free/business line. Publishing a number is never consent: marketing_eligibility stays BLOCKED_NO_CONSENT.",
+  "enabled": true,
+  "dossier_limit": 50,
+  "pause_seconds": 1.2,
+  "probes": true,
+  "probe_pause_seconds": 0.4,
+  "min_name_confidence_for_contact": 0.8
+ }
+
+}

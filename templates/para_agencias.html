@@ -1,0 +1,166 @@
+{% extends "base.html" %}{% set _es = True %}{% set lang = 'es' %}
+{% block lang %}es{% endblock %}
+{% block title %}GS Allude — prospectos exclusivos de seguros de salud en Florida para agencias con licencia{% endblock %}
+{% block desc %}Prospectos de seguros de salud que el propio consumidor inicia y consiente en Florida: un consumidor, un consentimiento, una agencia. Ve qué llega con cada prospecto, cómo funcionan los créditos y cómo solicitar.{% endblock %}
+{% block header %}<header class="top"><div class="wrap" style="max-width:1080px"><a class="brand" href="/para-agencias">GS Allude<span class="desc">Prospectos exclusivos de salud</span></a><div class="trust">Para agencias de seguros con licencia en Florida</div><div style="display:flex;gap:10px;align-items:center"><a class="btn" style="width:auto;padding:9px 16px;text-decoration:none" href="#solicitar">Solicitar</a><a class="langswitch" href="/for-agents" hreflang="en"><span aria-hidden="true">⇄</span> English</a></div></div></header>{% endblock %}
+{% block body %}<div class="wrap adm" style="max-width:1080px;padding:0 16px 40px">
+
+<section class="hero-b">
+ <span class="eyebrow">Prospectos exclusivos de seguros de salud</span>
+ <h1>Un consumidor. Un consentimiento. Una agencia.</h1>
+ <p class="lead">Un consumidor termina el Chequeo de Cobertura en {{ site.brand }} — nuestro sitio para consumidores —, escribe <b>su propio número de teléfono</b> y acepta que lo contacten. Esa solicitud se asigna a una sola agencia con licencia en Florida: la tuya, o a ninguna. Generamos prospectos; nunca llamamos a consumidores y nunca revendemos un prospecto.</p>
+ <div class="cta-row">
+  <a class="btn" href="#solicitar">Solicitar una cuenta</a>
+  <a class="btn ghost" href="#precios">Ver precios y créditos</a>
+ </div>
+ <p class="trustline">Solo agencias con licencia en Florida · consentimiento registrado por solicitud, con texto versionado y copia del formulario · créditos prepagados, cobrados una vez al entregar · devoluciones según la política de abajo</p>
+</section>
+
+<h2 class="sec-h" style="font-size:20px;margin:26px 0 4px">Cómo funciona</h2>
+<div class="bsteps">
+ <div class="bstep"><b>1. Solicita</b><span>Envía el nombre legal de tu agencia, tu número de licencia de Florida, tu NPN y los productos que vendes. Respondemos en un día hábil.</span></div>
+ <div class="bstep"><b>2. Verificamos y acordamos</b><span>Revisamos tu licencia y tu NPN, y acordamos por escrito tu precio por nivel y tu tope diario. Nada está activo antes de eso.</span></div>
+ <div class="bstep"><b>3. Recibes prospectos</b><span>Te enviamos el enlace a tu escritorio privado. Añades créditos prepagados; cada prospecto se cobra una sola vez al entregarse.</span></div>
+</div>
+
+<h2 class="sec-h" style="font-size:20px;margin:26px 0 4px">Qué recibes con cada prospecto</h2>
+<div class="tbl-wrap"><table>
+<tr><th style="width:190px">Elemento</th><th>Qué es</th></tr>
+<tr><td>El teléfono del propio consumidor</td><td>Número NANP validado que el consumidor escribió (formato +1 E.164 y nacional), con la fecha y la versión del consentimiento adjuntas. Sin números añadidos ni de registros públicos: la base de datos lo impide.</td></tr>
+<tr><td>Prueba del consentimiento</td><td>Texto de consentimiento versionado que nombra a {{ site.brand }} <i>y a su agente asociado con licencia</i> (la frase de la plataforma — el consumidor nunca elige una agencia), con fecha, IP, agente del navegador, URL de la página y una copia SHA-256 del formulario tal como lo vio la persona. Tu agencia queda registrada en la asignación del lead, no la elige el consumidor.</td></tr>
+<tr><td>Procedencia y contexto</td><td>Qué página leyó, qué le dijo a la herramienta (tamaño del hogar, rango de ingreso, urgencia, plazo, idioma) y la fuente de seguimiento.</td></tr>
+<tr><td>Tu escritorio</td><td>Un portal privado (el enlace /agent que te emitimos): cada prospecto nuevo con botones de resultado en un clic (contactado / cita / vendido / no llamar / devolución), más tu libro de créditos.</td></tr>
+<tr><td>Aviso inmediato</td><td>Un correo en el segundo en que llega un prospecto, con recordatorios de la ventana de contacto de Florida y de conservación de registros.</td></tr>
+</table></div>
+
+<h2 class="sec-h" id="precios" style="font-size:20px;margin:26px 0 4px">Precios, créditos y devoluciones</h2>
+<div class="card-b">
+<p style="margin-top:0">Créditos prepagados en USD, registrados en un libro que puedes ver en cualquier momento. Un prospecto se cobra una sola vez, al entregarse, a tu precio acordado por nivel. Cada prospecto vendido es <b>exclusivo</b>: un consumidor, un consentimiento, un comprador — nunca se revende ni se comparte.</p>
+<p class="mini">Los precios por prospecto se acuerdan por nivel antes de activarte: nunca son precios de lista genéricos y nunca los fija un formulario web. Los importes de abajo son paquetes de crédito, no precios por prospecto.</p>
+<div class="tbl-wrap"><table><tr><th>Paquete de crédito</th><th>Monto</th></tr>
+{% for p in packages %}<tr><td>{{ p.label }}</td><td>${{ p.amount_usd }}</td></tr>{% else %}<tr><td colspan=2 class="small">Los tamaños de paquete se fijan por acuerdo.</td></tr>{% endfor %}</table></div>
+<p class="mini" style="margin-bottom:0">Política de devoluciones y créditos: {% if returns.get('enabled') %}un prospecto entregado se puede devolver por crédito en tu saldo dentro de las {{ returns.window_hours }} horas siguientes a la entrega{% if not returns.allow_after_contact %} (y solo antes de que lo marques como contactado){% endif %}{% if returns.get('reasons') %}, con un motivo{% endif %}. Lo más antiguo pasa a nosotros como ajuste del operador.{% else %} las devoluciones están desactivadas por el operador en este momento — cualquier otra cosa requiere un ajuste del operador.{% endif %}</p>
+</div>
+
+<h2 class="sec-h" style="font-size:20px;margin:26px 0 4px">Qué necesitamos de ti antes de que recibas prospectos</h2>
+<ul style="margin:4px 0 12px 20px">
+<li>El nombre legal exacto de tu agencia (queda registrado en tu cuenta y en cada asignación de lead)</li>
+<li>Tu número de licencia de seguros de Florida y tu NPN (verificamos ambos antes de activarte)</li>
+<li>Los estados y productos para los que tienes licencia, los niveles de prospecto que aceptas y sus precios, y un tope diario</li>
+<li>Para prospectos de salud en Florida: participación en el Mercado / registro FFM para las campañas de {{ site.brand }}</li>
+</ul>
+
+<h2 class="sec-h" id="solicitar" style="font-size:20px;margin:26px 0 4px">Solicitar</h2>
+<p class="small" style="margin:0 0 10px">Respondemos en un día hábil. Los campos con * son obligatorios.</p>
+{% if done %}<div class="note good" style="border-left:4px solid #1a7">{{ done }}</div>
+<p class="mini" style="margin-top:8px">Siguiente paso: revisamos tus datos, acordamos precios por prospecto y tu tope diario, y te enviamos el enlace a tu escritorio privado. Nada está activo hasta que tengas créditos y activemos tu cuenta.</p>
+{% endif %}
+{% if err %}<div class="note" style="border-left:4px solid #b00">La solicitud no se guardó — {{ err }}</div>{% endif %}
+<form method="post" action="/for-agents/apply" style="display:grid;gap:12px;max-width:680px;margin-top:10px">
+<input type="hidden" name="lang" value="es">
+
+<div class="field req">
+ <label class="lbl" for="agency">Nombre legal de la agencia</label>
+ <p class="fhint">Exactamente como debe aparecer en el consentimiento del consumidor — sin corchetes ni ejemplos.</p>
+ <input class="t" id="agency" name="agency" autocomplete="organization" required>
+</div>
+
+<div class="field req">
+ <label class="lbl" for="contact_name">Tu nombre</label>
+ <input class="t" id="contact_name" name="contact_name" autocomplete="name" required>
+</div>
+
+<div class="field req">
+ <label class="lbl" for="contact_email">Correo al que podemos responderte</label>
+ <input class="t" id="contact_email" name="contact_email" type="email" autocomplete="email" required>
+</div>
+
+<div class="field">
+ <label class="lbl" for="contact_phone">Teléfono de la oficina <span class="mini">(opcional)</span></label>
+ <input class="t" id="contact_phone" name="contact_phone" type="tel" autocomplete="tel">
+</div>
+
+<div style="display:flex;gap:12px;flex-wrap:wrap">
+ <div class="field" style="flex:1;min-width:180px">
+  <label class="lbl" for="license_number">Número de licencia de seguros de Florida</label>
+  <p class="fhint">La licencia de tu agencia o agente (p. ej. A123456).</p>
+  <input class="t" id="license_number" name="license_number">
+ </div>
+ <div class="field" style="flex:1;min-width:150px">
+  <label class="lbl" for="npn">NPN</label>
+  <p class="fhint">National Producer Number.</p>
+  <input class="t" id="npn" name="npn">
+ </div>
+</div>
+
+<div class="field">
+ <label class="lbl" for="licensed_states">Estados donde tienes licencia</label>
+ <p class="fhint">Separados por coma. Por ahora servimos solo Florida.</p>
+ <input class="t" id="licensed_states" name="licensed_states" value="FL">
+</div>
+
+<div class="field">
+ <span class="lbl">Productos para los que tienes licencia</span>
+ <p class="fhint">Marca todos los que apliquen. Salud (ACA / Mercado) es el producto que este mercado entrega hoy.</p>
+ <div class="grid2" style="gap:4px 20px">
+  <label class="small" style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="prod" value="health_aca" checked> Seguro de salud (ACA / Mercado)</label>
+  <label class="small" style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="prod" value="term_life"> Vida temporal</label>
+  <label class="small" style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="prod" value="final_expense"> Gastos finales</label>
+  <label class="small" style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="prod" value="mortgage_protection"> Protección hipotecaria</label>
+  <label class="small" style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="prod" value="key_person"> Persona clave</label>
+ </div>
+ <input type="hidden" name="products" id="products" value="health_aca">
+</div>
+
+<div class="field">
+ <label class="lbl" for="expected_volume">Prospectos al día que realmente puedes llamar</label>
+ <p class="fhint">Un número aproximado basta — solo nos ayuda a fijar tu tope diario.</p>
+ <input class="t" id="expected_volume" name="expected_volume" placeholder="p. ej. 5-10">
+</div>
+
+<div class="field">
+ <label class="lbl" for="delivery_method">Cómo quieres recibir los prospectos</label>
+ <select class="t" id="delivery_method" name="delivery_method">
+  <option value="outbox">Dejarlos en mi escritorio privado</option>
+  <option value="email">Enviar cada prospecto nuevo a mi correo</option>
+  <option value="webhook">POST a mi webhook de CRM</option>
+ </select>
+</div>
+
+<div class="field">
+ <label class="lbl" for="delivery_webhook">URL del webhook de CRM <span class="mini">(solo si elegiste webhook)</span></label>
+ <p class="fhint">Debe ser https:// — los datos de contacto del consumidor nunca se envían por http sin cifrar.</p>
+ <input class="t" id="delivery_webhook" name="delivery_webhook" type="url" placeholder="https://…">
+</div>
+
+<div class="field">
+ <label class="lbl" for="note">Lo demás <span class="mini">(opcional)</span></label>
+ <textarea class="t" id="note" name="note" rows="3" placeholder="Aseguradoras, tamaño del equipo, horario preferido, preguntas"></textarea>
+</div>
+
+<input name="website" style="display:none" tabindex="-1" autocomplete="off">  <!-- honeypot -->
+<button class="btn" type="submit" style="max-width:340px">Enviar solicitud</button>
+<p class="mini" style="margin-top:0">Usamos estos datos solo para crear tu cuenta y responderte — nunca para marketing, y este formulario nunca pregunta por un consumidor.</p>
+</form>
+
+<p class="small" style="margin-top:18px"><a href="/for-agents" hreflang="en">Read this in English</a> · <a href="/">Ver el sitio para consumidores ({{ site.brand }})</a></p>
+</div>
+
+<script>
+(function () {
+  var hidden = document.getElementById('products');
+  var boxes = document.querySelectorAll('input.prod');
+  function sync() {
+    var picked = [];
+    for (var i = 0; i < boxes.length; i++) { if (boxes[i].checked) picked.push(boxes[i].value); }
+    hidden.value = picked.join(',');
+  }
+  for (var i = 0; i < boxes.length; i++) { boxes[i].addEventListener('change', sync); }
+  sync();
+})();
+</script>
+{% endblock %}
+{% block footer %}<footer class="sitefoot"><div class="wrap" style="max-width:1080px">
+<p style="margin:0 0 8px"><b>GS Allude</b> — prospectos exclusivos de seguros de salud que el consumidor inicia. No somos una aseguradora, ni una agencia de seguros, ni un sitio del gobierno, y no vendemos seguros; la cobertura, los precios y la elegibilidad los determinan las aseguradoras y el Mercado. No estamos afiliados con HealthCare.gov ni con ninguna agencia del gobierno.{% if biz.legal_entity %} Operado por {{ biz.legal_entity }}{% if biz.mailing_address %}, {{ biz.mailing_address }}{% endif %}.{% endif %}</p>
+<p style="margin:0"><a href="/privacidad">Privacidad</a><a href="/terminos">Términos</a><a href="/contact">Contacto</a><a href="/">Sitio para consumidores ({{ site.brand }})</a><a href="/for-agents" hreflang="en">English</a></p>
+</div></footer>{% endblock %}

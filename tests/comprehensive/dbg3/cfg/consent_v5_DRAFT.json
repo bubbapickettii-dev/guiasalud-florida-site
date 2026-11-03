@@ -1,0 +1,20 @@
+{
+ "_status": "DRAFT FOR COUNSEL. NOT LOADED BY THE APP (app.py reads config/consent.json only). Facts, not legal advice. Written 2026-10-16.",
+ "_why": "v4 names the seller but not the party that collects and shares the data, gives no revocation channel, and does not name the phone number's use as 'not a condition' with the collecting party. See docs/LEAD_CAPTURE_REQUIREMENTS.md.",
+ "_placeholders": ["{brand}", "{legal_entity}", "{contact_email}", "{seller}", "{cta}", "{product_label}"],
+ "version": "2026-10-16.v5-DRAFT",
+ "text": "By checking this box and clicking \"{cta}\", I agree that {brand}, operated by {legal_entity}, may share the information I entered on this form with {seller} (a licensed insurance agency), and that {seller} may contact me about {product_label} at the phone number and email I provided, including by calls and text messages that may use automated technology or prerecorded/artificial voice. My consent is not a condition of buying any product or service. Message and data rates may apply. I can revoke this consent at any time by replying STOP to a text or by emailing {contact_email}, and my request will be honored within 10 business days. I have read the Privacy Policy and Terms.",
+ "text_es": "Al marcar esta casilla y hacer clic en \"{cta}\", acepto que {brand}, operado por {legal_entity}, comparta la información que escribí en este formulario con {seller} (una agencia de seguros con licencia), y que {seller} me contacte sobre {product_label} al número de teléfono y correo electrónico que proporcioné, incluso mediante llamadas y mensajes de texto que pueden usar tecnología automatizada o voz pregrabada/artificial. Mi consentimiento no es una condición para comprar ningún producto o servicio. Pueden aplicar tarifas de mensajes y datos. Puedo revocar este consentimiento en cualquier momento respondiendo STOP a un texto o escribiendo a {contact_email}, y mi solicitud se cumplirá en un plazo de 10 días hábiles. He leído la Política de Privacidad y los Términos.",
+ "what_changed_vs_v4": [
+  "Names the collecting party ({brand}, operated by {legal_entity}) and says it shares the data with the named seller.",
+  "Adds a revocation channel (STOP and {contact_email}) and the 10-business-day commitment.",
+  "Says consent is not a condition of buying any product or service (v4 said 'any purchase').",
+  "Removes 'agree to Privacy Policy' as part of the same consent sentence; it is now 'I have read' (a link, not a consent)."
+ ],
+ "questions_for_counsel": [
+  "Is naming one seller per submission enough for FTSA/TCPA written consent when the lead is held (tier below the buyer's cutoff) and not delivered?",
+  "Should the result screen after submit avoid any plan names or prices (Fla. Stat. 626.112 solicitation risk)? Current design shows none.",
+  "Retention period for consents and form snapshots (current default: kept until deletion request; counsel to set).",
+  "Does a flat per-lead fee that is never tied to a sale fit Fla. Stat. 626.112 for this structure?"
+ ]
+}

@@ -1,0 +1,99 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1100px;padding:16px 16px 60px">
+<h2>Owner walkthrough — everything this app actually does</h2>
+<p class="small">Every link below opens a <b>real page this application serves</b>. Data state
+right now: <b>{{ leads_test }}</b> synthetic test submissions, <b>{{ leads_real }}</b> real-consumer
+records (none were ever collected from the public), signals db {{ 'present' if signals_db else 'not yet created' }},
+live delivery <b>{{ 'ON — should not happen locally' if live_delivery else 'OFF (deliveries are dry runs to outbox/)' }}</b>,
+payments <b>off</b> (no card is ever charged on this machine), outbound SMS/email/webhook <b>off</b>.
+Nothing you click can contact anyone or spend money.</p>
+
+<h3 style="margin-top:14px">1 · Consumer experience</h3>
+<p class="small">What a real person would see. The site is <b>Spanish-first</b> (the audience), with
+an English toggle. Nobody is identified by anything shown here — the coverage check is answered by
+the visitor about themselves.</p>
+<table>
+<tr><th>Page</th><th>What it is</th><th>Try this</th></tr>
+<tr><td><a href="/?token={{ token }}">Home (Spanish-first)</a></td><td>Public entry: coverage-check call, guides, agent recruitment. <code>/?lang=en</code> for English</td><td>Read it in both languages</td></tr>
+<tr><td><a href="/check?token={{ token }}">Coverage check (EN)</a></td><td>The qualification questionnaire → consent → submission</td><td>Answer as a <b>clearly fake person</b> (e.g. name "Walkthrough Tester"); check the consent box; submit</td></tr>
+<tr><td><a href="/check?lang=es&amp;a=es_check&amp;token={{ token }}">Verificación (ES)</a></td><td>The same journey fully in Spanish (campaign <code>oep-2027-health-es</code>)</td><td>Submit once here too — see your two entries in the admin queue</td></tr>
+<tr><td><a href="/learn?token={{ token }}">Guides (EN) / <a href="/aprende?token={{ token }}">aprende (ES)</a></td><td>Content pages: COBRA, job loss, enrollment timing…</td><td>Open any guide; each CTA flows back into the Check</td></tr>
+<tr><td><a href="/layoffs?token={{ token }}">Layoff tracker (EN)</a> / <a href="/despidos?token={{ token }}">despidos (ES)</a></td><td>WARN-notice-derived employer pages (researched opportunity OPP-02)</td><td>Pick a workplace page and follow its call-to-action</td></tr>
+<tr><td><a href="/open-enrollment-2027?token={{ token }}">OEP 2027 (EN)</a> / <a href="/inscripcion-abierta-2027?token={{ token }}">(ES)</a></td><td>Seasonal landing page for the main campaign</td><td>Skim, then use its Check CTA</td></tr>
+<tr><td><a href="/for-agents?token={{ token }}">For agents</a></td><td>Public buyer-acquisition pitch + application form</td><td>Submit a fake application — it lands in buyer pipeline, never auto-activated</td></tr>
+</table>
+
+<h3 style="margin-top:14px">2 · AI &amp; data collection</h3>
+<p class="small">Public-web signals → local AI. Collection is <b>manual only</b> (a CLI action you
+run); nothing sweeps on a schedule. Public posts are stored minimized (no author handles); the
+local Ollama model classifies and distills them.</p>
+<table>
+<tr><th>Page</th><th>What it is</th><th>Try this</th></tr>
+<tr><td><a href="/admin/integrations?token={{ token }}">Integrations</a></td><td>Every sink and source with its REAL status: local Ollama health, ScrapeGraphAI venv, credential-gated platforms, last collection results, prospect-acquisition paths</td><td>Read the Local-AI panel — it reports READY/NEEDS_SETUP/FAILED per component from live checks</td></tr>
+<tr><td><a href="/admin/intel/signals?token={{ token }}">Signal watch</a></td><td>Review queue of public posts (Reddit/HN/YouTube/News/webreader) classified EN/ES with relevance scores. <b>Signals are never leads and never contact targets.</b></td><td>Filter by language/topic; open a citation URL; mark one REVIEWED with a note</td></tr>
+<tr><td><a href="/admin/intel/clusters?token={{ token }}">Clusters</a></td><td>The <b>local AI distillation</b> of signals into prioritized opportunity clusters (already built from stored signals), facts vs labeled inference, each linked to the ladder below</td><td>Follow a cluster's thesis link; dismiss requires a note</td></tr>
+<tr><td><a href="/admin/intel/supply?token={{ token }}">Supply sources</a></td><td>Researched external lead-supply registry (all supply-disabled by default)</td><td>Read — this page sells nothing</td></tr>
+</table>
+<p class="small">CLI (run in the project folder, e.g. <code>.venv\Scripts\python.exe -X utf8 tools\collect.py …</code>):
+<code>status</code> (what's stored) · <code>run --network</code> (explicit sweep, overlap-locked, politely pauses) ·
+<code>clusters-build</code> (local-AI distillation) · <code>ai-health</code> / <code>ai-smoke</code> (honest AI checks) ·
+<code>report</code> (markdown report to out/). Collection stays off unless you execute it.</p>
+
+<h3 style="margin-top:14px">3 · Opportunities &amp; prospects</h3>
+<table>
+<tr><th>Page</th><th>What it is</th><th>Try this</th></tr>
+<tr><td><a href="/admin/opportunities?token={{ token }}">Opportunity ladder</a></td><td>27 researched acquisition theses (OPP-xx/HID-xx) with evidence standards, statuses HYPOTHESIS→READY TO TEST→RESEARCHED and outcomes</td><td>Open OPP-02; update a status with a recorded result</td></tr>
+<tr><td><a href="/admin/channels?token={{ token }}">Channels &amp; links</a></td><td>Attribution: every public link/QR/tracking code and where it lands</td><td>Create a test channel and open its target URL</td></tr>
+<tr><td><a href="/admin/prospects?token={{ token }}">Buyer prospects</a></td><td><b>Business</b>-buyer acquisition registry (separate from consumer leads): stages NEW→QUALIFIED→VERIFIED→READY→HANDOFF, verification evidence, decision history</td><td>Add a fake agency prospect; record a decision; try a handoff with missing data to see the refusal reasons</td></tr>
+<tr><td><a href="/admin/organic?token={{ token }}">Organic queue</a></td><td>Content/publishing task queue per opportunity</td><td>Mark a test row SENT with a fake URL</td></tr><tr><td><a href="/admin/content-ideas?token={{ token }}">Content ideas</a></td><td>Reviewed signals become draft EN/ES content briefs</td><td>Generate/read a brief draft</td></tr>
+<tr><td><a href="/admin/intel/briefs?token={{ token }}">Regional briefs</a></td><td>County-level market briefs</td><td>Skim one</td></tr>
+</table>
+
+<h3 style="margin-top:14px">4 · Buyer onboarding</h3>
+<table>
+<tr><th>Page</th><th>What it is</th><th>Try this</th></tr>
+<tr><td><a href="/admin/buyer-pipeline?token={{ token }}">Buyers pipeline</a></td><td>Follow-up queue with the SAME blockers the routing engine computes; nothing is "commercially ready" unless routing agrees</td><td>Open a demo buyer; try a stage change</td></tr>
+<tr><td><a href="/admin/readiness?token={{ token }}">Readiness</a></td><td>One screen: launch blockers vs operator decisions vs integration status</td><td>Read — answers "what stands between us and activation?"</td></tr>
+<tr><td><a href="/admin/pipeline?token={{ token }}">Operator pipeline</a></td><td>Sign-up → activation workflow for businesses that applied</td><td>Advance a pipeline stage</td></tr>
+<tr><td><a href="/admin/lab?token={{ token }}">Distribution Lab</a></td><td>Experiment log: what we tried, what it cost, what it produced</td><td>Read</td></tr>
+</table>
+
+<h3 style="margin-top:14px">5 · Marketplace &amp; lead delivery</h3>
+<p class="small">The full consumer-lead lifecycle: qualification → eligibility → <b>exclusive</b>
+routing → purchase → delivery. <b>A consumer never picks their buyer.</b> Delivery is
+dry-run to <code>outbox/</code> on this machine.</p>
+<table>
+<tr><th>Page</th><th>What it is</th><th>Try this</th></tr>
+<tr><td><a href="/admin?token={{ token }}">Overview</a></td><td>Live funnel counts (visitors → responders → qualified → submitted → delivered), unmatched queue</td><td>Find the submission you just made under "Queue / unmatched"</td></tr>
+<tr><td>Lead detail → deliver</td><td>Per-lead lifecycle: qualification evidence, consent record, routing explanation ("why NOT routed" reasons), deliver button</td><td>From the queue, open your test lead; click <b>Route/Deliver</b> — watch it sell exclusively and dry-run; open <code>out\outbox\</code> to see the file</td></tr>
+<tr><td><a href="/admin/economics?token={{ token }}">Economics</a></td><td>Recorded money (ledger, imports) split TEST vs real, with cross-checks + a scenario calculator</td><td>Compare ledger vs delivered-leads totals</td></tr>
+<tr><td><a href="/admin/credits?token={{ token }}">Credit queue</a></td><td>Buyer return-credit disputes with evidence</td><td>Read</td></tr>
+<tr><td><a href="/admin/inquiries?token={{ token }}">Inquiries</a></td><td>Consumer messages from the public contact form — support requests, never leads, never routed or sold</td><td>Reply only where a reply was invited</td></tr>
+<tr><td><a href="/admin/quality?token={{ token }}">Lead quality</a></td><td>Submission-quality metrics</td><td>Read</td></tr>
+</table>
+<p class="small"><b>Demo buyers</b> (internal test desks — never a real customer, no real lead, no real money):</p>
+{% if not demos %}<p class="small">Closed on this deployment: demo portal tokens are refused while <code>LEADENGINE_ENV=production</code>. They open only on a local/staging run.</p>{% endif %}
+<table>
+<tr><th>Demo buyer</th><th>Portal (own token, real page)</th><th>Also try</th></tr>
+{% for bid, b in demos.items() %}
+<tr><td>{{ bid }}<br><span class="mini">{{ b.name }}</span></td><td><a href="/agent/{{ b.portal_token }}?token={{ token }}">/agent/{{ b.portal_token }}</a></td><td><a href="/agent/{{ b.portal_token }}/billing?token={{ token }}">billing</a> · <a href="/agent/{{ b.portal_token }}/leads?token={{ token }}">leads</a></td></tr>
+{% endfor %}
+</table>
+<p class="small">In the portal a buyer sees <b>only their own</b> leads, prices, balance and ledger.
+Try buyer onboarding without activation: admin → Buyers → top up a demo buyer (recorded, no card),
+then deliver your exclusive test lead to it and check the buyer's desk + ledger agree.</p>
+
+<h3 style="margin-top:14px">6 · Administration</h3>
+<table>
+<tr><th>Page</th><th>What it is</th></tr>
+<tr><td><a href="/admin/partners?token={{ token }}">Partners</a></td><td>Distribution partners (salon suites, radio etc.): registration, QR, co-brand guide PDFs</td></tr>
+<tr><td><a href="/admin/content?token={{ token }}">Content</a></td><td>Sites/pages under management</td></tr>
+<tr><td><a href="/admin/audiences?token={{ token }}">Audiences</a></td><td>Audience segments for campaigns</td></tr>
+<tr><td><a href="/admin/funnel?token={{ token }}">Funnel</a> · <a href="/admin/consents.csv?token={{ token }}">Consents CSV</a> · <a href="/admin/export.csv?token={{ token }}">Leads export</a></td><td>Funnel analysis; consent evidence export</td></tr>
+</table>
+<p class="small" style="margin-top:14px"><b>Unavailable on this machine (honest list):</b> Google
+Places prospect sweep (needs <code>GOOGLE_PLACES_API_KEY</code> + explicit budget approval), Instagram/Facebook/TikTok
+adapters (need platform credentials/approval), stripe payments (keys unset — top-ups are the
+operator-recorded path), real SMS/email/webhook delivery (intentionally off; dry-run outbox instead).
+Full guide: <code>docs/USER_WALKTHROUGH.md</code></p>
+</div>{% endblock %}

@@ -1,0 +1,87 @@
+{
+ "brand": "Gia Salud",
+ "platform_name": "GS Allude",
+ "legal_entity_slot": "legal_entity",
+ "_note": "Organic-social profile source of truth. The public profiles present the CONSUMER brand (Gia Salud) operated by the platform. No legal entity, address or phone appears on a social profile until config/site.json carries a real value — and the profile link always points at the permanent consumer site with the platform's own UTM tagging, never at /for-agents (buyer application), /agent (buyer portal), /admin or a staging host. Nothing here is published: creating profiles or posting is an owner action.",
+ "domain": "",
+ "_domain_note": "Permanent https origin only (e.g. https://guiasalud.com). While empty, no link may be published: tools/social_links.py writes the links with status BLOCKED instead of guessing a host.",
+ "landing_path": "/",
+ "_landing_note": "The consumer entry point: '/' is the ES-first home with the free coverage check, '/check?a=health_check' the EN check. Both are consumer pages. Any /for-agents, /para-agencias, /agent, /partner or /admin path is refused by the validator.",
+ "profiles": [
+  {
+   "platform": "instagram",
+   "handle": "guiasalud",
+   "handle_alternatives": [
+    "guiasalud.help",
+    "guiasaludfl",
+    "guiasalud.coverage"
+   ],
+   "display_name": "Gia Salud | Cobertura",
+   "category": "Health/wellness website",
+   "bio": "Ayuda gratis y clara para entender tu cobertura médica. ES/EN. No somos aseguradores ni el gobierno. Empieza aquí 👇",
+   "bio_en": "Free, plain-language help understanding your health coverage. ES/EN. Not an insurer, not the government. Start here 👇",
+   "utm": {
+    "utm_source": "instagram",
+    "utm_medium": "organic_social",
+    "utm_campaign": "gs_allude_launch"
+   },
+   "assets": {
+    "profile_image": "out/social_kit/images/profile_1080.png",
+    "highlights": [
+     "Cobertura",
+     "Costos",
+     "Inscripción",
+     "Despidos",
+     "Ayuda gratis"
+    ]
+   },
+   "contact_block": "not_configured",
+   "_contact_note": "IG business contact buttons (email/phone/address) stay empty until Task 2's real support inbox and address exist."
+  },
+  {
+   "platform": "tiktok",
+   "handle": "guiasalud",
+   "handle_alternatives": [
+    "guiasalud.help",
+    "guiasaludfl"
+   ],
+   "display_name": "Gia Salud",
+   "category": "Education",
+   "bio": "Seguro médico, explicado simple. ES/EN. Ayuda gratis 👇",
+   "bio_en": "Health coverage, explained simply. ES/EN. Free help 👇",
+   "utm": {
+    "utm_source": "tiktok",
+    "utm_medium": "organic_social",
+    "utm_campaign": "gs_allude_launch"
+   },
+   "assets": {
+    "profile_image": "out/social_kit/images/profile_1080.png"
+   },
+   "contact_block": "not_supported"
+  },
+  {
+   "platform": "facebook",
+   "handle": "guiasalud",
+   "handle_alternatives": [
+    "guiasalud.help",
+    "guiasaludfl",
+    "guiasaludcoverage"
+   ],
+   "display_name": "Gia Salud",
+   "category": "Health & wellness website",
+   "bio": "Guías gratis y un chequeo de 2 minutos para entender tu cobertura médica, en español e inglés. No somos una aseguradora, una agencia de seguros ni un sitio del gobierno, y no vendemos seguros.",
+   "bio_en": "Free guides and a 2-minute check to help you understand your health coverage, in Spanish and English. We are not an insurer, an insurance agency or a government site, and we do not sell insurance.",
+   "about": "Gia Salud helps people in Florida understand their health coverage options in plain language: free guides, a 2-minute coverage check, and a directory of free in-person enrollment help. Bilingual Spanish/English. We are not an insurance company, an insurance agency or a government site; we do not sell insurance and we do not charge consumers. If you ask for help, one licensed agency — assigned by us — may contact you, and only after you give permission.",
+   "utm": {
+    "utm_source": "facebook",
+    "utm_medium": "organic_social",
+    "utm_campaign": "gs_allude_launch"
+   },
+   "assets": {
+    "profile_image": "out/social_kit/images/profile_1080.png",
+    "cover_image": "out/social_kit/images/facebook_cover_1640x624.png"
+   },
+   "contact_block": "not_configured"
+  }
+ ]
+}

@@ -1,0 +1,80 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1300px;padding:16px 16px 40px">
+<h2>Signal watch — public intent signals (review queue)</h2>
+<p class="small"><b>Signals are not leads.</b> Each row is a <b>public post</b> where someone openly
+describes a coverage problem ("lost my job", "my plan was cancelled", "me cambiaron de seguro").
+The author is <b>never identified or contacted</b>: no usernames, no message fields, no DMs, no
+replies. The product of a review is a decision about a <i>public asset</i> — which content page
+answers that moment, or which channel/test the finding should join — never an outreach task. The
+consumer side of this business still lives entirely in the Check: someone submits their own phone
+there, with recorded consent, before anything is routed.</p>
+<p class="small">Statuses: NEW (needs a decision) · REVIEWED (read, awaiting the evidence note) ·
+ACTIONED (decision recorded with evidence) · IRRELEVANT. Fetching is manual:
+<code>python tools/signals_watch.py fetch --network</code> (Reddit/Hacker News public endpoints,
+never automatic) or offline <code>--ingest file.json</code>.</p>
+<p class="small"><b>Totals:</b> {{ c.NEW }} new · {{ c.REVIEWED }} reviewed · {{ c.ACTIONED }} actioned · {{ c.IRRELEVANT }} irrelevant ({{ c.TOTAL }} total)
+· kind split: <b>{{ kk.MARKET }} MARKET</b> (market intelligence) · <b>{{ kk.INTEREST }} INTEREST</b> (person-shaped public need posts)
+{% if msg %} · <b>{{ msg }}</b>{% endif %} ·
+<a href="/admin/intel/signals.csv?token={{ token }}">Export aggregate insights CSV</a></p>
+<div class="tabs">{% for s,label in [('NEW','NEW (' ~ c.NEW ~ ')'),('REVIEWED','REVIEWED (' ~ c.REVIEWED ~ ')'),('ACTIONED','ACTIONED (' ~ c.ACTIONED ~ ')'),('IRRELEVANT','IRRELEVANT (' ~ c.IRRELEVANT ~ ')')] %}<a class="{{ 'on' if status==s }}" href="/admin/intel/signals?status={{ s }}&token={{ token }}">{{ label }}</a>{% endfor %}</div>
+<form method="get" action="/admin/intel/signals" style="margin:8px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+ <input type="hidden" name="token" value="{{ token }}">
+ <input type="hidden" name="status" value="{{ status }}">
+ <label class="small">platform<br><select name="source"><option value="">any</option>
+   {% for s in facets.sources %}<option value="{{ s }}" {{ 'selected' if f.source==s }}>{{ s }}</option>{% endfor %}</select></label>
+ <label class="small">language<br><select name="lang"><option value="">any</option>
+   {% for l in facets.langs %}<option value="{{ l }}" {{ 'selected' if f.lang==l }}>{{ l }}</option>{% endfor %}</select></label>
+ <label class="small">topic<br><select name="topic"><option value="">any</option>
+   {% for t in facets.topics %}<option value="{{ t }}" {{ 'selected' if f.topic==t }}>{{ t }}</option>{% endfor %}</select></label>
+ <label class="small">kind<br><select name="kind"><option value="">any</option>
+   {% for k in facets.kinds %}<option value="{{ k }}" {{ 'selected' if f.kind==k }}>{{ k }}</option>{% endfor %}</select></label>
+ <label class="small">category<br><select name="intent_cat"><option value="">any</option>
+   {% for ct in ['shopping','question','enrolled','news','generic','irrelevant'] %}<option value="{{ ct }}" {{ 'selected' if f.intent_cat==ct }}>{{ ct }}</option>{% endfor %}</select></label>
+ <label class="small">min relevance<br><input class="wide" style="width:70px" type="number" name="min_intent" min="0" max="10" step="0.5" value="{{ f.min_intent if f.min_intent else '' }}"></label>
+ <label class="small">age (days)<br><input class="wide" style="width:70px" type="number" name="days" min="0" max="365" value="{{ f.days if f.days else '' }}"></label>
+ <button class="btn" type="submit">Filter</button>
+ <a class="btn secondary" href="/admin/intel/signals?status={{ status }}&token={{ token }}">Reset</a>
+</form>
+<table>
+<tr><th>#</th><th>Intent</th><th>Kind</th><th>Signal (public post)</th><th>Classification</th><th>Decision</th></tr>
+{% for r in rows %}
+<tr>
+ <td>{{ r.id }}<br><span class="small">{{ r.source }}</span></td>
+ <td><b>{{ r.intent }}</b></td>
+ <td class="small"><span class="pill">{{ r.kind }}</span></td>
+ <td class="small"><b>{{ r.title }}</b><br><a href="{{ r.url }}" rel="noopener" target="_blank">{{ r.url[:90] }}</a>
+   {% if r.snippet %}<br>...{{ r.snippet[:200] }}{% endif %}
+   <br>{{ r.community }} · {{ r.observed_at }}</td>
+ <td class="small">{{ r.topic }}<br>{{ r.topic_label }}<br>lang: {{ r.lang }} · angle: {{ r.angle }}<br>opps: {{ r.opps }}<br><span class="pill">{{ r.intent_cat or '?' }}</span></td>
+ <td class="small">
+   {% if r.status == 'REVIEWED' or r.status == 'NEW' %}
+   <form method="post" action="/admin/intel/signals/{{ r.id }}/status?token={{ token }}" style="margin:4px 0">
+     <input type="hidden" name="status" value="REVIEWED">
+     <button class="btn secondary" type="submit">Reviewed</button>
+   </form>
+   <form method="post" action="/admin/intel/signals/{{ r.id }}/status?token={{ token }}" style="margin:4px 0">
+     <input type="hidden" name="status" value="IRRELEVANT">
+     <input class="wide" type="text" name="note" placeholder="why not our need (required)">
+     <button class="btn secondary" type="submit">Irrelevant</button>
+   </form>
+   <form method="post" action="/admin/intel/signals/{{ r.id }}/status?token={{ token }}">
+     <input type="hidden" name="status" value="ACTIONED">
+     <input class="wide" type="text" name="note" placeholder="evidence: which page/test this answered">
+     <button class="btn" type="submit">Actioned</button>
+   </form>
+   {% elif r.kind == 'INTEREST' and r.intent_cat in ('shopping','question') %}
+   <a class="btn secondary" href="/admin/intel/signals/{{ r.id }}/campaign-link?token={{ token }}" onclick="return confirm('Create the tracked /check link for this signal? No one is contacted — the link is for US to publish in our own content or bio.')">Campaign link</a>
+   <form method="post" action="/admin/intel/signals/{{ r.id }}/status?token={{ token }}">
+     <input type="hidden" name="status" value="ACTIONED">
+     <input class="wide" type="text" name="note" placeholder="evidence: which page/test this answered">
+     <button class="btn" type="submit">Actioned</button>
+   </form>
+   {% else %}
+   <span class="pill small">{{ r.status }}</span>{% if r.note %}<br>note: {{ r.note[:180] }}{% endif %}
+   {% endif %}
+ </td>
+</tr>
+{% else %}<tr><td colspan="6" class="small">No {{ status }} signals.</td></tr>{% endfor %}
+</table>
+<p class="small">Kind legend: <b>MARKET</b> = news, official datasets (CMS open-data catalog, healthcare.gov content API), published pages — content-planning and timing material, never a person. <b>INTEREST</b> = a person-shaped public post asking for coverage help — unchanged discipline: no author is identified, nobody is contacted, and it becomes a lead only if that person independently submits their own information through the Check.</p>
+</div>{% endblock %}

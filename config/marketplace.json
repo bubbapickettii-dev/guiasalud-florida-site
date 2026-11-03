@@ -1,0 +1,54 @@
+{
+ "mode": "prepaid_credits",
+ "enforce_credits": false,
+ "min_balance_usd": 0,
+ "_min_balance_note": "While enforcement is ON, routing stays available only to buyers whose real-lead balance is strictly above min_balance_usd (0 = must hold positive credits). Set higher to keep a cushion.",
+ "_enforce_credits_note": "With enforce_credits=false STAGING behaves as before (routing preview / consent / delivery unchanged) and the ledger is pure bookkeeping. A LIVE deployment (LEADENGINE_ENV=production) always enforces credits on REAL traffic regardless of this switch: the buyer is excluded from the routing preview BEFORE consent, so a consumer is never told someone can take their request when that buyer cannot pay for the lead. Set this to true in staging too when you want to rehearse the enforced path.",
+ "_pricing_note": "Per-lead prices are NOT set here: they stay in config/buyers.json price_by_tier and are validated against the actual buyer's requirements before activation. Package sizes below are parameters to tune after buyer requirements are validated - the '~1000 USD/week buyer' is an unverified commercial hypothesis, not revenue.",
+ "payments": {
+  "provider": "stripe",
+  "live_payments": false,
+  "_rails_note": "When STRIPE_SECRET_KEY (sk_test_...) and STRIPE_WEBHOOK_SECRET (whsec_...) are present in the environment, buyers can self-serve a Checkout session for a package. CREDITS ARE GRANTED ONLY BY THE SIGNATURE-VERIFIED WEBHOOK (/api/webhooks/stripe) — the browser success page never grants credits. sk_live_ keys are refused unless live_payments=true AND LEADENGINE_ENV=production; live payments stay off until the operator explicitly approves them. With no keys set, the rail is OFF and only operator top-ups add credits."
+ },
+ "buyer_health": {
+  "enabled": true,
+  "window_days": 14,
+  "grace_hours": 48,
+  "min_sample": 4,
+  "demote_rate": 0.34,
+  "block_rate": 0.66,
+  "_note": "Quality-aware routing (REAL leads only): each buyer's desk outcomes in the rolling window — RETURNED, BAD_INFO, or delivered-but-never-contacted even after grace_hours — decide their standing when the platform assigns the next fresh consumer. rank 1 (>= demote_rate of delivered leads, after min_sample) ranks them after cleaner buyers; rank 2 (>= block_rate) EXCLUDES them from the routing preview entirely, so the consumer's consent can never name a buyer who rejects that much demand, and every withheld decision records the reason in routing_decisions. DNC / NOT_QUALIFIED / contacted outcomes are work done, never penalized. Grows healthy buyers, pauses chronically unresponsive ones (turn OFF via enabled:false to revert to pure config routing)."
+ },
+ "returns": {
+  "enabled": true,
+  "window_hours": 72,
+  "allow_after_contact": false,
+  "reasons": ["unreachable", "no_agency_capacity", "not_qualified", "bad_contact_info", "dnc_requested", "other"],
+  "default_reason": "other",
+  "_policy_note": "THESE are the only return-credit rules: a delivered lead may be returned for balance CREDIT (not a cash refund) only within window_hours of delivery and only when allow_after_contact=false and the agent never marked it CONTACTED/APPOINTMENT/SOLD, and only with one of the configured reasons. Older or contacted re-returns need an operator ADJUSTMENT with a note. This text is rendered from this file; nothing is promised beyond it."
+ },
+ "reoffer": {
+  "enabled": true,
+  "after_hours": 48,
+  "batch": 10,
+  "_note": "Timed re-offer sweep for the unmatched queue: when the admin overview is loaded, a NO_BUYER lead whose last assignment attempt is older than after_hours re-runs the SAME platform-controlled assignment (consent names the platform, never a chosen agency; every attempt is audited in routing_decisions; a delivered sale is never re-routed; opted-out consumers are never touched; batch caps the work per load). In production the sweep stays OFF until auto_in_live is truthy — live sales are operator decisions, not page-load side effects."
+ },
+ "packages": [
+  {
+   "id": "starter-250",
+   "label": "Starter credit pack",
+   "amount_usd": 250
+  },
+  {
+   "id": "weekly-1000",
+   "label": "Weekly credit pack (candidate buyer tier)",
+   "amount_usd": 1000
+  },
+  {
+   "id": "scale-5000",
+   "label": "Scale credit pack",
+   "amount_usd": 5000
+  }
+ ],
+ "_package_note": "A package is recorded as a credit row (PACKAGE_PURCHASE) ONLY after funds are confirmed: operator /admin buyer top-up after an offline payment, or — when the Stripe rail is configured — automatically by the signature-verified webhook for a Checkout session. No browser-reported success ever grants credits. Nothing is automatic beyond that, and live charges never activate without operator approval."
+}

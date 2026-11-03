@@ -1,0 +1,48 @@
+{% extends "admin_base.html" %}{% block title %}Enter a lead manually{% endblock %}
+{% block body %}<div class="wrap adm" style="max-width:900px;padding-bottom:40px">
+<h2 style="margin-top:14px">Enter a lead manually</h2>
+<p class="small" style="margin:0 0 10px">For an inquiry that reached us off-web (a phone call, a partner submission, an email). Apply the SAME rules as the public form: a consumer phone is only stored as callable when the operator records real consent evidence — who consented, when, and the exact wording. Anything weaker enters as an email-only inquiry (not sold) or fails qualification. Routing, when it applies, is the normal platform assignment — never a pre-chosen buyer.</p>
+{% for e in errs %}<div class="note" style="border-left:4px solid #b00">⚠ {{ e }}</div>{% endfor %}
+<form method="post" action="/admin/leads/new?token={{ token }}" style="display:grid;gap:8px;max-width:720px;margin-top:10px">
+<div class="grp">Inquiry</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap">
+<select name="campaign" required><option value="">campaign…</option>{% for cid in campaigns %}<option value="{{ cid }}" {{ 'selected' if d.get('campaign')==cid }}>{{ cid }}</option>{% endfor %}</select>
+<select name="state"><option value="">state…</option>{% for s in states %}<option value="{{ s }}" {{ 'selected' if d.get('state')==s }}>{{ s }}</option>{% endfor %}</select>
+<input name="zip" value="{{ d.get('zip','') }}" placeholder="ZIP (5 digits)" style="max-width:120px">
+<select name="age_range"><option value="">age range…</option>{% for a in ages %}<option value="{{ a }}" {{ 'selected' if d.get('age_range')==a }}>{{ a }}</option>{% endfor %}</select>
+</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap">
+<input name="first_name" value="{{ d.get('first_name','') }}" placeholder="First name" required>
+<input name="last_name" value="{{ d.get('last_name','') }}" placeholder="Last name" required>
+<input name="phone" value="{{ d.get('phone','') }}" placeholder="Consumer phone (callable only with consent evidence below)">
+<input name="email" value="{{ d.get('email','') }}" type="email" placeholder="Email (required when no phone consent)">
+</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap">
+<input name="coverage_for" value="{{ d.get('coverage_for','') }}" placeholder="coverage for (me, family…)">
+<input name="household_size" value="{{ d.get('household_size','') }}" placeholder="household size" style="max-width:130px">
+<input name="income_band" value="{{ d.get('income_band','') }}" placeholder="income band (optional)">
+</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap">
+<select name="urgency"><option value="">urgency…</option>{% for u in ('HIGH','MEDIUM','LOW') %}<option value="{{ u }}" {{ 'selected' if d.get('urgency')==u }}>{{ u }}</option>{% endfor %}</select>
+<select name="enrollment_situation"><option value="">enrollment situation…</option>{% for x in ('SEP_LIKELY','OEP_OPEN','OEP_UPCOMING','RENEWAL') %}<option value="{{ x }}" {{ 'selected' if d.get('enrollment_situation')==x }}>{{ x }}</option>{% endfor %}</select>
+<select name="preferred_contact"><option value="">preferred contact…</option><option value="phone" {{ 'selected' if d.get('preferred_contact')=='phone' }}>phone</option><option value="text" {{ 'selected' if d.get('preferred_contact')=='text' }}>text</option><option value="email" {{ 'selected' if d.get('preferred_contact')=='email' }}>email</option></select>
+</div>
+<div class="grp">Provenance — where this inquiry actually came from</div>
+<select name="source" required><option value="">source…</option>
+<option value="inbound_call" {{ 'selected' if d.get('source')=='inbound_call' }}>inbound call</option>
+<option value="partner_submitted" {{ 'selected' if d.get('source')=='partner_submitted' }}>partner submission</option>
+<option value="email_inquiry" {{ 'selected' if d.get('source')=='email_inquiry' }}>email inquiry</option>
+<option value="referral" {{ 'selected' if d.get('source')=='referral' }}>referral</option>
+<option value="other" {{ 'selected' if d.get('source')=='other' }}>other</option></select>
+<textarea name="note" placeholder="how it arrived (call date/time, partner, channel) — recorded on the lead" style="min-height:60px">{{ d.get('note','') }}</textarea>
+<div class="grp">Consent evidence (consumer phone is callable only with ALL of these)</div>
+<label class="small" style="display:flex;gap:6px;align-items:flex-start"><input type="checkbox" name="consent_attested" {{ 'checked' if d.get('consent_attested') }} style="margin-top:2px"> The consumer verbally agreed to be contacted by GS Allude and the licensed buyers it may assign; I hold the record.</label>
+<input name="consent_ts" type="datetime-local" value="{{ d.get('consent_ts','') }}" placeholder="when they consented" style="max-width:260px">
+<textarea name="consent_text" placeholder="the consent wording they actually heard/read (paste or type; stored with the lead)" style="min-height:70px">{{ d.get('consent_text','') }}</textarea>
+<input name="consent_ip" value="{{ d.get('consent_ip','') }}" placeholder="optional: caller/submitter IP or note" style="max-width:320px">
+<div class="grp">TEST data</div>
+<label class="small" style="display:flex;gap:6px;align-items:flex-start"><input type="checkbox" name="test" {{ 'checked' if d.get('test') }} style="margin-top:2px"> This is TEST/demo data (fictional phone allowed — 555-01xx — and it stays on the TEST lane)</label>
+<button>Record lead</button>
+<p class="mini" style="margin:0">Consent template version on record: {{ consent_version }}. Duplicate submissions are recorded as DUPLICATE, never sold. A lead that clears qualification is offered to the platform exactly like a web submission — audited in the distribution decisions.</p>
+</form>
+</div>{% endblock %}

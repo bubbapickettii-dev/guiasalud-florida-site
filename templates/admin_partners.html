@@ -1,0 +1,25 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1400px;padding:16px 16px 40px">
+{% if request.args.get('err') %}<div class="note bad" style="border-left:4px solid #b00">{{ request.args.get('err') }}</div>{% endif %}
+<h2>Partners - distribution, not data sharing</h2>
+<div class="tabs" style="margin:8px 0">{% for k,l in [('outreach','Outreach queue'),('network','Referral network')] %}<a class="{{ 'on' if scope==k }}" href="?token={{ token }}&scope={{ k }}">{{ l }} ({{ counts[k] }})</a>{% endfor %}
+{% if scope == 'network' %}· <a href="/admin/leadgen?token={{ token }}">Network yield</a>{% endif %}</div>
+{% if scope == 'network' %}<div class="note">Registry-verified organization locations built by <code>tools/leadgen.py network-build</code>. Each is a <b>location</b> that can hand out a card - never a consumer, never a lead. Work them in bulk: <code>python tools/leadgen.py network-export</code> → <code>out/network_kits.csv</code> (link, QR, EN/ES card copy, outreach draft, approval marker). Nothing is sent by the platform.</div>{% endif %}
+<p class="small">Partner shares a free resource (link, QR, guide) → consumer runs the Check → lead is attributed to the partner → partner sees <b>counts only</b> → only the named agent gets contact details. Partners never receive individual consumer information, and are never paid per lead or per sale (Fla. Stat. 626.112(8): referral fees to unlicensed persons can't depend on a purchase). Status "PROSPECT - not contacted" means nobody has reached out.</p>
+<details open><summary>+ Add a partner (link, QR, guide and stats page are generated instantly)</summary>
+<form method="post" class="grid2" style="margin-top:10px">
+<label class="mini">Display name<input class="t" name="display_name" required placeholder="Gold Coast Schools - Hialeah"></label>
+<label class="mini">Type<select class="t" name="type">{% for t in types %}<option>{{ t }}</option>{% endfor %}</select></label>
+<label class="mini">Language<select class="t" name="language"><option value="en">English</option><option value="es">Español</option></select></label>
+<label class="mini">Landing angle (blank = auto from type)<select class="t" name="default_angle"><option value="">auto</option>{% for k,a in angles.items() %}<option value="{{ k }}">{{ k }}</option>{% endfor %}</select></label>
+<label class="mini">Why this partner (evidence)<input class="t" name="evidence" placeholder="136 new agents in 12 mo (DBPR)"></label>
+<label class="mini">Contact hint (internal)<input class="t" name="contact_hint" placeholder="onboarding director"></label>
+<label class="mini"><input type="checkbox" name="cobrand_approved" value="1"> Partner approved showing their name</label>
+<div><button class="btn" style="padding:10px">Create partner</button></div></form></details>
+<div style="overflow-x:auto"><table><tr><th>Partner</th><th>Type / audience</th><th>Lang / angle</th><th>Link · QR · guide · stats</th><th class="num">Visits</th><th class="num">Used check</th><th class="num">Asked for help</th><th>Status</th></tr>
+{% for p in rows %}<tr><td><b>{{ p.display_name }}</b><br><span class="mini">{{ p.partner_id }}</span>{% if p.evidence %}<br><span class="mini">{{ p.evidence }}</span>{% endif %}</td>
+<td class="mini">{{ p.type }}<br>{{ p.audience }}</td><td class="mini">{{ (p.language or 'en')|upper }}<br>{{ p.default_angle }}</td>
+<td class="mini">{{ base }}/p/{{ p.partner_id }}<br><a href="/qr.png?u=/p/{{ p.partner_id }}" target="_blank">QR</a> · <a href="/admin/partners/{{ p.partner_id }}/guide.pdf?token={{ token }}" target="_blank">guide PDF</a> · <a href="/partner/{{ p.token }}" target="_blank">partner stats page</a> · <a href="/p/{{ p.partner_id }}?src=admin_preview" target="_blank">preview</a></td>
+<td class="num">{{ p.visits }}</td><td class="num">{{ p.used_check }}</td><td class="num">{{ p.requested_help }}</td>
+<td><form method="post" action="/admin/partners/{{ p.partner_id }}/status?token={{ token }}" style="margin:0;min-width:200px"><input class="t" name="status" value="{{ p.status }}"><label class="mini"><input type="checkbox" name="cobrand_approved" value="1" {{ 'checked' if p.cobrand_approved }}> name approved</label> <button class="sb">Save</button></form></td></tr>{% endfor %}</table></div>
+</div>{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "agent_base.html" %}{% block title %}Lead {{ l.first_name }} - {{ b.name }}{% endblock %}
+{% set LBL = {'NEW':'New','VIEWED':'Viewed','CONTACTED':'Contacted','APPOINTMENT':'Appointment','SOLD':'Sold','NOT_QUALIFIED':'Not qualified','RETURNED':'Return (not usable)','BAD_INFO':'Bad info','DNC':'Do not contact','OTHER':'Other'} %}
+{% block topbar %}<span class="tri"><span><b>${{ '%.2f'|format(meta.balance) }}</b><em>Available balance</em></span></span><a class="btn sm ghost" href="/agent/{{ token }}/leads">← Leads</a>{% endblock %}
+{% block shell %}{% set a = j(l.answers) %}{% set r = j(l.tool_result) %}<div class="adm">
+{% if desk_err == 'notapplied' %}<div class="note" style="border-left:4px solid #b00"><b>That status could not be recorded</b> (unknown status, or the lead is not on your desk). Nothing was changed here.</div>
+{% elif desk_msg == 'saved' %}<div class="note good" style="border-left:4px solid #1a7"><b>Status saved</b> — the history below and your ledger reflect it immediately.</div>
+{% endif %}
+{% if redeliver %}<div class="note">CRM delivery: {{ redeliver }}</div>{% endif %}
+<h2 style="margin-bottom:4px">{{ l.first_name }} {{ l.last_name }} {% if l.is_test %}<span class="pill TEST">TEST DATA</span>{% endif %}</h2>
+<div class="kpis" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))"><div class="kpi"><span>Phone (typed by the consumer)</span><b>{{ l.phone|pphone }}</b></div>
+<div class="kpi"><span>Prefers</span><b style="font-size:18px">{{ l.preferred_contact or '-' }} · {{ l.best_time or '' }}</b></div><div class="kpi"><span>Language</span><b style="font-size:18px">{{ 'Spanish' if l.lang=='es' else 'English' }}</b></div></div>
+<table><tr><th>Lead type</th><td>{{ l.lead_type }}</td></tr>
+<tr><th>Phone</th><td>{{ l.phone_e164 }} · source <b>{{ l.phone_source }}</b> · format {{ 'valid' if l.phone_valid else 'NOT valid' }} ({{ l.phone_check }}) · area code {{ l.phone_area_region }} · line type {{ l.phone_line_type }} <span class="mini">({{ l.phone_line_type_source }})</span></td></tr>
+<tr><th>Consent</th><td>{{ (l.consent_ts or '')[:19].replace('T',' ') }} UTC · version {{ l.consent_version }} · names <b>{{ c.seller_named }}</b></td></tr>
+<tr><th>Email</th><td>{{ l.email or '(not given)' }}</td></tr><tr><th>ZIP / state</th><td>{{ l.zip }} / {{ l.state }}</td></tr>
+<tr><th>Lead timestamp</th><td>{{ l.created_at[:19].replace('T',' ') }} UTC</td></tr>
+<tr><th>What they read</th><td class="small">{{ l.entry_page or '-' }}{% if l.urgency %} · urgency <b>{{ l.urgency }}</b>{% endif %}</td></tr>
+<tr><th>Where they came from</th><td class="small">landing {{ l.landing_url or '-' }}<br>campaign {{ l.campaign }} · source {{ l.utm_source or '(direct)' }} / {{ l.utm_medium or '-' }} · tracking {{ l.tracking_id or '-' }}{% if l.experiment_id %} · experiment {{ l.experiment_id }}{% endif %}{% if l.partner_id %} · partner {{ l.partner_id }}{% endif %}</td></tr>
+<tr><th>Qualification / delivery</th><td>{{ l.qual_status }} · tier {{ l.tier }} · {{ l.routing_status }} {{ (l.delivered_at or '')[:16].replace('T',' ') }}</td></tr>
+{% if crm %}<tr><th>CRM delivery</th><td>{{ 'success' if crm.status in ('SENT','RESENT') else '<b>failed</b>'|safe }} · latest attempt {{ crm.ts[:16].replace('T',' ') }} UTC{% if crm.status == 'FAILED' %} · response: <code>{{ crm.response }}</code>{% endif %}
+{% if crm.status == 'FAILED' %}<form method="post" action="/agent/{{ token }}/lead/{{ l.lead_id }}/redeliver" style="margin-top:4px"><button title="Re-post the EXACT payload we recorded to your CRM webhook (automatic retries stop after 5; a successful attempt never becomes a second delivery)">Retry CRM delivery now</button></form>{% endif %}</td></tr>{% endif %}</table>
+<form method="post" action="/agent/{{ token }}"><input type="hidden" name="lead_id" value="{{ l.lead_id }}"><input type="hidden" name="back" value="1"><input class="t" name="note" placeholder="Optional note (no health details)" style="max-width:420px">
+<div>{% for s in statuses if s not in ('NEW','VIEWED') %}<button class="sb {{ 'cur' if l.agent_status==s }}" name="status" value="{{ s }}"{% if s == 'RETURNED' %} title="{{ return_hint }}"{% endif %}>{{ LBL[s] }}</button>{% endfor %}</div></form>
+<div class="panelcard" style="margin:14px 0">
+<div class="panel-row"><b>Your working fields</b><form method="post" action="/agent/{{ token }}/lead/{{ l.lead_id }}/pin" style="margin:0"><button>{{ '★ Unpin' if l.pinned else '☆ Pin this lead' }}</button></form></div>
+<form method="post" action="/agent/{{ token }}/lead/{{ l.lead_id }}/fields" class="inlinefields">
+<label class="mini">First contact date<input class="t" type="date" name="contact_at" value="{{ l.contact_at or '' }}"></label>
+<label class="mini">Est. submitted AV (your estimate)<input class="t" inputmode="decimal" name="est_av" value="{{ l.est_av if l.est_av is not none else '' }}" placeholder="e.g. 4200"></label>
+<label class="mini">Next follow-up<input class="t" type="date" name="followup_at" value="{{ l.followup_at or '' }}"></label>
+<button class="btn sm">Save working fields</button></form>
+<p class="mini" style="margin:4px 0 0">These fields are your own work-tracker (like agent CRM fields); they never change routing, pricing or the recorded consent.</p>
+</div>
+<span class="mini">now: {{ LBL.get(l.agent_status, l.agent_status or 'New') }}</span>
+{% if statuses|select('equalto','RETURNED')|list %}<p class="mini" style="margin:6px 0 0"><b>Return policy for THIS lead (explains the Return button, never a promise):</b> {{ return_hint }}. The platform's recorded rules and the ledger decide the actual outcome at the moment of the click — a return is credited to your balance only when the returned rules allow it; a refused return is recorded here and can be reviewed by the operator.</p>{% endif %}
+<div class="note"><b>Compliance:</b> Florida: call 8am-8pm their time, max 3 calls/24h on the same subject (Fla. Stat. 501.616). Stop on any opt-out (mark Do not contact). Before Marketplace assistance, document consent per 45 CFR 155.220(j)(2)(iii) (scope, purpose, duration, date, name, agent, how to rescind) and keep it 10 years. Consent below covers contact by <b>{{ c.seller_named or b.name }}</b> only - do not pass this lead to anyone else.</div>
+<h3>What they told us</h3><table>
+<tr><th>Looking for</th><td>{{ (l.need_path or l.product or '').replace('_',' ') }}</td></tr>
+<tr><th>Enrollment situation</th><td>{{ (l.enrollment_situation or '').replace('_',' ') }} {% if l.urgency %}(urgency {{ l.urgency }}){% endif %}</td></tr>
+<tr><th>Household</th><td>{{ l.household_size or '-' }}</td></tr><tr><th>Income vs. FPL (self-reported band)</th><td>{{ l.income_band or '-' }}</td></tr>
+<tr><th>Age band</th><td>{{ l.age_range or '-' }}</td></tr>
+{% for k,v in a.items() if k not in ('first_name','last_name','email','phone','zip','household','income','age','website') %}<tr><th>{{ k.replace('_',' ') }}</th><td>{{ v }}</td></tr>{% endfor %}
+<tr><th>Summary shown to them</th><td>{{ r.get('headline','') }}<br><span class="small">{{ r.get('detail','') }}</span></td></tr>
+<tr><th>Flags</th><td>{{ l.flags or '-' }}</td></tr><tr><th>Score</th><td>{{ l.tier }} / {{ l.score|int if l.score else '' }}</td></tr></table>
+<h3>Consent record</h3><table><tr><th>Time</th><td>{{ c.ts }}</td></tr><tr><th>Scope</th><td>{{ c.scope }}</td></tr><tr><th>Seller named</th><td>{{ c.seller_named }}</td></tr><tr><th>Version</th><td>{{ c.consent_version }}</td></tr><tr><th>Page</th><td class="small">{{ c.page_url }}</td></tr><tr><th>Text shown</th><td class="small">{{ c.consent_text }}</td></tr><tr><th>Snapshot SHA-256</th><td class="small">{{ c.form_snapshot_sha256 }}</td></tr></table>
+<h3>History</h3>{% if hist %}<table>{% for h in hist %}<tr><td class="small">{{ h.ts[:16].replace('T',' ') }}</td><td>{{ LBL.get(h.outcome, h.outcome) }}</td><td class="small">{{ h.note }}</td></tr>{% endfor %}</table>{% else %}<p class="small">No updates yet.</p>{% endif %}
+</div>{% endblock %}
+{% block footer %}{% endblock %}

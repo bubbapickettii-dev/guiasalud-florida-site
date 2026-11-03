@@ -1,0 +1,146 @@
+{
+ "_doc": "Engine 2 (paid, Meta) -> config/meta_campaigns.json + experiments X022/X024/X025 (PLANNED: nothing runs without Bubba's approval).\nRules baked in:\n- Special Ad Category = Financial products and services (covers all insurance incl. health): no age/gender/ZIP targeting,\n  radius >= 15 miles, limited detailed targeting. The CREATIVE does the targeting: every ad names a concrete event.\n- Personal-attributes policy: ads may not assert/imply health, vulnerable financial status, age, etc. So paid copy never says\n  \"Laid off?\" / \"Lost your job?\"; it describes the event (\"When a job ends in Florida...\").\n- Traffic goes to our own Check/estimator (quality filter + our consent), never Meta instant forms.\n- Health & Wellness classification may block conversion optimization: start with Leads (website, event Lead); if the account\n  is restricted, switch to Landing Page Views and judge on our own funnel.\nRun: python research/build_meta.py",
+ "economics": {
+  "_doc": "Break-even math. Replace assumed_price with what our agents actually pay per lead.",
+  "assumed_price_per_lead_usd": {
+   "health": 35,
+   "life": 30
+  },
+  "assumed_acceptance_rate": 0.8,
+  "break_even_cpl_usd": {
+   "health": 28,
+   "life": 24
+  },
+  "test_budget_usd": {
+   "X022": 245,
+   "X024": 175,
+   "X025": 175
+  },
+  "kill_rule": "Spend >= 3x target CPL with 0 consented leads -> KILL (tools/engine_report.py)",
+  "scale_rule": "CPL <= target with >= 3 accepted leads and >= 60% acceptance -> raise budget 20% every 3 days",
+  "what_we_dont_know": "Real CPL for these hooks. Life-agent DIY Meta leads are claimed at ~$15 (LifeButton webinar, unverified); vendors sell at $35-70. Our test exists to measure our own number."
+ },
+ "campaigns": [
+  {
+   "experiment_id": "X022",
+   "priority": 1,
+   "category": "health",
+   "name": "X022 | Meta | ES | Carrier exit Miami-Dade+Broward",
+   "objective": "OUTCOME_LEADS (website, event Lead)  ->  fallback OUTCOME_TRAFFIC / Landing page views if account is Health&Wellness-restricted",
+   "special_ad_category": "FINANCIAL_PRODUCTS_SERVICES",
+   "locations": [
+    "Miami-Dade County, FL",
+    "Broward County, FL"
+   ],
+   "language": "Spanish (if offered)",
+   "placements": "Advantage+ placements",
+   "daily_budget_usd": 35,
+   "days": 7,
+   "landing": "/aprende/cambios-seguro-medico-florida-2027",
+   "ads": [
+    {
+     "ad_id": "x022-a",
+     "lang": "es",
+     "primary_text": "Cigna sale del Mercado de Florida en 2027. Esos planes terminan el 31 de diciembre. Si no se escoge un plan antes del 15 de diciembre, el Mercado asigna uno de otra compañía. Guía gratis con fuentes oficiales.",
+     "headline": "Planes que terminan el 31 de diciembre",
+     "description": "Fechas y opciones en 60 segundos",
+     "cta_button": "LEARN_MORE",
+     "creative_feed": "assets/ads/meta/es_exit_a_feed.png",
+     "creative_story": "assets/ads/meta/es_exit_a_story.png",
+     "url": "/aprende/cambios-seguro-medico-florida-2027?utm_source=facebook&utm_medium=paid_social&utm_campaign=X022&utm_content=x022-a&x=X022"
+    },
+    {
+     "ad_id": "x022-b",
+     "lang": "es",
+     "primary_text": "Planes comprados directamente con la aseguradora no se pasan a otro plan: simplemente terminan el 31 de diciembre. Qué hacer y antes de qué fecha, explicado en español.",
+     "headline": "Plan comprado directo: termina el 31/12",
+     "description": "Guía gratis en español",
+     "cta_button": "LEARN_MORE",
+     "creative_feed": "assets/ads/meta/es_exit_b_feed.png",
+     "creative_story": "assets/ads/meta/es_exit_b_story.png",
+     "url": "/aprende/cambios-seguro-medico-florida-2027?utm_source=facebook&utm_medium=paid_social&utm_campaign=X022&utm_content=x022-b&x=X022"
+    },
+    {
+     "ad_id": "x022-c",
+     "lang": "es",
+     "primary_text": "El plan que asigna el Mercado no revisa médicos ni medicinas. Antes del 15 de diciembre: la lista de lo que hay que revisar en cada plan.",
+     "headline": "Médicos y medicinas: revísalos antes del 15",
+     "description": "Chequeo gratis de 60 segundos",
+     "cta_button": "LEARN_MORE",
+     "creative_feed": "assets/ads/meta/es_exit_c_feed.png",
+     "creative_story": "assets/ads/meta/es_exit_c_story.png",
+     "url": "/aprende/cambios-seguro-medico-florida-2027?utm_source=facebook&utm_medium=paid_social&utm_campaign=X022&utm_content=x022-c&x=X022"
+    }
+   ]
+  },
+  {
+   "experiment_id": "X024",
+   "priority": 2,
+   "category": "life",
+   "name": "X024 | Meta | EN | Job ends -> group life 31 days (Florida)",
+   "objective": "OUTCOME_LEADS (website, event Lead)",
+   "special_ad_category": "FINANCIAL_PRODUCTS_SERVICES",
+   "locations": [
+    "Florida"
+   ],
+   "language": "All",
+   "placements": "Advantage+ placements",
+   "daily_budget_usd": 25,
+   "days": 7,
+   "landing": "/learn/life-insurance-after-layoff-florida",
+   "ads": [
+    {
+     "ad_id": "x024-a",
+     "lang": "en",
+     "primary_text": "When a job ends, work life insurance usually ends with it. Florida law gives 31 days to convert group life coverage with no health exam, and a new term policy can cost less. Both options, explained.",
+     "headline": "Work life insurance: the 31-day rule",
+     "description": "Estimate the coverage needed",
+     "cta_button": "LEARN_MORE",
+     "creative_feed": "assets/ads/meta/en_life_a_feed.png",
+     "creative_story": "assets/ads/meta/en_life_a_story.png",
+     "url": "/learn/life-insurance-after-layoff-florida?utm_source=facebook&utm_medium=paid_social&utm_campaign=X024&utm_content=x024-a&x=X024"
+    },
+    {
+     "ad_id": "x024-b",
+     "lang": "en",
+     "primary_text": "31 days. That's how long Florida law gives to convert group life insurance after employment ends. What to compare before day 31.",
+     "headline": "31 days to convert group life",
+     "description": "See the coverage your family needs",
+     "cta_button": "LEARN_MORE",
+     "creative_feed": "assets/ads/meta/en_life_b_feed.png",
+     "creative_story": "assets/ads/meta/en_life_b_story.png",
+     "url": "/learn/life-insurance-after-layoff-florida?utm_source=facebook&utm_medium=paid_social&utm_campaign=X024&utm_content=x024-b&x=X024"
+    }
+   ]
+  },
+  {
+   "experiment_id": "X025",
+   "priority": 3,
+   "category": "health",
+   "name": "X025 | Meta | EN | Carrier exit Florida",
+   "objective": "OUTCOME_LEADS (website, event Lead)",
+   "special_ad_category": "FINANCIAL_PRODUCTS_SERVICES",
+   "locations": [
+    "Florida"
+   ],
+   "language": "All",
+   "placements": "Advantage+ placements",
+   "daily_budget_usd": 25,
+   "days": 7,
+   "landing": "/learn/florida-health-plan-changes-2027",
+   "ads": [
+    {
+     "ad_id": "x025-a",
+     "lang": "en",
+     "primary_text": "Cigna is leaving Florida's Marketplace for 2027. Those plans end December 31. Without a choice by December 15, HealthCare.gov assigns a plan from a different company.",
+     "headline": "2027: Florida plans ending Dec 31",
+     "description": "Dates and options in 60 seconds",
+     "cta_button": "LEARN_MORE",
+     "creative_feed": "assets/ads/meta/en_exit_a_feed.png",
+     "creative_story": "assets/ads/meta/en_exit_a_story.png",
+     "url": "/learn/florida-health-plan-changes-2027?utm_source=facebook&utm_medium=paid_social&utm_campaign=X025&utm_content=x025-a&x=X025"
+    }
+   ]
+  }
+ ]
+}

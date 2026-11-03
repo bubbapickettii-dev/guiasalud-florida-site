@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% set es = (lang == 'es') %}
+{% macro t(a, b) %}{{ a if es else b }}{% endmacro %}
+{% block lang %}{{ lang }}{% endblock %}
+{% block title %}{{ site.brand }} · {{ 'Entiende tu cobertura médica' if es else 'Understand your health coverage' }}{% endblock %}
+{% block body %}
+<div class="wrap">
+<div class="hero" style="grid-template-columns:1fr;max-width:820px;padding-bottom:10px">
+ <div class="copy">
+  <span class="eyebrow">{{ t('Gratis · Fuentes oficiales · Español e inglés', 'Free · Official sources · English and Spanish') }}</span>
+  <h1>{{ t('Entiende tu cobertura. Da el siguiente paso.', 'Understand your coverage. Take the next step.') }}</h1>
+  <p class="sub">{{ t('¿Perdiste tu seguro médico, te subió el precio o necesitas cobertura para 2027? Te ayudamos a entender tus opciones.', 'Lost your health insurance, watching your premium go up, or need coverage for 2027? We help you understand your options.') }}</p>
+  <a class="btn" style="max-width:360px" href="/check{{ '?a=es_check' if es else '' }}">{{ t('Empezar el chequeo (2 minutos)', 'Start the check (2 minutes)') }}</a>
+  <p class="sitnote">{{ t('No te pedimos nombre, teléfono ni correo. Termina con tus fechas y los sitios oficiales para comparar planes.', "We don't ask for your name, phone or email. It ends with your dates and the official sites to compare plans.") }}</p>
+ </div>
+</div>
+
+<h2 class="sec-h">{{ t('¿Cuál es tu situación?', "What's your situation?") }}</h2>
+<div class="grid3" style="padding-top:14px">
+ <a class="tile" href="/check?a={{ 'es_life_change' if es else 'life_change' }}"><b><i class="senal"></i>{{ t('Perdí mi seguro o me despidieron', 'I lost my insurance or my job') }}</b><span class="small">{{ t('Normalmente tienes 60 días para inscribirte. Revisa tu fecha.', 'You usually have 60 days to enroll. Check your date.') }}</span></a>
+ <a class="tile" href="/check?a={{ 'es_plan_change' if es else 'plan_change' }}"><b><i class="senal"></i>{{ t('Mi plan sube de precio o se termina', 'My plan is going up or ending') }}</b><span class="small">{{ t('Entiende tu carta y la fecha límite del 15 de diciembre.', 'Understand your letter and the Dec 15 deadline.') }}</span></a>
+ <a class="tile" href="/{{ 'inscripcion-abierta-2027' if es else 'open-enrollment-2027' }}"><b><i class="senal"></i>{{ t('Necesito cobertura para 2027', 'I need coverage for 2027') }}</b><span class="small">{{ t('Inscripción Abierta: del 1 de nov. al 15 de ene. Para empezar el 1 de enero, elige antes del 15 de dic.', 'Open Enrollment: Nov 1 to Jan 15. To start Jan 1, choose by Dec 15.') }}</span></a>
+ <a class="tile" href="/check?a={{ 'es_self_employed' if es else 'self_employed' }}"><b><i class="senal"></i>{{ t('Trabajo por mi cuenta (1099)', "I'm self-employed (1099)") }}</b><span class="small">{{ t('Sin plan del empleador: ve tus opciones y si tu ingreso podría calificar para ayuda.', 'No employer plan: see your options and whether your income may qualify for help.') }}</span></a>
+ <a class="tile" href="/check?a={{ 'es_family' if es else 'family' }}"><b><i class="senal"></i>{{ t('Busco cobertura para mi familia', "I'm looking for family coverage") }}</b><span class="small">{{ t('Tu periodo de inscripción y el rango de ingreso del hogar.', 'Your enrollment window and your household income range.') }}</span></a>
+ <a class="tile" href="/{{ 'aprende' if es else 'learn' }}"><b><i class="senal"></i>{{ t('Solo quiero entender mis opciones', 'I just want to understand my options') }}</b><span class="small">{{ t('Guías en lenguaje sencillo: costos, doctores, ayuda para pagar, Medicaid.', 'Plain-language guides: costs, doctors, help paying, Medicaid.') }}</span></a>
+</div>
+
+<section style="padding:6px 0 10px">
+ <h2 class="sec-h">{{ t('Cómo funciona', 'How it works') }}</h2>
+ <div class="grid3" style="padding-top:14px">
+  <div class="tile"><b><i class="senal"></i>{{ t('Paso 1', 'Step 1') }}</b><span class="small">{{ t('Elige tu situación.', 'Pick your situation.') }}</span></div>
+  <div class="tile"><b><i class="senal"></i>{{ t('Paso 2', 'Step 2') }}</b><span class="small">{{ t('Contesta unas preguntas sencillas: código postal, edad, tamaño del hogar e ingreso aproximado. Te explicamos por qué preguntamos cada una.', 'Answer a few simple questions: ZIP, age, household size and rough income. We explain why we ask each one.') }}</span></div>
+  <div class="tile"><b><i class="senal"></i>{{ t('Paso 3', 'Step 3') }}</b><span class="small">{{ t('Recibe tu resumen estimado, tus fechas y el siguiente paso con enlaces a fuentes oficiales.', 'Get your estimated summary, your dates and your next step, with links to official sources.') }}</span></div>
+ </div>
+ <p class="small">{{ t('Por ahora el chequeo cubre códigos postales de Florida. Las guías explican reglas generales y marcan lo que es específico de Florida.', 'For now the check covers Florida ZIP codes. The guides explain general rules and mark what is specific to Florida.') }}</p>
+</section>
+
+<section style="padding:6px 0 14px">
+ <div class="card" style="max-width:820px">
+  <div class="chips"><span class="chip"><i class="senal"></i>{{ t('Fuente oficial: HealthCare.gov', 'Official source: HealthCare.gov') }}</span></div>
+  <h2 class="sec-h" style="margin:0 0 6px">{{ t('Fechas clave de 2027', 'Key 2027 dates') }}</h2>
+  <p style="margin:6px 0">{{ t('Inscripción Abierta: del 1 de noviembre de 2026 al 15 de enero de 2027. Si te inscribes antes del 15 de diciembre, la cobertura puede empezar el 1 de enero. Si pierdes la cobertura del trabajo, normalmente tienes 60 días para inscribirte.', 'Open Enrollment: November 1, 2026 to January 15, 2027. Enroll by December 15 and coverage can start January 1. If you lose job-based coverage, you usually have 60 days to enroll.') }}</p>
+  <p class="small">{{ t('Confirma siempre las fechas en el sitio oficial antes de decidir. Este sitio no es HealthCare.gov.', 'Always confirm dates on the official site before you decide. This site is not HealthCare.gov.') }}</p>
+  <p class="small" style="margin-top:10px"><b>{{ t('Específico de Florida:', 'Florida-specific:') }}</b> <a href="{{ '/aprende/cigna-se-va-de-florida-2027' if es else '/learn/cigna-leaving-florida-marketplace-2027' }}">{{ t('Cigna sale del Mercado individual de Florida en 2027. Qué hacer si recibiste su carta.', "Cigna is leaving Florida's individual Marketplace for 2027. What to do if you got its letter.") }}</a></p>
+ </div>
+</section>
+
+<section style="padding:0 0 40px;max-width:820px">
+ <h2 class="sec-h">{{ t('Quiénes somos y quiénes no', 'Who we are and are not') }}</h2>
+ {% if site.no_buyer %}
+ <p>{{ t('Somos una guía educativa gratuita. No somos una aseguradora, ni una agencia, ni un sitio del gobierno, y no vendemos seguros. Por ahora no te conectamos con ningún agente y no recopilamos tus datos de contacto. Si en el futuro lo ofrecemos, te diremos quién recibiría tu información y te pediremos permiso antes de compartir cualquier cosa.', 'We are a free educational guide. We are not an insurer, an agency or a government site, and we do not sell insurance. For now we do not connect you with any agent and we do not collect your contact details. If we ever offer that, we will tell you who would receive your information and ask your permission before sharing anything.') }}</p>
+ {% else %}
+ {# the check can collect contact details, so the page must say so instead of claiming it never does #}
+ <p>{{ t('Somos una guía educativa gratuita. No somos una aseguradora, ni una agencia de seguros, ni un sitio del gobierno, y no vendemos seguros. El chequeo se puede completar sin dar tu nombre, teléfono ni correo. Si al final decides que te contacte una agencia, marcamos una casilla que nombra a la agencia con licencia que recibiría tus datos, y no compartimos nada sin tu permiso. Para ti es gratis: a la agencia le paga la aseguradora, no tú.', 'We are a free educational guide. We are not an insurer, an insurance agency or a government site, and we do not sell insurance. You can finish the check without giving your name, phone or email. If you decide at the end that you want an agency to contact you, a checkbox names the licensed agency that would receive your details, and nothing is shared without your permission. It is free for you: the agency is paid by the insurer, not by you.') }}</p>
+ {% endif %}
+ <p class="small"><a href="{{ '/privacidad' if es else '/privacy' }}">{{ t('Política de privacidad', 'Privacy policy') }}</a> · <a href="{{ '/terminos' if es else '/terms' }}">{{ t('Términos', 'Terms') }}</a></p>
+</section>
+</div>{% endblock %}

@@ -1,0 +1,126 @@
+{
+ "_doc": "How every visit and lead is bucketed. Edit here, never in code. channel -> engine; category = health vs life.",
+ "channels": {
+  "partner_mediums": [
+   "partner",
+   "print",
+   "qr",
+   "flyer",
+   "embed",
+   "newsletter_partner"
+  ],
+  "paid_mediums": [
+   "cpc",
+   "ppc",
+   "paid",
+   "paid_social",
+   "paidsocial",
+   "ads",
+   "display"
+  ],
+  "meta_sources": [
+   "facebook",
+   "fb",
+   "instagram",
+   "ig",
+   "meta"
+  ],
+  "search_sources": [
+   "google",
+   "bing",
+   "duckduckgo",
+   "yahoo",
+   "ecosia",
+   "brave"
+  ],
+  "social_sources": [
+   "reddit",
+   "facebook",
+   "fb",
+   "instagram",
+   "ig",
+   "tiktok",
+   "youtube",
+   "whatsapp",
+   "nextdoor",
+   "threads",
+   "x",
+   "twitter",
+   "linkedin",
+   "pinterest",
+   "telegram"
+  ],
+  "social_mediums": [
+   "organic_social",
+   "social",
+   "community",
+   "share",
+   "reels",
+   "story",
+   "post",
+   "comment",
+   "group"
+  ]
+ },
+ "engine_of_channel": {
+  "search": "ORGANIC",
+  "ai_answer": "ORGANIC",
+  "social_community": "ORGANIC",
+  "referral": "ORGANIC",
+  "partner": "PARTNER",
+  "paid_meta": "PAID",
+  "paid_other": "PAID",
+  "direct": "DIRECT"
+ },
+ "category": {
+  "life_campaigns": [
+   "new-business-owner",
+   "newly-self-employed",
+   "owner-operator",
+   "mortgage-protection",
+   "new-parent",
+   "family-protection",
+   "income-replacement",
+   "final-expense",
+   "young-adult",
+   "pre-retirement",
+   "policy-review",
+   "do-i-need",
+   "how-much",
+   "health-issues",
+   "cost",
+   "work-life-ends",
+   "work-life-ends-es",
+   "military-life-ends"
+  ],
+  "life_page_prefixes": [
+   "/c/",
+   "/learn/life-insurance-",
+   "/aprende/seguro-de-vida-"
+  ],
+  "health_page_prefixes": [
+   "/check",
+   "/learn/",
+   "/aprende/",
+   "/layoffs",
+   "/despidos",
+   "/open-enrollment",
+   "/inscripcion-abierta",
+   "/p/"
+  ]
+ },
+ "decision_rules": {
+  "_doc": "Used by tools/engine_report.py. REAL traffic only. Money values in USD.",
+  "target_cpl": {
+   "health": 25,
+   "life": 20
+  },
+  "paid_kill_spend_multiple": 3,
+  "paid_scale_min_accepted": 3,
+  "organic_min_visits_to_judge": 300,
+  "organic_scale_min_leads": 3,
+  "min_acceptance_rate_pct": 60,
+  "hourly_value_usd": 20,
+  "_hourly_doc": "Value of an hour of our time, used to turn minutes logged in the Organic queue into cost per lead. Change to your real number."
+ }
+}

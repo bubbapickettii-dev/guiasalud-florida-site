@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% set es = lang == 'es' %}
+{% block lang %}{{ lang }}{% endblock %}
+{% block title %}{{ angle.headline }} | {{ site.brand }}{% endblock %}
+{% block desc %}{{ angle.subhead }}{% endblock %}
+{% block footdisc %}{{ (site.disclosure_es if es else site.disclosure) }} {{ (site.gov_disclaimer_es if es else site.gov_disclaimer) }}{% endblock %}
+{% block lp %}{{ 'Política de Privacidad' if es else 'Privacy Policy' }}{% endblock %}{% block lt %}{{ 'Términos' if es else 'Terms' }}{% endblock %}{% block lo %}{{ 'No contactarme' if es else 'Do not contact me / opt out' }}{% endblock %}
+{% block bodyclass %}check-page {{ 'embed' if embed else '' }}{% endblock %}
+{% block header %}{% if not embed %}{{ super() }}{% endif %}{% endblock %}
+{% block body %}
+<div class="wrap"><div class="hero" {% if embed %}style="grid-template-columns:1fr;padding:0"{% endif %}>
+{% if not embed %}<div class="copy"><span class="eyebrow">{{ angle.eyebrow }}</span><h1>{{ angle.headline }}</h1><p class="sub">{{ angle.subhead }}</p>
+{% if es %}<ul class="bullets"><li>Toma unos 2 minutos</li><li>No pedimos nombre, teléfono ni correo{% if not site.no_buyer %} para ver tu resumen{% endif %}</li><li>{% if site.no_buyer %}Termina con tus fechas y los sitios oficiales para comparar planes{% else %}Solo hablas con un agente si tú lo pides y das tu permiso{% endif %}</li></ul>
+{% else %}<ul class="bullets"><li>Takes about 2 minutes</li><li>We don't ask for your name, phone or email{% if not site.no_buyer %} to see your summary{% endif %}</li><li>{% if site.no_buyer %}Ends with your dates and the official sites to compare plans{% else %}You only hear from an agent if you ask and give permission{% endif %}</li></ul>{% endif %}</div>{% endif %}
+<div class="card" id="app">{% if partner %}<p class="small" style="margin:-6px 0 12px">{{ 'Compartido contigo por' if es else 'Shared with you by' }} <b>{{ partner.display_name }}</b></p>{% endif %}
+<div class="progress"><i id="prog"></i></div><div id="steps"><noscript>{{ 'Activa JavaScript para usar el chequeo.' if es else 'Please enable JavaScript to use the check.' }}</noscript></div>
+<input class="hp" tabindex="-1" autocomplete="nope" id="hpw" name="hpw" aria-hidden="true">
+<p class="disclosure">{{ (site.disclosure_es if es else site.disclosure) }} {{ (site.gov_disclaimer_es if es else site.gov_disclaimer) }}</p></div>
+</div></div>
+{% if not embed %}<section class="edu"><div class="wrap" style="max-width:760px">
+{% if es %}<h2>Fechas clave 2027</h2><p>Inscripción Abierta: del 1 de noviembre de 2026 al 15 de enero de 2027. Inscríbete antes del 15 de diciembre para que la cobertura empiece el 1 de enero. Si te inscribes entre el 16 de diciembre y el 15 de enero, empieza el 1 de febrero.</p>
+<p>Si pierdes la cobertura de tu trabajo, normalmente tienes 60 días para inscribirte con un Periodo Especial de Inscripción.</p>
+<p class="chips"><span class="chip"><i class="senal"></i>Fuente oficial: HealthCare.gov / CuidadoDeSalud.gov</span></p><p class="small">Este sitio no es HealthCare.gov ni una agencia del gobierno. Confirma las fechas en el sitio oficial antes de decidir.</p>
+{% else %}<h2>Key 2027 dates</h2><p>Open Enrollment: November 1, 2026 to January 15, 2027. Enroll by December 15 for coverage that starts January 1. Enroll December 16 to January 15 and coverage starts February 1.</p>
+<p>If you lose job-based coverage, you usually have 60 days to enroll through a Special Enrollment Period.</p>
+<p class="chips"><span class="chip"><i class="senal"></i>Official source: HealthCare.gov</span></p><p class="small">This site is not HealthCare.gov or a government agency. Confirm dates on the official site before you decide.</p>{% endif %}
+</div></section>{% endif %}
+<script>window.LE_NO_AUTO_PV=true;window.HF={flow:{{ flow|tojson }},angleId:{{ angle_id|tojson }},angle:{{ angle|tojson }},lang:{{ lang|tojson }},campaignId:{{ campaign_id|tojson }},embed:{{ 'true' if embed else 'false' }},today:{{ (request.args.get('today') if request.args.get('test')=='1' else None)|tojson }},emailFallback:{{ 'true' if email_fallback else 'false' }},noBuyer:{{ 'true' if site.no_buyer else 'false' }}};</script>
+<script src="/static/health.js"></script>
+{% endblock %}
+{% block footer %}{% if not embed %}{{ super() }}{% endif %}{% endblock %}

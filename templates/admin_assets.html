@@ -1,0 +1,80 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1250px;padding:16px 16px 40px">
+<h2>Asset queue — public intent signals → publishable content → tracked Check link</h2>
+<p class="small" style="border:2px solid #b45309;padding:8px;background:#fffbeb">
+<b>How this campaign works:</b> <b>1)</b> review a real public post where someone is actively
+asking about coverage; <b>2)</b> prepare the platform-appropriate EN/ES copy here (a
+draft — nothing is ever posted automatically); <b>3)</b> publish the copy yourself on your own
+channel with its tracked <code>/go/…</code> link; <b>4)</b> mark it DEPLOYED with where you
+posted it. Consumers who click through land on the real <a href="/check?token={{ token }}">/check</a>
+journey; a lead exists only if they voluntarily submit with consent. Nobody in the signal
+store is contacted and no post is treated as consent.</p>
+{% if msg %}<p class="pill ok">{{ msg }}</p>{% endif %}
+
+<h3 style="margin:18px 0 6px">Candidates — strongest genuine demand ({{ ready.ready_signals }} reviewed with no asset yet)</h3>
+<table>
+<tr><th>#</th><th>Shape</th><th>Score</th><th>Where / when</th><th>The post</th><th></th></tr>
+{% for c in cands %}
+<tr>
+  <td>{{ c.id }}</td>
+  <td><b>{{ c.intent_cat }}</b> · {{ c.lang }} · {{ c.topic }}{% if c.status == 'NEW' %}<br><span class="pill">needs review first</span>{% endif %}</td>
+  <td class="num">{{ c.intent }}</td>
+  <td class="small">{{ c.source }}<br><span class="mini">{{ c.observed_at[:10] }}</span><br><a href="{{ c.url }}" rel="noopener" target="_blank">source ↗</a></td>
+  <td class="small" style="max-width:420px">{{ c.title[:180] }}</td>
+  <td style="white-space:nowrap">
+    {% if c.status != 'NEW' %}<form method="post" action="/admin/assets/prepare?token={{ token }}" style="display:inline">
+      <input type="hidden" name="id" value="{{ c.id }}"><button>Prepare draft</button></form>{% endif %}
+    {% if c.status == 'NEW' %}<a class="mini" href="/admin/intel/signals?token={{ token }}&status=NEW">review →</a>{% endif %}
+  </td>
+</tr>
+{% else %}<tr><td colspan="6" class="small">No candidates at this threshold — run a sweep or lower intent ≥ 2.0.</td></tr>{% endfor %}
+</table>
+<form method="post" action="/admin/assets/prepare?token={{ token }}" style="margin-top:10px">
+  <input type="hidden" name="id" value="all"><button>Prepare drafts for ALL reviewed candidates</button>
+</form>
+
+<h3 style="margin:22px 0 6px">Language wave without a reviewed signal — topic-generic ES asset</h3>
+<form method="post" action="/admin/assets/prepare?token={{ token }}" style="display:flex;gap:8px;align-items:center">
+  <input type="hidden" name="id" value="all">
+  <input type="hidden" name="lang" value="es">
+  <select name="topic" style="width:220px">
+    <option value="job_loss">Job loss / employer coverage ended</option>
+    <option value="enroll_help">Enrollment help</option>
+    <option value="cost_savings">Cost / subsidies</option>
+    <option value="self_employed">Self-employed</option>
+    <option value="timing">Enrollment timing</option>
+  </select>
+  <button>Prepare Spanish draft</button>
+</form>
+
+<h3 style="margin:24px 0 6px">Prepared assets ({{ assets|length }}) — copy, approve, publish, mark DEPLOYED</h3>
+{% for a in assets %}
+<div class="panelcard" style="margin:10px 0;opacity:{{ '0.62' if a.status in ('SKIPPED','DEPLOYED') else '1' }}">
+  <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline">
+    <div><b>{{ a.asset_id }}</b> · {{ a.status }} · {{ a.lang }} · {{ a.topic }} · style {{ a.platform_style }}</div>
+    <div class="mini"><a href="/go/{{ a.link_code }}?token={{ token }}"><code>/go/{{ a.link_code }}</code></a></div>
+  </div>
+  {% if a.source_url %}<div class="mini" style="margin-top:2px">source: <a href="{{ a.source_url }}" rel="noopener" target="_blank">{{ a.source_url[:90] }}</a></div>{% endif %}
+  <div class="small" style="margin-top:6px"><b>{{ a.headline }}</b></div>
+  <pre style="white-space:pre-wrap;background:#f6f6f6;padding:10px;border:1px solid #e2e2e2;margin:6px 0;font-size:12.5px">{{ a.body }}</pre>
+  <div class="mini" style="color:#666">{{ a.disclosure }}</div>
+  <div class="mini" style="margin-top:4px">Full attributed URL: <code>{{ a.utm_url }}</code></div>
+  {% if a.status == 'PREPARED' %}
+  <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+    <form method="post" action="/admin/assets/{{ a.asset_id }}/decision?token={{ token }}">
+      <input type="hidden" name="status" value="APPROVED"><button>Approve copy</button></form>
+    <form method="post" action="/admin/assets/{{ a.asset_id }}/decision?token={{ token }}" style="display:inline">
+      <input type="hidden" name="status" value="SKIPPED"><input name="note" placeholder="why skip (required)" style="width:200px">
+      <button>Skip</button></form>
+  </div>
+  {% elif a.status == 'APPROVED' %}
+  <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+    <form method="post" action="/admin/assets/{{ a.asset_id }}/decision?token={{ token }}" style="display:inline">
+      <input type="hidden" name="status" value="DEPLOYED"><input name="note" placeholder="where did you post it? (required)" style="width:240px">
+      <button>Mark DEPLOYED</button></form>
+  </div>
+  {% elif a.status == 'DEPLOYED' %}<div class="mini" style="margin-top:6px">deployed: {{ a.note }} · decided {{ a.decided_at[:10] }}</div>
+  {% else %}<div class="mini" style="margin-top:6px">skipped: {{ a.note }}</div>{% endif %}
+</div>
+{% else %}<p class="small">No drafted assets yet — press Prepare above.</p>{% endfor %}
+</div>{% endblock %}

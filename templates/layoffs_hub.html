@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Laid off in Florida? Health coverage guides by employer | {{ site.brand }}{% endblock %}
+{% block desc %}Laid off in Florida? A 60-day plan for health coverage after a layoff, guides by employer (from public WARN notices) and a free 2-minute check. Official sources, no obligation.{% endblock %}
+{% block body %}<article class="wrap learn" style="max-width:760px;padding:30px 16px 60px">
+<h1>Laid off in Florida? Your 60-day health coverage plan</h1>
+{% for para in hub.a %}<p>{{ para }}</p>{% endfor %}
+<div class="ctabox"><b style="font-size:20px">See your options in 60 seconds</b><script>window.LE_PAGE={angle:"life_change",lang:"en",campaign:"oep-2027-health"};</script>
+<a class="btn" href="/check?a=life_change&via=layoffs">Check my 60-day options</a></div>
+<div class="ctabox" style="background:#0c2b25"><b style="font-size:18px">Your work life insurance may end too</b><p style="color:#E3EDE6;margin:8px 0 0">Florida gives you 31 days after group life coverage ends to convert it without a health exam (s. 627.566). A new term policy can cost less if you're healthy.</p>
+{% if not site.no_buyer %}<a class="btn" href="/c/work-life-insurance-ending?via=layoffs">See how much life coverage I need</a>{% endif %}</div>
+<h3>Recent Florida layoffs</h3><p class="small">From public WARN notices and local news. We are not affiliated with these companies.</p>
+<ul>{% for e in events %}<li style="margin:8px 0"><a href="/layoffs/{{ e.slug }}"><b>{{ e.company }}</b>, {{ e.city }}</a> <span class="small">· {{ '{:,}'.format(e.employees) }} workers · around {{ e.effective_pretty }}</span></li>{% endfor %}</ul>
+<p class="small">¿Prefieres español? <a href="/despidos" hreflang="es">¿Te despidieron en Florida? Todas las guías</a></p>
+</article>{% endblock %}

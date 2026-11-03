@@ -1,0 +1,72 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1300px;padding:16px 16px 40px">
+<h2>Economics — recorded money and a labeled scenario calculator</h2>
+<p class="mini">Section 1 is computed from the buyer ledger, the leads table and recorded spend imports, always
+split TEST vs real. Section 2 is arithmetic over EDITABLE assumption fields — a scenario, never a result or a
+forecast. Nothing here contacts anyone or activates anything.</p>
+
+<h3 style="margin:18px 0 6px">1 · Recorded money (buyer ledger)</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Side</th><th>Ledger kind</th><th class="num">Rows</th><th class="num">Amount</th></tr>
+{% for istest,label in [(1,'TEST'),(0,'REAL')] %}
+  {% for k in money[istest].kinds %}
+  <tr><td><span class="pill {{ 'good' if istest==1 else '' }}">{{ label }}</span></td><td>{{ k.kind }}</td>
+      <td class="num">{{ k.n }}</td><td class="num">{{ '${:,.2f}'.format(k.amt) }}</td></tr>
+  {% else %}
+  <tr><td><span class="pill {{ 'good' if istest==1 else '' }}">{{ label }}</span></td><td class="mini" colspan="3">no ledger rows yet</td></tr>
+  {% endfor %}
+{% endfor %}
+</table></div>
+<p class="mini" style="margin:4px 0">TEST rows come from rehearsal traffic; REAL rows only ever exist once the
+operator records a prepaid pack or a lead is delivered with a positive configured price. Empty REAL means the
+marketplace has not yet sold anything — stated as recorded, never assumed.</p>
+
+<h3 style="margin:18px 0 6px">Reconciliation — ledger vs leads table</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Side</th><th class="num">Delivered (price&gt;0)</th><th class="num">Ledger charges</th><th>Charge check</th><th class="num">Returned</th><th class="num">Ledger credits</th><th>Credit check</th><th class="num">Effective rev / delivered</th></tr>
+{% for istest,label in [(1,'TEST'),(0,'REAL')] %}
+{% set m = money[istest] %}
+<tr><td>{{ label }}</td><td class="num">{{ m.delivered }}</td><td class="num">{{ m.charges.0 }}</td>
+<td>{{ '✓ matches' if m.recon_charge=='OK' else '⚠ ' + m.recon_charge }}</td>
+<td class="num">{{ m.returned }}</td><td class="num">{{ m.credits.0 }}</td>
+<td>{{ '✓ matches' if m.recon_credit=='OK' else '⚠ ' + m.recon_credit }}</td>
+<td class="num">{{ ('${:,.2f}'.format(m.rev_per_delivered) if m.rev_per_delivered is not none else '-') }}</td></tr>
+{% endfor %}
+</table></div>
+
+<h3 style="margin:18px 0 6px">Recorded ad spend</h3>
+{% if spend.0 %}<p>Imported spend rows: {{ spend.0 }} · total <b>{{ '${:,.2f}'.format(spend.1) }}</b> (real money only; TEST views never carry spend). Per-channel CPL lives on the <a href="/admin/funnel?token={{ token }}">Funnel</a> page — this page does not duplicate it.</p>
+{% else %}<p class="small">No spend imported yet — cost per lead stays <b>unknown</b>, and nothing here counts it as $0. Import an ad-platform export with <span style="font-family:monospace">tools/import_spend.py</span> when a paid test is approved.</p>{% endif %}
+
+<h3 style="margin:18px 0 6px">Configured buyer pricing (contracted, recorded in config)</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Buyer</th><th>Active</th>{% for t in ['A','B','C'] %}<th class="num">Tier {{ t }}</th>{% endfor %}</tr>
+{% for b in buyers %}<tr><td>{{ b.id }}</td><td>{{ '✓' if b.active else 'draft' }}</td>
+{% for t in ['A','B','C'] %}<td class="num">{% if t in b.tiers and b.prices[t] %}{{ '${:,.2f}'.format(b.prices[t]) }}{% else %}-{% endif %}</td>{% endfor %}
+</tr>{% endfor %}{% if not buyers %}<tr><td colspan="5" class="mini">no non-demo buyers configured</td></tr>{% endif %}
+</table></div>
+
+{% if outcomes %}<h3 style="margin:18px 0 6px">Recorded buyer outcomes (all traffic)</h3>
+<div style="overflow-x:auto"><table><tr><th>Outcome</th><th class="num">Count</th></tr>
+{% for o in outcomes %}<tr><td>{{ o.outcome }}</td><td class="num">{{ o.n }}</td></tr>{% endfor %}</table></div>{% endif %}
+
+<h3 style="margin:22px 0 6px">2 · SCENARIO — freely editable assumptions, NOT a result</h3>
+<p class="mini">Answers "what would this pricing mean", using whatever numbers below you type. Defaults come from
+recorded buyer pricing. Produces arithmetic only; it never becomes revenue, demand or validation evidence.</p>
+<form method="get" action="/admin/economics" style="display:flex;gap:10px;flex-wrap:wrap;margin:8px 0;align-items:end">
+  <label>Leads delivered / day<input class="t" name="leads" type="number" step="0.1" min="0" value="{{ scn.leads }}"></label>
+  <label>Price per lead $<input class="t" name="price" type="number" step="0.01" min="0" value="{{ '{:.2f}'.format(scn.price) }}"></label>
+  <label>Return rate %<input class="t" name="return_pct" type="number" step="1" min="0" max="100" value="{{ '%.1f'|format(scn.return_pct) }}"></label>
+  <button class="sb">Recalculate</button>
+</form>
+<div style="overflow-x:auto"><table style="max-width:900px">
+<tr><th>Scenario line</th><th class="num">Value</th></tr>
+<tr><td>Weekly gross charges</td><td class="num">{{ '${:,.2f}'.format(scn.daily_gross * 7) }}</td></tr>
+<tr><td>Weekly refund allowances (returns)</td><td class="num">{{ '${:,.2f}'.format(scn.daily_refunds * 7) }}</td></tr>
+<tr><td><b>Weekly net revenue</b></td><td class="num"><b>{{ '${:,.2f}'.format(scn.weekly_net) }}</b></td></tr>
+</table></div>
+{% if scn.packs %}<table style="max-width:640px;margin:6px 0"><caption class="mini" style="text-align:left">At this pace a buyer's credit pack covers:</caption><tr><th>Pack</th><th class="num">Amount</th><th class="num">Covers</th></tr>
+{% for p in scn.packs %}<tr><td>{{ p.name }} (${{ '{:.0f}'.format(p.amount_usd) }})</td><td class="num">{{ '${:,.2f}'.format(p.amount_usd) }}</td>
+<td class="num">{% if p.days is not none %}~{{ p.days }} days{% else %}n/a{% endif %}</td></tr>{% endfor %}</table>{% endif %}
+<p class="mini" style="margin-top:14px">package list: {% for p in packages %}{{ p.name }} (${{ '{:.0f}'.format(p.amount_usd) }}){% if not loop.last %} · {% endif %}{% else %}none configured{% endfor %} — recorded in config/marketplace.json; charges come ONLY from each buyer's per-tier price.</p>
+</div>{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "agent_base.html" %}{% block title %}Leads - {{ b.name }}{% endblock %}
+{% block topbar %}<span class="tri"><span><b>{{ total }}</b><em>leads on this desk</em></span><span><b>{{ page }} of {{ pages }}</b><em>page · 25 per page</em></span></span><a class="btn sm" href="/agent/{{ token }}/">← Dashboard</a>{% endblock %}
+{% block shell %}{% macro _toggle_dir(k) %}{% if sort == k %}{{ 'asc' if dir_ == 'desc' else 'desc' }}{% else %}desc{% endif %}{% endmacro %}
+{% macro _base_qs(k, d, p=None) %}q={{ q|urlencode }}&f={{ f|urlencode }}&days={{ days }}{% if request.args.get('pinned') == '1' %}&pinned=1{% endif %}{% if due %}&due=1{% endif %}&sort={{ k }}&dir={{ d }}{% if p %}&page={{ p }}{% endif %}{% endmacro %}
+{% macro _sorturl(k) %}/agent/{{ token }}/leads?{{ _base_qs(k, _toggle_dir(k)) }}{% endmacro %}
+{% macro _hidden_filters() %}<input type="hidden" name="ret" value="{{ ('/agent/' ~ token ~ '/leads?') ~ _base_qs(sort, dir_) }}">{% endmacro %}
+{% macro _pageurl(p) %}{{ _base_qs(sort, dir_, p) }}{% endmacro %}
+{% set LBL = {'NEW':'New','VIEWED':'Viewed','CONTACTED':'Contacted','APPOINTMENT':'Appointment','SOLD':'Sold','NOT_QUALIFIED':'Not qualified','RETURNED':'Returned','BAD_INFO':'Bad info','DNC':'Do not contact','OTHER':'Other'} %}
+<div class="dsk-hrow"><h1 style="font-size:22px;margin:0">Leads</h1><span class="mini">Review and manage the leads delivered to your desk. Open a lead for full details and one-click outcomes.</span></div>
+{% if due %}<div class="note good" style="border-left:4px solid #1a7"><b>Follow-up view</b> — leads whose next follow-up date has arrived (today or overdue). Work these first, then go back to the whole desk.</div>
+{% endif %}{% if desk_err and desk_err.startswith('field:') %}<div class="note" style="border-left:4px solid #b00"><b>Field not saved:</b> "{{ desk_err.split(':')[1] }}" — {"dates must be YYYY-MM-DD" if 'at' in desk_err else "the estimate must be a number"} . Nothing on the lead changed.</div>
+{% elif desk_err == 'notapplied' %}<div class="note" style="border-left:4px solid #b00"><b>That action could not be recorded</b> (unknown status, or the lead is not on your desk). Nothing was changed.</div>
+{% elif desk_msg == 'saved' %}<div class="note good" style="border-left:4px solid #1a7"><b>Status saved.</b></div>
+{% elif desk_msg == 'fields' %}<div class="note good" style="border-left:4px solid #1a7"><b>Fields saved.</b></div>{% endif %}
+
+<form class="dsk-tools" method="get" action="/agent/{{ token }}/leads">
+<input class="t" name="q" value="{{ q }}" placeholder="Search lead by name, email, phone, id or campaign…" style="max-width:340px">
+<select class="t" name="f" style="max-width:170px"><option value="">All statuses</option>{% for s in statuses %}<option value="{{ s }}" {{ 'selected' if f == s }}>{{ LBL.get(s, s.replace('_',' ').title()) }}</option>{% endfor %}</select>
+<select class="t" name="days" style="max-width:130px">{% for d, lab in [(7,'Last 7 days'),(14,'Last 14 days'),(30,'Last 30 days'),(90,'Last 90 days'),(0,'All time')] %}<option value="{{ d }}" {{ 'selected' if days == d }}>{{ lab }}</option>{% endfor %}</select>
+<label class="mini" style="white-space:nowrap"><input type="checkbox" name="pinned" value="1" {{ 'checked' if request.args.get('pinned') == '1' }}> Pinned only</label>
+<label class="mini" style="white-space:nowrap"><input type="checkbox" name="due" value="1" {{ 'checked' if due }}> Due for follow-up</label>
+<button class="btn sm" type="submit">Filter</button><a class="btn sm ghost" href="/agent/{{ token }}/leads">Reset</a>
+<a class="btn sm download" href="{% with d = _toggle_dir(sort) %}{% with qs = _base_qs(sort, d)[1:] %}{{ '/agent/%s/leads.csv?%s' % (token, qs) }}{% endwith %}{% endwith %}" title="Download this filtered list as CSV — scoped to your desk only">Download</a></form>
+
+{% if not rows %}
+<div class="panelcard"><b>{% if q or f or request.args.get('pinned') == '1' or due %}No leads match this filter.</b> Widen the date range or clear the status filter to see the rest of your desk. <a href="/agent/{{ token }}/leads">Show your whole desk →</a>{% else %}Your desk is empty right now — that is the true state, not an error.</b> New exclusive leads appear here the moment the marketplace assigns one to your desk; none have been assigned yet. Nothing is being withheld from you — assignment depends on the consumer's consent, your licensed states, your daily cap and your balance. <a href="/agent/{{ token }}/billing">Account &amp; billing →</a>{% endif %}</div>
+{% else %}
+<div class="hscroll"><table>
+<tr><th style="width:28px"></th><th><a href="{{ _sorturl('name') }}">Name {{ '▼' if sort == 'name' and dir_ == 'desc' else '▲' if sort == 'name' }}</a></th><th>Contact</th>
+<th><a href="{{ _sorturl('date') }}">Received {{ '▼' if sort == 'date' and dir_ == 'desc' else '▲' if sort == 'date' }}</a></th>
+<th><a href="{{ _sorturl('tier') }}">Tier / price {{ '▼' if sort == 'tier' and dir_ == 'desc' else '▲' if sort == 'tier' }}</a></th>
+<th><a href="{{ _sorturl('status') }}">Status {{ '▼' if sort == 'status' and dir_ == 'desc' else '▲' if sort == 'status' }}</a></th></tr>
+{% for l in rows %}<tr class="{{ 'pinrow' if l.pinned }}">
+<td><form method="post" action="/agent/{{ token }}/lead/{{ l.lead_id }}/pin" style="margin:0">
+{{ _hidden_filters() }}<button class="{{ 'pinbtn on' if l.pinned else 'pinbtn' }}" {% if not l.pinned %}type="submit" title="Pin to top of your list"{% endif %}>{% if l.pinned %}★{% else %}☆{% endif %}</button></form></td>
+<td><a href="/agent/{{ token }}/lead/{{ l.lead_id }}"><b>{{ l.first_name }} {{ l.last_name }}</b></a>{% if l.is_test %}<br><span class="pill TEST">TEST</span>{% endif %}<br><span class="mini">{{ l.zip }} · {{ l.state }}</span></td>
+<td><b style="font-size:15px">{{ l.phone|pphone }}</b><br><span class="mini">{{ l.email or '—' }} · {{ l.preferred_contact or '-' }}</span></td>
+<td class="small">{{ (l.delivered_at or l.created_at)[5:16].replace('T',' ') }}<br><span class="mini">{{ l.campaign or '—' }}</span></td>
+<td><span class="pill">{{ l.tier }}</span> {% if l.price %}${{ '%.2f'|format(l.price) }}{% endif %}</td>
+<td><span class="pill {{ {'SOLD':'A','RETURNED':'C','BAD_INFO':'C','DNC':'C'}.get(l.agent_status,'B') }}">{{ LBL.get(l.agent_status, l.agent_status) }}</span>{% if l.followup_at %}<br><span class="mini">follow-up {{ l.followup_at }}{% if l.followup_at <= now()[:10] %} <b>due</b>{% endif %}</span>{% endif %}</td></tr>{% endfor %}
+</table></div>
+<p class="mini">Showing {{ rows|length }} of {{ total }} lead(s){% if pages > 1 %} · page {{ page }} of {{ pages }} — {% if page > 1 %}<a href="{{ _pageurl(page - 1) }}">‹ prev</a>{% endif %}{% if page < pages %} · <a href="{{ _pageurl(page + 1) }}">next ›</a>{% endif %}{% endif %}</p>
+{% endif %}
+<p class="mini">Pins are working-tracker marks on YOUR desk only — they never change routing, pricing or eligibility.</p>
+{% endblock %}

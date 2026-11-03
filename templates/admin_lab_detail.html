@@ -1,0 +1,22 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1300px;padding:16px 16px 40px">
+<p class="small"><a href="/admin/lab?token={{ token }}">← Distribution Lab</a></p>
+<h2>{{ e.experiment_id }} · {{ e.name }} <span class="pill {{ m.evidence.split(' ')[0] }}">{{ m.evidence }}</span> <span class="pill">{{ e.status }}</span></h2>
+<table><tr><th>Audience</th><td>{{ e.audience or '-' }}</td><th>Demand trigger</th><td>{{ e.demand_trigger or '-' }}</td></tr>
+<tr><th>Channel / source</th><td>{{ e.channel }} · {{ e.source or '-' }} / {{ e.medium or '-' }}</td><th>Content concept</th><td>{{ e.content_concept or '-' }} <span class="mini">({{ e.creative or '' }})</span></td></tr>
+<tr><th>Offer / CTA</th><td>{{ e.offer_cta or '-' }}</td><th>Landing page / angle</th><td>{{ e.landing_page }} · {{ e.angle }} · {{ (e.language or 'en')|upper }}</td></tr>
+<tr><th>Phone-step wording</th><td>{{ (e.phone_variant ~ ' - ' ~ phone_copy[e.phone_variant].label) if e.phone_variant else 'A/B split per visitor' }}</td><th>Campaign</th><td>{{ e.campaign or 'oep-2027-health' }}</td></tr>
+<tr><th>Tracking ID / link</th><td><b>{{ e.tracking_id }}</b> · {{ base }}/go/{{ e.tracking_id }} · <a href="/qr.png?u=/go/{{ e.tracking_id }}" target="_blank">QR</a></td><th>Dates</th><td>{{ e.start_date or '?' }} → {{ e.end_date or '?' }}</td></tr>
+<tr><th>Hypothesis</th><td colspan="3">{{ e.hypothesis or '-' }}</td></tr></table>
+<h3>Funnel</h3>
+<table><tr><th></th><th class="num">Clicks</th><th class="num">Visits</th><th class="num">Form starts</th><th class="num">Check completed</th><th class="num">Phone step viewed</th><th class="num">Phones submitted</th><th class="num">Valid phones</th><th class="num">Consented phone leads</th><th class="num">Qualified</th><th class="num">Delivered</th><th class="num">Appts</th><th class="num">Sales</th></tr>
+{% for lbl, r in [('REAL', m.real), ('TEST DATA', m.test)] %}<tr><td><b>{{ lbl }}</b></td><td class="num">{{ r.clicks if r.clicks is not none else '-' }}</td><td class="num">{{ r.landing_page_visits }}</td><td class="num">{{ r.form_starts }}</td><td class="num">{{ r.check_completions }}</td><td class="num">{{ r.phone_step_views }}</td><td class="num">{{ r.phones_submitted }}</td><td class="num">{{ r.valid_phones }}</td><td class="num"><b>{{ r.consented_phone_leads }}</b></td><td class="num">{{ r.qualified_leads }}</td><td class="num">{{ r.delivered }}</td><td class="num">{{ r.appointments }}</td><td class="num">{{ r.sales }}</td></tr>{% endfor %}</table>
+<p class="mini">Clicks count only real, non-bot, non-QA traffic. Test clicks are never counted.</p>
+<div class="tabs" style="margin:14px 0 6px">{% for t,l in [('real','Breakdowns: REAL'),('only','Breakdowns: TEST DATA')] %}<a class="{{ 'on' if t==test }}" href="?token={{ token }}&test={{ t }}">{{ l }}</a>{% endfor %}</div>
+{% for dim, rows in splits.items() %}<h3 style="margin-bottom:6px">By {{ dim.replace('_',' ') }}</h3>{% if not rows %}<p class="small">No {{ 'real ' if test=='real' }}traffic yet.</p>{% else %}
+<table><tr><th>{{ dim }}</th>{% for s in stages[:8] %}<th class="num">{{ labels[s] }}</th>{% endfor %}<th class="num">Check → phone %</th></tr>
+{% for r in rows %}<tr><td><b>{{ r.k }}</b>{% if dim=='phone_variant' and phone_copy.get(r.k) %}<br><span class="mini">{{ phone_copy[r.k].label }}</span>{% endif %}</td>{% for s in stages[:8] %}<td class="num">{{ r[s] }}</td>{% endfor %}<td class="num">{{ r.completion_to_phone_pct if r.completion_to_phone_pct is not none else '-' }}</td></tr>{% endfor %}</table>{% endif %}{% endfor %}
+<h3>Leads from this experiment ({{ 'REAL' if test=='real' else 'TEST DATA' }})</h3>
+{% if not leads %}<p class="small">None yet.</p>{% else %}<table><tr><th>Lead</th><th>Received</th><th>Type</th><th>Phone valid</th><th>Phone wording</th><th>Entry page</th><th>Lang</th><th>Need</th><th>Qualification</th><th>Delivery</th><th>Agent outcome</th></tr>
+{% for l in leads %}<tr><td class="mini">{{ l.lead_id }}</td><td class="mini">{{ l.created_at[5:16].replace('T',' ') }}</td><td class="mini">{{ l.lead_type }}</td><td>{{ 'yes' if l.phone_valid else '-' }}</td><td>{{ l.phone_variant or '-' }}</td><td class="mini">{{ l.entry_page or '-' }}</td><td>{{ (l.lang or 'en')|upper }}</td><td class="mini">{{ l.need_path }}</td><td class="mini">{{ l.qual_status }}</td><td class="mini">{{ l.routing_status }}</td><td class="mini">{{ l.agent_status or '-' }}</td></tr>{% endfor %}</table>{% endif %}
+</div>{% endblock %}

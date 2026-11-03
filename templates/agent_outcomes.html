@@ -1,0 +1,33 @@
+{% extends "agent_base.html" %}{% block title %}My outcomes - {{ b.name }}{% endblock %}
+{% block topbar %}<span class="tri"><span><b>{{ rows|length }}</b><em>leads in view</em></span><span><b>inline record</b><em>contact date · est. AV · follow-up</em></span></span><a class="btn sm" href="/agent/{{ token }}/">← Dashboard</a>{% endblock %}
+{% block shell %}
+<div class="dsk-hrow"><h1 style="font-size:22px;margin:0">My outcomes</h1><span class="mini">Click a field to record the first-contact date, estimated submitted AV (your written-premium estimate), and next follow-up for each lead — the same inputs desktop CRM agents keep synced here.</span></div>
+{% if desk_err and desk_err.startswith('field:') %}<div class="note" style="border-left:4px solid #b00"><b>Field not saved:</b> "{{ desk_err.split(':')[1] }}"{% if 'av' in desk_err %} — the estimate must be a plain number (e.g. 4200.50){% else %} — dates must be YYYY-MM-DD{% endif %}. Nothing on the lead changed.</div>
+{% elif desk_msg == 'fields' %}<div class="note good" style="border-left:4px solid #1a7"><b>Fields saved.</b></div>
+{% elif desk_msg == 'saved' %}<div class="note good" style="border-left:4px solid #1a7"><b>Status saved.</b></div>{% endif %}
+
+<form class="dsk-tools" method="get" action="/agent/{{ token }}/outcomes">
+<input class="t" name="q" value="{{ q }}" placeholder="Search phone, email or name…" style="max-width:320px">
+<select class="t" name="week" style="max-width:170px">{% for w_, lab in [(1,'Last 7 days'),(4,'Last 4 weeks'),(12,'Last quarter'),(0,'All recorded apps')] %}<option value="{{ w_ }}" {{ 'selected' if week == w_ }}>{{ lab }}</option>{% endfor %}</select>
+<button class="btn sm" type="submit">Filter</button><a class="btn sm ghost" href="/agent/{{ token }}/outcomes">Reset</a><a class="btn sm ghost" href="/agent/{{ token }}/outcomes.csv?q={{ (q|urlencode) }}&week={{ week }}" title="The exact rows you're looking at, as a CSV for your CRM or bookkeeping">Download CSV</a></form>
+
+{% if not rows %}<div class="panelcard"><b>No submitted apps in this window.</b> The tracker fills as leads are delivered to your desk and as you record contact outcomes.{% if q %} <a href="/agent/{{ token }}/outcomes">Clear the search →</a>{% endif %}</div>
+{% else %}
+<div class="hscroll"><table>
+<tr><th>Received</th><th>Phone</th><th>Email</th><th>Contact date</th><th>Est. submitted AV</th><th>Family size</th><th>Next follow-up</th><th>Source</th><th>Status</th></tr>
+{% for l in rows %}<tr><td class="small">{{ (l.delivered_at or l.created_at)[5:16].replace('T',' ') }}{% if l.is_test %}<br><span class="pill TEST">TEST</span>{% endif %}</td>
+<td><b style="font-size:14px">{{ l.phone|pphone }}</b><br><span class="mini"><a href="/agent/{{ token }}/lead/{{ l.lead_id }}">{{ l.first_name }} {{ l.last_name }}</a></span></td>
+<td class="small">{{ l.email or '—' }}</td>
+<td colspan="5" style="padding:0"><form method="post" action="/agent/{{ token }}/lead/{{ l.lead_id }}/fields" class="inlinefields">
+<input type="hidden" name="ret" value="{{ '/agent/' ~ token ~ '/outcomes?q=' ~ (q|urlencode) ~ '&week=' ~ week }}">
+<input class="t" type="date" name="contact_at" value="{{ l.contact_at or '' }}" aria-label="Contact date">
+<input class="t" inputmode="decimal" name="est_av" value="{{ l.est_av if l.est_av is not none else '' }}" placeholder="e.g. 4200" style="max-width:110px" aria-label="Estimated submitted AV">
+<span class="mini">{{ l.household_size or '—' }}</span>
+<input class="t" type="date" name="followup_at" value="{{ l.followup_at or '' }}" aria-label="Next follow-up">
+<span class="small">{{ l.campaign or '—' }}</span>
+<button class="btn sm">Save</button></form></td>
+<td><span class="pill {{ {'SOLD':'A','RETURNED':'C','BAD_INFO':'C','DNC':'C'}.get(l.agent_status,'B') }}">{{ l.agent_status }}</span></td></tr>{% endfor %}
+</table></div>
+<p class="mini">"Family size" is the consumer's own recorded household figure (read-only here — it is their submitted answer). Contact date and follow-up are your working fields; "est. submitted AV" is your own estimate of the case value, never a recorded sale.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1400px;padding:16px 16px 40px">
+<h2>Regional briefs - where to put the Check, who the partners are, what to say</h2>
+<p class="small">Built from aggregate public-record counts (new licenses, new businesses, new NPIs, new carriers; last 12 months, South Florida ZIPs). This is targeting intelligence, not a contact list - nobody in these counts is contacted. Language calls are INFERENCES until checked against Census ACS table C16001.</p>
+{% if not briefs %}<p>Intelligence DB not found (set INTEL_DB).</p>{% endif %}
+<table><tr><th>City</th><th class="num">New self-employed (12 mo)</th><th>Mix</th><th>Top ZIPs</th><th>Language</th><th>Angle → page</th><th>Partners to approach</th><th>Content</th><th>Channels</th><th>Paid geo (if approved)</th></tr>
+{% for b in briefs %}<tr><td><b>{{ b.city }}</b><br><span class="mini">{{ b.county }}</span></td><td class="num">{{ b.new_self_employed_12mo }}</td>
+<td class="mini">{% for s,n,pct in b.segments %}{{ s }} {{ pct }}%<br>{% endfor %}</td><td class="mini">{{ b.top_zips|join(', ') }}</td>
+<td class="mini"><b>{{ b.language }}</b><br>{{ b.language_basis }}</td><td class="mini"><a href="/check?a={{ b.angle }}" target="_blank">{{ b.angle }}</a><br><a href="/check?a={{ b.angle_es }}" target="_blank">{{ b.angle_es }}</a></td>
+<td class="mini">{{ b.partners }}</td><td class="mini">{% for c in b.content %}<a href="/learn/{{ c }}" target="_blank">{{ c }}</a><br>{% endfor %}</td><td class="mini">{{ b.channels }}</td><td class="mini">{{ b.paid_geo }}</td></tr>{% endfor %}</table>
+</div>{% endblock %}

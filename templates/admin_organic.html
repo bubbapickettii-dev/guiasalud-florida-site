@@ -1,0 +1,15 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1450px;padding:16px 16px 40px">
+<h2>Organic queue (Engine 1): every action, its effort, its own results</h2>
+<p class="small">Showing <b>{{ 'TEST' if test else 'REAL' }}</b> results (<a href="?token={{ token }}&test={{ 0 if test else 1 }}">switch</a>). A row only counts as live after someone logs POSTED / SENT. Results match on the row's tracked link (utm_content = row id). Effort is valued at ${{ hourly }}/hour (config/engines.json).</p>
+<p><b>Totals:</b> {{ tot.minutes }} min (${{ (tot.minutes / 60 * hourly)|round(2) }}) + ${{ tot.cost_usd }} spent · {{ tot.visits }} visits · {{ tot.leads }} leads · {{ tot.accepted }} accepted
+{% if tot.leads %} · effort cost per lead ${{ ((tot.minutes / 60 * hourly + tot.cost_usd) / tot.leads)|round(2) }}{% endif %} · <a href="/admin/organic.csv?token={{ token }}">CSV</a></p>
+<table><tr><th>Item</th><th>Status</th><th>Effort</th><th class="num">Visits</th><th class="num">Check done</th><th class="num">Leads</th><th class="num">Accepted</th><th>Log an action</th></tr>
+{% for r in rows %}<tr id="{{ r.id }}"><td><b>{{ r.id }}</b> <span class="mini">{{ r.engine }} · {{ r.category }} · {{ r.priority }}{% if r.window %} · life window closes {{ r.window }}{% endif %}</span><br><span class="mini">{{ r.where }}</span>
+<details style="margin:4px 0 0"><summary class="mini">Copy, link, how</summary>{% if r.link %}<p class="mini"><b>Tracked link:</b> <code>{{ r.link }}</code></p>{% endif %}
+{% if r.how %}<p class="mini"><b>How:</b> {{ r.how }}</p>{% endif %}{% if r.rules %}<p class="mini"><b>Rules:</b> {{ r.rules }}</p>{% endif %}<pre class="mini" style="white-space:pre-wrap">{{ r.copy_text }}</pre></details></td>
+<td><span class="pill {{ 'LIVE' if r.live else 'UNTESTED' }}">{{ r.status }}</span>{% if r.post_url %}<br><a class="mini" href="{{ r.post_url }}" target="_blank" rel="noopener">post</a>{% endif %}{% if r.last_ts %}<br><span class="mini">{{ r.last_ts[:10] }}</span>{% endif %}</td>
+<td class="mini">{{ r.minutes }} min{% if r.cost_usd %} · ${{ r.cost_usd }}{% endif %}</td><td class="num">{{ r.visits }}</td><td class="num">{{ r.check_done }}</td><td class="num"><b>{{ r.leads }}</b></td><td class="num">{{ r.accepted }}</td>
+<td><form method="post" style="margin:0"><input type="hidden" name="item_id" value="{{ r.id }}"><select name="action">{% for a in actions %}<option>{{ a }}</option>{% endfor %}</select>
+<input class="t" name="url" placeholder="post / thread URL" style="width:150px"><input class="t" name="minutes" placeholder="min" style="width:50px"><input class="t" name="cost" placeholder="$" style="width:45px"><input class="t" name="note" placeholder="note" style="width:110px"><button class="sb">Log</button></form></td></tr>{% endfor %}</table>
+</div>{% endblock %}

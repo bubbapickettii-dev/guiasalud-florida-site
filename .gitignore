@@ -1,0 +1,21 @@
+.staging/
+# rotated admin token lives there, never in the repo
+
+# Machine-local state: databases, backups and generated mail must never be committed or deployed.
+# A public host that received data/leads.db would be serving real consumer records (and the free
+# Render service would then run its ephemeral database over the top of them) — see docs/RENDER_DEPLOY.md.
+data/
+outbox/
+backups/
+*.db
+*.db-shm
+*.db-wal
+*.db.bak-final
+*.eml
+.env
+__pycache__/
+.pytest_cache/
+# test screenshots can contain real admin/lead screens — never publish them
+# test screenshots can show admin/lead records — never publish them
+tests/screens*/
+tests/manual/screens_*

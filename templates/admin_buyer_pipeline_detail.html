@@ -1,0 +1,39 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1000px;padding:16px 16px 40px">
+<p><a href="/admin/buyer-pipeline?token={{ token }}">← Buyers pipeline queue</a> ·
+<a href="/admin?token={{ token }}#onboard">Onboarding form</a></p>
+<h2>{{ b.name or b.id }}</h2>
+<p class="mini">{{ b.id }} · stage <b>{{ stg_label[stage] }}</b>{% if b.active %} · <span class="pill good">active buyer</span>{% else %} · inactive draft{% endif %}</p>
+
+<p class="small" style="margin:10px 0 2px"><b>Recorded onboarding state</b> (what is actually on file — never shown as complete when it is not):</p>
+<ul class="small" style="margin:2px 0;padding-left:18px">
+  <li>name: {{ b.name or '-' }} · FL license: {{ b.license_number or '-' }} · NPN: {{ b.npn or '-' }}</li>
+  <li>prices: {{ b.price_by_tier|tojson }} · tiers: {{ (b.tiers or [])|join(',') }}</li>
+  <li>delivery: {{ (b.delivery or {}).get('method','outbox') }}{% if (b.delivery or {}).get('webhook_url') %} · webhook {{ b.delivery.webhook_url[:60] }}{% endif %}</li>
+  {% if b._application %}<li>application contact: {{ b._application.contact_name or '-' }} · {{ b._application.contact_email }}{% if b._application.note %} · “{{ b._application.note }}”{% endif %}</li>{% endif %}
+  {% if st.blockers %}<li style="color:#8a2b2b">not receiving new leads: {{ st.blockers|join('; ') }}</li>{% else %}<li>no routing blockers recorded</li>{% endif %}
+  {% if st.next %}<li>operator next step: {{ st.next }}</li>{% endif %}
+</ul>
+<p class="mini">Verification requests, activation and portal links live on <a href="/admin?token={{ token }}#onboard">Overview → Buyers</a>; this page records only the commercial follow-up.</p>
+
+<h3 style="margin:16px 0 6px">Record follow-up / update stage</h3>
+<form method="post" action="/admin/buyer-pipeline/{{ b.id }}/action" class="grid2" style="max-width:640px;display:grid;gap:6px">
+  <select name="stage" style="max-width:220px"><option value="">stage ({{ stg_label[stage] }})</option>{% for s in stages %}{% if s != stage %}<option>{{ s }}</option>{% endif %}{% endfor %}</select>
+  <select name="method" style="max-width:160px"><option value="">method</option>{% for m in methods %}<option>{{ m }}</option>{% endfor %}</select>
+  <input name="next_followup" type="date" placeholder="YYYY-MM-DD">
+  <input name="note" placeholder="note — what was said / decided" style="grid-column:1/-1">
+  <button>Save</button>
+</form>
+
+<h3 style="margin:18px 0 6px">Activity history (append-only)</h3>
+{% if hist %}
+<table style="max-width:900px"><tr><th>When</th><th>Kind</th><th>Detail</th><th>By</th></tr>
+{% for h in hist %}
+<tr><td class="small">{{ h.ts[:19] }}</td><td class="small">{{ h.kind }}</td>
+<td class="small">{% if h.kind == 'STAGE' %}{{ h.stage_from }} → {{ h.stage_to }}{% endif %}
+{% if h.kind == 'OUTREACH' %}{% if h.method %}{{ h.method }} · {% endif %}{{ h.note }}{% endif %}
+{% if h.kind == 'FOLLOWUP' %}next follow-up set for {{ h.next_followup }}{% endif %}</td>
+<td class="small">{{ h.operator }}</td></tr>
+{% endfor %}</table>
+{% else %}<p class="small">No recorded activity yet — the queue row above shows exactly why (nothing has been logged for this prospect).</p>{% endif %}
+</div>{% endblock %}

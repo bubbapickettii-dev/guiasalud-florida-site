@@ -1,0 +1,159 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1200px;padding:16px 16px 40px">
+<p class="mini"><a href="/admin/prospects?token={{ token }}">← Buyer prospects</a></p>
+<h2>{{ r.name }} <span class="pill">{{ (stage)|replace('_',' ')|lower }}</span>
+    {% if r.buyer_id %}<span class="mini">buyer draft: <code>{{ r.buyer_id }}</code></span>{% endif %}</h2>
+<p class="small">Prospect #{{ r.id }} · source {{ r.source or 'manual' }} ·
+{% if r.evidence_url %}<a href="{{ r.evidence_url }}" rel="noopener">evidence</a>{% else %}no evidence URL recorded{% endif %} ·
+decision <b>{{ r.decision or 'NEW' }}</b> · verification <b>{{ r.verify_state or 'UNVERIFIED' }}</b> ·
+created {{ (r.created_at or '')[:16] }} · last change {{ (r.updated_at or '')[:16] }}</p>
+{% if r.segment %}
+<p class="small">Working list: <b>priority {{ r.priority }}</b> · segment
+<code>{{ r.segment }}</code> · audience <code>{{ r.audience }}</code> ·
+phone evidence <b>{{ r.phone_evidence or 'none' }}</b>{% if r.phone_shared_by %}
+(the same number appears on {{ r.phone_shared_by }} records){% endif %} ·
+outreach <b>{{ r.outreach_status or 'NOT_CONTACTED' }}</b> · classified
+{{ (r.worklist_synced_at or '')[:16] }}</p>
+{% endif %}
+
+{% if err %}<div class="note bad" style="border-left:4px solid #b00">{{ err }}</div>{% endif %}
+{% if msg %}<div class="note good" style="border-left:4px solid #1a7">{{ msg }}</div>{% endif %}
+
+<h3>Needs attention (from recorded state only)</h3>
+{% if gaps %}<ul class="small">{% for g in gaps %}<li>· {{ g }}</li>{% endfor %}</ul>
+{% else %}<p class="small">No recorded gaps in basics, decision, verification-alignment or next action.</p>{% endif %}
+
+<h3>Onboarding-readiness checklist</h3>
+<p class="mini">Prospect-side requirements first, then (once a draft exists) the buyer-draft requirements — every
+item is an EXISTING application rule (the same checks the buyer onboarding/activation flow enforces); nothing invented
+here. “provided” = an operator’s recorded entry; “verified” = an independently checked record naming what was checked
+and where. “pending review” = checked but not yet operator-verified.</p>
+<table class="small" style="max-width:900px"><tr><th>Requirement</th><th>Status</th><th>Kind</th><th>Where the answer lives / evidence</th></tr>
+{% for c in checklist %}
+<tr><td>{{ c.label }}</td>
+<td><span class="pill {{ 'done' if c.status=='complete' else ('bad' if c.status in ('missing','rejected') else '') }}">{{ c.status }}</span>{% if c.detail %}<br><span class="mini">{{ c.detail }}</span>{% endif %}</td>
+<td class="mini">{{ c.kind }}</td><td class="mini">{{ c.source }}</td></tr>
+{% endfor %}
+</table>
+
+<h3>Operational status</h3>
+<p class="small">{% if not buyer %}Business prospect only — no buyer record exists yet.
+{% elif not buyer.active %}Buyer draft <code>{{ buyer.id }}</code> exists and is <b>INACTIVE</b> — it cannot receive any lead.
+     Complete onboarding on <a href="/admin?f={{ buyer.id }}&token={{ token }}">Overview → Buyers</a> (license, NPN, prices, caps,
+     delivery, portal token), then activate there with an explicit operator approval.
+{% else %}Buyer <code>{{ buyer.id }}</code> is <b>ACTIVE</b> in the marketplace (status: everything on the buyer pages applies).
+{% endif %}Routing eligibility is decided ONLY by the routing engine under the existing buyer safeguards — never by
+qualification/verification here.</p>
+
+<h3>Verification record (explicit, evidence-bearing)</h3>
+<form method="post" action="/admin/prospects/{{ r.id }}/verify" class="small">
+ select state
+ <select name="verify_state">
+  {% for v in ['UNVERIFIED','PUBLIC_DETAILS_CHECKED','OPERATOR_VERIFIED','DENIED'] %}
+  <option value="{{ v }}" {{ 'selected' if r.verify_state==v }}>{{ v }}</option>{% endfor %}</select>
+ <input name="note" value="{{ r.verify_note }}" placeholder="what was checked + where/when (required)" size="60">
+ <button type="submit">record verification</button>
+</form>
+<p class="mini">A verification is a record of what YOU checked — importing data or being told facts never sets this.
+Never auto-derived; never an activation.</p>
+
+<h3>Stage ladder</h3>
+<form method="post" action="/admin/prospects/{{ r.id }}/stage" class="small">
+ <select name="stage">
+  {% for s in manual_stages %}<option value="{{ s }}" {{ 'selected' if (r.stage or 'NEW')==s }}>{{ s }} — {{ stage_label[s] }}</option>{% endfor %}
+ </select>
+ <input name="note" placeholder="why this stage (required to QUALIFY / DISQUALIFY / mark ready)" size="50">
+ <button type="submit">set stage</button>
+</form>
+<p class="mini">ONBOARDING_STARTED / ONBOARDED / ACTIVATED are recorded by the real flows (handoff below, onboarding, buyer
+activation) — they are not set by hand. Current: <b>{{ stage }}</b> of {{ stage_counts.get(stage, 0) }} in this stage.</p>
+
+<h3>Commercial qualification (only what is actually known — blank stays unknown)</h3>
+<form method="post" action="/admin/prospects/{{ r.id }}/update" class="small" style="display:grid;grid-template-columns:220px 1fr;gap:6px 10px;max-width:900px">
+ <label for="f-interested">Interested in buying leads?</label>
+ <select id="f-interested" name="interested">
+  <option value="" {{ 'selected' if not r.interested }}>unknown — not yet discussed</option>
+  <option value="yes" {{ 'selected' if r.interested=='yes' }}>yes — said they want to buy</option>
+  <option value="maybe" {{ 'selected' if r.interested=='maybe' }}>maybe — needs follow-up</option>
+  <option value="no" {{ 'selected' if r.interested=='no' }}>no — said they are not interested</option>
+ </select>
+ <label for="f-lead_types">Lead types wanted</label>
+ <input id="f-lead_types" name="lead_types" value="{{ r.lead_types }}" placeholder="e.g. health_aca (only what they asked for)">
+ <label for="f-service_territory">Service territory / licensed region</label>
+ <input id="f-service_territory" name="service_territory" value="{{ r.service_territory }}" placeholder="e.g. FL, South FL (as stated by them / found publicly)">
+ <label for="f-stated_weekly_volume">Expected volume (CLAIMED)</label>
+ <input id="f-stated_weekly_volume" name="stated_weekly_volume" value="{{ r.stated_weekly_volume }}" placeholder="what they say they want — never our projection">
+ <label for="f-stated_budget_usd">Weekly budget (CLAIMED)</label>
+ <input id="f-stated_budget_usd" name="stated_budget_usd" value="{{ r.stated_budget_usd }}" placeholder='exactly as stated, e.g. "up to $900/wk if quality holds" — a claim to verify, not a commitment'>
+ <label for="f-stated_frequency">Purchase frequency (as they described)</label>
+ <input id="f-stated_frequency" name="stated_frequency" value="{{ r.stated_frequency }}" placeholder="e.g. 'a few leads a week when quality holds' — recorded, never assumed">
+ <label for="f-delivery_pref">Delivery preference</label>
+ <input id="f-delivery_pref" name="delivery_pref" value="{{ r.delivery_pref }}" placeholder="desk / email / webhook — as they requested">
+ <label for="f-proposed_price">Proposed price (our side)</label>
+ <input id="f-proposed_price" name="proposed_price" value="{{ r.proposed_price }}" placeholder="what we proposed, e.g. A=$45 B=$28 — not agreed yet">
+ <label for="f-agreed_price">AGREED price (only with a real agreement)</label>
+ <input id="f-agreed_price" name="agreed_price" value="{{ r.agreed_price }}" placeholder="leave blank until an actual agreement exists">
+ <label for="f-agreement_status">Agreement status</label>
+ <select id="f-agreement_status" name="agreement_status">
+  <option value="" {{ 'selected' if not r.agreement_status }}>none / unknown</option>
+  <option value="drafted" {{ 'selected' if r.agreement_status=='drafted' }}>drafted — sent for review</option>
+  <option value="signed" {{ 'selected' if r.agreement_status=='signed' }}>signed (record which agreement in notes)</option>
+ </select>
+ <label for="f-open_questions">Outstanding questions</label>
+ <textarea id="f-open_questions" name="open_questions" rows="2" placeholder="what to nail down before they can be handed off">{{ r.open_questions }}</textarea>
+ <label for="f-contact_person">Business contact (name)</label>
+ <input id="f-contact_person" name="contact_person" value="{{ r.contact_person }}" placeholder="public / conversational contact — optional, kept deliberately">
+ <label for="f-biz_email">Business email</label>
+ <input id="f-biz_email" name="biz_email" value="{{ r.biz_email }}" placeholder="only when the business gave it to us">
+ <label for="f-biz_phone">Business phone</label>
+ <input id="f-biz_phone" name="biz_phone" value="{{ r.public_phone }}" placeholder="public listing / as given — editable here">
+ <label for="f-followup_note">Follow-up note (what happened)</label>
+ <textarea id="f-followup_note" name="followup_note" rows="2" placeholder="record what ACTUALLY occurred — outreach is manual; this is the log of it, not an action">{{ r.followup_note }}</textarea>
+ <label for="f-next_action">NEXT action</label>
+ <input id="f-next_action" name="next_action" value="{{ r.next_action }}" placeholder="e.g. 'send pricing follow-up Tue' — a record, not a send button">
+ <label for="f-next_action_date">Next action date</label>
+ <input id="f-next_action_date" name="next_action_date" value="{{ r.next_action_date }}" placeholder="YYYY-MM-DD">
+ <label for="f-notes">Notes</label>
+ <textarea id="f-notes" name="notes" rows="2">{{ r.notes }}</textarea>
+ <span></span><button type="submit">save commercial record</button>
+</form>
+<p class="mini">Every change is logged with before/after in the history below. No form here contacts anyone,
+verifies anything, or activates a buyer.</p>
+
+<h3>Dedupe check</h3>
+{% if dup %}<p class="small" style="background:#fde">⚠ Possible duplicate of existing buyer
+<a href="/admin?f={{ dup.id }}&token={{ token }}"><code>{{ dup.id }}</code> — {{ dup.name or dup.id }}</a>
+(same website/name). Resolve before creating another buyer account.</p>{% else %}<p class="small">No existing buyer record matches this name/website.</p>{% endif %}
+
+<h3>Handoff to buyer onboarding</h3>
+{% if buyer %}
+ <p class="small">A linked buyer record <code>{{ buyer.id }}</code> already EXISTS — the handoff RESUMES it (prefilled
+ form), never creating a second account.</p>
+{% if not buyer.active %}
+ <p class="small">Draft status: <b>INACTIVE</b> — cannot receive leads. Complete onboarding, then activate explicitly.</p>
+ <p class="small"><a class="btn sm ghost" href="/admin?f={{ buyer.id }}&token={{ token }}">Open onboarding form (resume)</a></p>
+{% else %}
+ <p class="small">Final status: <span class="pill done">ACTIVE buyer</span> — routing eligibility is governed ONLY by the
+ marketplace engine; the onboarding journey here is complete.</p>
+{% endif %}
+{% elif missing %}
+<p class="small" style="background:#fde">Blocked — still missing:</p>
+<ul class="small">{% for m in missing %}<li>· {{ m }}</li>{% endfor %}</ul>
+<p class="mini">Once everything above is recorded, the confirm button below becomes available.</p>
+{% else %}
+<form method="post" action="/admin/prospects/{{ r.id }}/handoff" class="small">
+ <button type="submit" name="confirm" value="convert">Confirm handoff → create INACTIVE buyer draft + open onboarding form</button>
+</form>
+<p class="mini">Carries the recorded business facts into the EXISTING onboarding flow as a portal-less INACTIVE draft
+(/admin?f=&lt;bid&gt;). Existing buyer values are never silently overwritten — the form keeps saved values unless you
+change them. No lead can ever be routed to a draft, and activation happens only there, after the full
+license/NPN/pricing/delivery checks pass — the ladder stays intact.</p>
+{% endif %}
+
+<h3>Decision + change history (append-only)</h3>
+<table class="small"><tr><th>When</th><th>Action</th><th>Detail</th></tr>
+{% for h in history %}<tr><td class="mini">{{ (h.ts or '')[:16].replace('T',' ') }}</td><td><code>{{ h.action }}</code></td><td>{{ h.note }}</td></tr>{% endfor %}
+</table>
+<p class="mini">This is the trail of what the OPERATOR did and learned — it can never invent conversations,
+interest, or commitments that were not recorded.</p>
+</div>{% endblock %}

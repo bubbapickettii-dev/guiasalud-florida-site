@@ -1,0 +1,35 @@
+{
+ "version": "2026-10-05.v4",
+ "text": "By checking this box and clicking \"{cta}\", I agree that {seller} (a licensed insurance agency) may contact me about {product_label} at the phone number and email I provided, including by calls and text messages that may use automated technology or prerecorded/artificial voice. Consent is not a condition of any purchase. Message & data rates may apply. I can opt out anytime (reply STOP to texts). I also agree to the Privacy Policy and Terms.",
+ "email_only_text": "Email me my results. I agree to receive emails from {brand} about my results and related insurance information. I can unsubscribe anytime.",
+ "notes": [
+  "Checkbox is unchecked by default (no pre-checked consent).",
+  "{seller} is the PLATFORM phrase ('GS Allude and its licensed agent partner'), never a pre-chosen agency: consumers never see or select a buyer. The platform assigns the fulfilling agent after submit, from each buyer's contracted criteria, daily cap and prepaid balance — never from anything the browser sends.",
+  "Full rendered text, version, page URL, IP, user agent, timestamp and a SHA-256 of the form snapshot are stored per lead.",
+  "Opt-outs honored within 10 business days by any reasonable means (FCC); FL s.501.059: the 15-day STOP window is a pre-suit cure period, not the compliance standard; honor STOP within 10 business days (FCC)."
+ ],
+ "product_labels": {
+  "health_aca": "health insurance",
+  "term_life": "life insurance",
+  "mortgage_protection": "life insurance (mortgage protection)",
+  "final_expense": "life insurance (final expense)"
+ },
+ "text_es": "Al marcar esta casilla y hacer clic en \"{cta}\", acepto que {seller} (una agencia de seguros con licencia) me contacte sobre {product_label} al número de teléfono y correo electrónico que proporcioné, incluso mediante llamadas y mensajes de texto que pueden usar tecnología automatizada o voz pregrabada/artificial. El consentimiento no es una condición de compra. Pueden aplicar tarifas de mensajes y datos. Puedo cancelar en cualquier momento (responde STOP a los textos). También acepto la Política de Privacidad y los Términos.",
+ "email_only_text_es": "Envíenme mis resultados por correo. Acepto recibir correos de {brand} sobre mis resultados e información de seguros relacionada. Puedo darme de baja en cualquier momento.",
+ "product_labels_es": {
+  "health_aca": "seguro médico",
+  "term_life": "seguro de vida",
+  "mortgage_protection": "seguro de vida (protección hipotecaria)",
+  "final_expense": "seguro de vida (gastos finales)"
+ },
+ "cta": {
+  "check": {
+   "en": "Connect me with an agent",
+   "es": "Conectarme con un agente"
+  },
+  "legacy": {
+   "en": "Get my options",
+   "es": "Ver mis opciones"
+  }
+ }
+}

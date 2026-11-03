@@ -1,0 +1,79 @@
+{
+ "source": "../leadgen aggregate export (audience_by_segment.csv) - counts of public demand signals, not people to contact",
+ "built": "2026-10-05",
+ "segments": {
+  "Beauty & barber pros": {
+   "audience_signals": 24305,
+   "south_fl": 7945,
+   "last_30d": 2151,
+   "last_90d": 6188
+  },
+  "New realtors": {
+   "audience_signals": 20168,
+   "south_fl": 6840,
+   "last_30d": 1700,
+   "last_90d": 5171
+  },
+  "Salon & barbershop owners": {
+   "audience_signals": 8124,
+   "south_fl": 2463,
+   "last_30d": 934,
+   "last_90d": 2253
+  },
+  "New business owners": {
+   "audience_signals": 7602,
+   "south_fl": 7537,
+   "last_30d": 333,
+   "last_90d": 2087
+  },
+  "Owner-operator truckers": {
+   "audience_signals": 7234,
+   "south_fl": 2406,
+   "last_30d": 911,
+   "last_90d": 3414
+  },
+  "New healthcare workers": {
+   "audience_signals": 3476,
+   "south_fl": 1235,
+   "last_30d": 1271,
+   "last_90d": 3409
+  },
+  "Self-employed health pros": {
+   "audience_signals": 2098,
+   "south_fl": 814,
+   "last_30d": 816,
+   "last_90d": 2067
+  },
+  "New practice owners": {
+   "audience_signals": 1636,
+   "south_fl": 705,
+   "last_30d": 594,
+   "last_90d": 1591
+  },
+  "Small trucking companies": {
+   "audience_signals": 965,
+   "south_fl": 282,
+   "last_30d": 138,
+   "last_90d": 441
+  },
+  "Laid-off workers (WARN employers)": {
+   "audience_signals": null,
+   "employers": 200,
+   "employees_affected": 15018,
+   "note": "company-level notices; no individuals"
+  },
+  "Spanish-speaking self-employed (Miami-Dade)": {
+   "audience_signals": 15286,
+   "last_90d": 4138,
+   "note": "Miami-Dade ZIPs, 5 self-employed triggers. Language is an inference, not in the data."
+  },
+  "Fitness & combat-sports pros (1099)": {
+   "audience_signals": null,
+   "note": "no public dataset (FL doesn't license trainers)"
+  },
+  "2027 re-shoppers (carrier exits / rate shock)": {
+   "audience_signals": null,
+   "note": "Not from the public-record engine: Florida treats carrier enrollment as a trade secret, so exiting-carrier membership counts aren't public. 4,538,772 FL plan selections in 2026 (all carriers)."
+  }
+ }
+}

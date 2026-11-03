@@ -1,0 +1,931 @@
+[
+ {
+  "id": "oep-2027-health",
+  "slug": "2027-health-coverage-check",
+  "product": "health_aca",
+  "secondary_products": [
+   "term_life"
+  ],
+  "audience": "Floridians without employer coverage: self-employed / 1099, new business owners, people losing a job plan, Marketplace members facing 2027 renewals",
+  "source_signals": [
+   "NEW_REALTOR_LICENSE",
+   "NEW_BEAUTY_LICENSE",
+   "NEW_BARBER_LICENSE",
+   "NEW_SELF_EMPLOYED_PROVIDER",
+   "NEW_TRUCKING_OWNER_OPERATOR",
+   "NEW_BUSINESS_FILING",
+   "NEW_LOCAL_BUSINESS",
+   "BUSINESS_CLOSED",
+   "TURNING_26"
+  ],
+  "likely_need": "Individual/family health coverage for 2027; subsidy eligibility after the enhanced credits ended",
+  "hook": "Open Enrollment runs Nov 1 - Jan 15. Enroll by Dec 15 for coverage starting Jan 1. Know where you stand before you pick a plan.",
+  "headline": "2027 Health Coverage Check for Floridians",
+  "subhead": "60 seconds: see your enrollment window and whether your income falls in the range that gets help paying premiums in 2027.",
+  "problem": "The extra Marketplace subsidies ended after 2025. For 2027, premium tax credits generally stop above 400% of the poverty level - $63,840 for a single person, $132,000 for a family of four.",
+  "offer": "Enrollment window + 2027 subsidy-range check",
+  "cta": "Check my 2027 coverage",
+  "tool": "aca_check",
+  "steps": [
+   "health_who",
+   "age_range",
+   "state",
+   "health_timeframe"
+  ],
+  "age_min": 18,
+  "age_max": 64,
+  "follow_up": "Licensed health agent call/text with consent; agent documents consumer consent per 45 CFR 155.220(j)(2)(iii) before any Marketplace assistance",
+  "value_usd": {
+   "A": 35,
+   "B": 22,
+   "C": 5
+  },
+  "channels": [
+   "meta_paid_social",
+   "partner_brokerage_onboarding",
+   "google_search",
+   "tiktok_organic",
+   "instagram_organic",
+   "partner_cpa_bookkeepers",
+   "facebook_groups_trucking"
+  ],
+  "variants": [
+   {
+    "id": "v_deadline",
+    "headline": "2027 Health Coverage Check for Floridians",
+    "cta": "Check my 2027 coverage"
+   },
+   {
+    "id": "v_cliff",
+    "headline": "Self-employed in Florida? Check if your income still gets help paying for health insurance in 2027",
+    "cta": "Run the 60-second check"
+   },
+   {
+    "id": "v_1099",
+    "headline": "Went 1099 this year? Here's your 2027 health coverage window",
+    "cta": "See my window"
+   }
+  ]
+ },
+ {
+  "id": "oep-2027-health-es",
+  "slug": "chequeo-seguro-medico-2027",
+  "product": "health_aca",
+  "secondary_products": [
+   "term_life"
+  ],
+  "audience": "Floridians without employer coverage: self-employed / 1099, new business owners, people losing a job plan, Marketplace members facing 2027 renewals",
+  "source_signals": [
+   "NEW_REALTOR_LICENSE",
+   "NEW_BEAUTY_LICENSE",
+   "NEW_BARBER_LICENSE",
+   "NEW_SELF_EMPLOYED_PROVIDER",
+   "NEW_TRUCKING_OWNER_OPERATOR",
+   "NEW_BUSINESS_FILING",
+   "NEW_LOCAL_BUSINESS",
+   "BUSINESS_CLOSED",
+   "TURNING_26"
+  ],
+  "likely_need": "Individual/family health coverage for 2027; subsidy eligibility after the enhanced credits ended",
+  "hook": "La Inscripción Abierta va del 1 de noviembre al 15 de enero. Inscríbase antes del 15 de diciembre para tener cobertura desde el 1 de enero.",
+  "headline": "Chequeo de Seguro Médico 2027 para Florida",
+  "subhead": "En 60 segundos: vea su periodo de inscripción y si sus ingresos están en el rango que recibe ayuda para pagar la prima en 2027.",
+  "problem": "Los subsidios extra del Mercado terminaron después de 2025. Para 2027, los créditos fiscales generalmente terminan por encima del 400% del nivel de pobreza: $63,840 para una persona y $132,000 para una familia de cuatro.",
+  "offer": "Su periodo de inscripción + rango de subsidio 2027",
+  "cta": "Revisar mi cobertura 2027",
+  "tool": "aca_check",
+  "steps": [
+   "health_who",
+   "age_range",
+   "state",
+   "health_timeframe"
+  ],
+  "age_min": 18,
+  "age_max": 64,
+  "follow_up": "Licensed health agent call/text with consent; agent documents consumer consent per 45 CFR 155.220(j)(2)(iii) before any Marketplace assistance",
+  "value_usd": {
+   "A": 35,
+   "B": 22,
+   "C": 5
+  },
+  "channels": [
+   "meta_paid_social",
+   "tiktok_organic",
+   "instagram_organic",
+   "partner_brokerage_onboarding",
+   "radio_local"
+  ],
+  "variants": [
+   {
+    "id": "es_deadline",
+    "headline": "Chequeo de Seguro Médico 2027 para Florida",
+    "cta": "Revisar mi cobertura 2027"
+   },
+   {
+    "id": "es_1099",
+    "headline": "¿Trabaja por su cuenta (1099)? Vea su opción de seguro médico para 2027",
+    "cta": "Hacer el chequeo de 60 segundos"
+   }
+  ],
+  "lang": "es"
+ },
+ {
+  "id": "new-business-owner",
+  "slug": "business-owner-protection",
+  "product": "term_life",
+  "secondary_products": [
+   "key_person",
+   "health_self_employed"
+  ],
+  "audience": "People who just formed an LLC / opened a business",
+  "source_signals": [
+   "NEW_BUSINESS_FILING",
+   "NEW_LOCAL_BUSINESS",
+   "NEW_BUSINESS_LOCATION",
+   "NEW_FOREIGN_ENTITY_REGISTRATION"
+  ],
+  "likely_need": "Income + family protection now that no employer plan exists; business debt/lease would fall on family",
+  "hook": "You just started a business. If something happened to you tomorrow, who pays the lease, the loan and the bills at home?",
+  "headline": "The 60-second Business Owner Protection Check",
+  "subhead": "See how much your family and your business would need if you couldn't work - then compare coverage options from a licensed agent.",
+  "problem": "New owners lose employer life & disability coverage the day they go out on their own, and most never replace it.",
+  "offer": "Free protection-gap estimate + business owner checklist",
+  "cta": "Run my protection check",
+  "tool": "dime_calc",
+  "tool_extra": [
+   "business_debt"
+  ],
+  "steps": [
+   "coverage_for",
+   "age_range",
+   "state",
+   "coverage_amount",
+   "tobacco",
+   "timeframe"
+  ],
+  "age_min": 18,
+  "age_max": 70,
+  "follow_up": "Agent call within 5 min (A tier); the one summary email the consumer asked for (no sequences)",
+  "value_usd": {
+   "A": 60,
+   "B": 35,
+   "C": 8
+  },
+  "channels": [
+   "partner_cpa_bookkeepers",
+   "qr_print_partner",
+   "google_search",
+   "seo_content",
+   "newsletter_sponsorship",
+   "meta_paid_social"
+  ]
+ },
+ {
+  "id": "newly-self-employed",
+  "slug": "self-employed-protection",
+  "product": "term_life",
+  "secondary_products": [
+   "disability_income",
+   "health_self_employed"
+  ],
+  "audience": "Newly licensed realtors, beauty pros, barbers, independent health pros (1099)",
+  "source_signals": [
+   "NEW_REALTOR_LICENSE",
+   "NEW_BEAUTY_LICENSE",
+   "NEW_BARBER_LICENSE",
+   "NEW_SELF_EMPLOYED_PROVIDER"
+  ],
+  "likely_need": "Replace the employer benefits they no longer get: life, income protection, health",
+  "hook": "You're officially self-employed. Nobody's covering you now - here's what changed.",
+  "headline": "Just went 1099? Get your Self-Employed Protection Checklist",
+  "subhead": "Answer 5 quick questions and get a personal checklist of the coverage your old employer used to handle.",
+  "problem": "1099 workers have no group life, no disability coverage and no employer health plan - most don't realize it until they need it.",
+  "offer": "Personalized self-employed coverage checklist",
+  "cta": "Build my checklist",
+  "tool": "se_checklist",
+  "steps": [
+   "work_type",
+   "age_range",
+   "state",
+   "dependents",
+   "coverage_amount",
+   "tobacco",
+   "timeframe",
+   "also_health"
+  ],
+  "age_min": 18,
+  "age_max": 65,
+  "follow_up": "Checklist emailed once (consumer asked for it); agent call for A/B; health-interest flag routes a second (health) lead only with separate consent",
+  "value_usd": {
+   "A": 55,
+   "B": 30,
+   "C": 8
+  },
+  "channels": [
+   "partner_brokerage_onboarding",
+   "partner_beauty_schools",
+   "tiktok_organic",
+   "instagram_organic",
+   "reddit_community",
+   "google_search",
+   "qr_print_partner"
+  ],
+  "variants": [
+   {
+    "id": "v_checklist",
+    "headline": "Just went 1099? Get your Self-Employed Protection Checklist",
+    "cta": "Build my checklist"
+   },
+   {
+    "id": "v_hr",
+    "headline": "You're your own HR department now. Here's what it never told you.",
+    "cta": "Show me what I'm missing"
+   }
+  ]
+ },
+ {
+  "id": "owner-operator",
+  "slug": "owner-operator-protection",
+  "product": "term_life",
+  "secondary_products": [
+   "health_self_employed",
+   "disability_income"
+  ],
+  "audience": "New owner-operator truckers (own authority, 1-2 trucks)",
+  "source_signals": [
+   "NEW_TRUCKING_OWNER_OPERATOR",
+   "NEW_TRUCKING_FLEET"
+  ],
+  "likely_need": "Family + truck-note protection; no company benefits; dangerous occupation",
+  "hook": "Your truck is insured. Your family isn't.",
+  "headline": "Owner-Operator Family Protection Check",
+  "subhead": "Two minutes: see what your truck note, your bills and your family would need if you couldn't drive.",
+  "problem": "Going under your own authority means losing the company life & health plan - and insurers ask about driving occupations.",
+  "offer": "Free family protection estimate built for drivers",
+  "cta": "Check my coverage gap",
+  "tool": "dime_calc",
+  "tool_extra": [
+   "truck_note"
+  ],
+  "steps": [
+   "coverage_for",
+   "age_range",
+   "state",
+   "coverage_amount",
+   "tobacco",
+   "timeframe"
+  ],
+  "age_min": 21,
+  "age_max": 70,
+  "follow_up": "Agent call (drivers prefer phone/text - only with consent); email summary",
+  "value_usd": {
+   "A": 60,
+   "B": 35,
+   "C": 8
+  },
+  "channels": [
+   "youtube_trucking",
+   "facebook_groups_trucking",
+   "partner_truck_stops_dispatch",
+   "qr_print_partner",
+   "tiktok_organic",
+   "meta_paid_social"
+  ]
+ },
+ {
+  "id": "mortgage-protection",
+  "slug": "mortgage-protection",
+  "product": "mortgage_protection",
+  "secondary_products": [
+   "term_life"
+  ],
+  "audience": "New homeowners",
+  "source_signals": [
+   "NEW_HOMEOWNER"
+  ],
+  "likely_need": "Pay off the mortgage if the borrower dies",
+  "hook": "See what your mortgage would leave your family with.",
+  "headline": "What would your mortgage leave your family with?",
+  "subhead": "Enter your loan and income - see the monthly gap your family would face, and what it takes to close it.",
+  "problem": "Most new homeowners have mortgage insurance that protects the LENDER (PMI), not their family.",
+  "offer": "Mortgage protection gap estimate",
+  "cta": "See my family's gap",
+  "tool": "mortgage_gap",
+  "steps": [
+   "coverage_for",
+   "age_range",
+   "state",
+   "mortgage_balance",
+   "tobacco",
+   "timeframe"
+  ],
+  "age_min": 18,
+  "age_max": 75,
+  "follow_up": "Agent call",
+  "value_usd": {
+   "A": 65,
+   "B": 40,
+   "C": 10
+  },
+  "channels": [
+   "partner_realtors_closing_gift",
+   "partner_title_companies",
+   "direct_mail_postcard",
+   "google_search",
+   "seo_content",
+   "meta_paid_social"
+  ],
+  "variants": [
+   {
+    "id": "v_family",
+    "headline": "What would your mortgage leave your family with?",
+    "cta": "See my family's gap"
+   },
+   {
+    "id": "v_pmi",
+    "headline": "PMI protects your lender. What protects your family?",
+    "cta": "See my family's gap"
+   }
+  ]
+ },
+ {
+  "id": "new-parent",
+  "slug": "new-parent-protection",
+  "product": "term_life",
+  "secondary_products": [],
+  "audience": "Expecting / new parents (no public signal - births are confidential)",
+  "source_signals": [],
+  "likely_need": "Income replacement until kids are grown + education",
+  "hook": "You just became someone's whole world. Make sure that's protected.",
+  "headline": "New Parent Protection Calculator",
+  "subhead": "Find out how much coverage would raise your child to 18 if you weren't here - in under a minute.",
+  "problem": "A new baby is the #1 reason people buy life insurance, but most new parents guess the amount.",
+  "offer": "Child-raising cost + coverage estimate",
+  "cta": "Calculate for my family",
+  "tool": "dime_calc",
+  "tool_extra": [
+   "kids"
+  ],
+  "steps": [
+   "coverage_for",
+   "age_range",
+   "state",
+   "coverage_amount",
+   "tobacco",
+   "timeframe"
+  ],
+  "age_min": 18,
+  "age_max": 55,
+  "follow_up": "Agent call; email estimate",
+  "value_usd": {
+   "A": 60,
+   "B": 35,
+   "C": 8
+  },
+  "channels": [
+   "partner_baby_stores_pediatric",
+   "instagram_organic",
+   "tiktok_organic",
+   "pinterest",
+   "meta_paid_social",
+   "seo_content"
+  ]
+ },
+ {
+  "id": "family-protection",
+  "slug": "family-protection",
+  "product": "term_life",
+  "secondary_products": [],
+  "audience": "Parents / married adults 25-55",
+  "source_signals": [
+   "TURNING_26",
+   "NEW_HOMEOWNER"
+  ],
+  "likely_need": "Income replacement + debts",
+  "hook": "If your income stopped today, how long would your family be okay?",
+  "headline": "Family Protection Gap Check",
+  "subhead": "See how many months your family could cover without your income - and what closes the gap.",
+  "problem": "Most families have less than a year of cushion and far less coverage than they think.",
+  "offer": "Protection gap estimate",
+  "cta": "Check my family's gap",
+  "tool": "dime_calc",
+  "steps": [
+   "coverage_for",
+   "age_range",
+   "state",
+   "coverage_amount",
+   "tobacco",
+   "timeframe"
+  ],
+  "age_min": 18,
+  "age_max": 65,
+  "follow_up": "Agent call; email estimate",
+  "value_usd": {
+   "A": 55,
+   "B": 30,
+   "C": 8
+  },
+  "channels": [
+   "meta_paid_social",
+   "google_search",
+   "seo_content",
+   "youtube",
+   "local_facebook_groups"
+  ]
+ },
+ {
+  "id": "income-replacement",
+  "slug": "income-protection",
+  "product": "term_life",
+  "secondary_products": [
+   "disability_income"
+  ],
+  "audience": "Earners whose family depends on their paycheck",
+  "source_signals": [
+   "NEW_SELF_EMPLOYED_PROVIDER",
+   "NEW_REALTOR_LICENSE",
+   "NEW_TRUCKING_OWNER_OPERATOR"
+  ],
+  "likely_need": "Replace X years of income",
+  "hook": "Your paycheck is your family's biggest asset. Is it protected?",
+  "headline": "Income Replacement Calculator",
+  "subhead": "How much would it take to replace your paycheck for your family? Get the number in 30 seconds.",
+  "problem": "People insure their car and phone but not the income that pays for everything.",
+  "offer": "Income replacement estimate",
+  "cta": "Calculate my number",
+  "tool": "income_calc",
+  "steps": [
+   "coverage_for",
+   "age_range",
+   "state",
+   "coverage_amount",
+   "tobacco",
+   "timeframe"
+  ],
+  "age_min": 18,
+  "age_max": 65,
+  "follow_up": "Agent call; email estimate",
+  "value_usd": {
+   "A": 55,
+   "B": 30,
+   "C": 8
+  },
+  "channels": [
+   "google_search",
+   "seo_content",
+   "linkedin_organic",
+   "newsletter_sponsorship",
+   "meta_paid_social"
+  ]
+ },
+ {
+  "id": "final-expense",
+  "slug": "final-expense",
+  "product": "final_expense",
+  "secondary_products": [],
+  "audience": "Adults 50-85",
+  "source_signals": [
+   "TURNING_65"
+  ],
+  "likely_need": "Small whole-life policy for funeral + final bills",
+  "hook": "Don't leave your family a bill. See what final expenses really cost.",
+  "headline": "Final Expense Cost Estimator",
+  "subhead": "See typical funeral and final costs and how a small policy could cover them - no medical exam options available.",
+  "problem": "The median funeral with viewing and burial cost $8,300 in 2023 (NFDA) - before cemetery costs - and families often pay it out of pocket.",
+  "offer": "Final expense estimate",
+  "cta": "Estimate my final expenses",
+  "tool": "final_expense_calc",
+  "steps": [
+   "coverage_for",
+   "age_range",
+   "state",
+   "fe_amount",
+   "tobacco",
+   "health_rating",
+   "timeframe"
+  ],
+  "age_min": 50,
+  "age_max": 85,
+  "follow_up": "Agent call (seniors prefer phone); mailed brochure option",
+  "value_usd": {
+   "A": 45,
+   "B": 28,
+   "C": 6
+  },
+  "channels": [
+   "direct_mail_postcard",
+   "partner_churches_senior_centers",
+   "facebook_paid_social",
+   "youtube",
+   "local_print_flyers",
+   "radio_local"
+  ]
+ },
+ {
+  "id": "young-adult",
+  "slug": "first-policy",
+  "product": "term_life",
+  "secondary_products": [],
+  "audience": "Ages 22-32, often turning 26",
+  "source_signals": [
+   "TURNING_26"
+  ],
+  "likely_need": "First policy while rates are lowest",
+  "hook": "Turning 26 changes your coverage. Lock in your rate while you're young.",
+  "headline": "Your First Policy: what young adults actually pay attention to",
+  "subhead": "5 quick questions show what drives your price and whether locking in now makes sense.",
+  "problem": "Young adults think life insurance is for later; age and health are the two biggest price drivers.",
+  "offer": "Price-factor check",
+  "cta": "See what drives my price",
+  "tool": "cost_factors",
+  "steps": [
+   "age_range",
+   "state",
+   "coverage_amount",
+   "tobacco",
+   "health_rating",
+   "timeframe"
+  ],
+  "age_min": 18,
+  "age_max": 40,
+  "follow_up": "Email-first (this group prefers text/email); agent only if requested",
+  "value_usd": {
+   "A": 40,
+   "B": 22,
+   "C": 6
+  },
+  "channels": [
+   "tiktok_organic",
+   "instagram_organic",
+   "reddit_community",
+   "youtube_shorts",
+   "snapchat_paid"
+  ]
+ },
+ {
+  "id": "pre-retirement",
+  "slug": "retirement-protection",
+  "product": "term_life",
+  "secondary_products": [
+   "final_expense"
+  ],
+  "audience": "Ages 55-64 approaching retirement / Medicare",
+  "source_signals": [
+   "TURNING_65"
+  ],
+  "likely_need": "Bridge coverage, spouse protection, final expense",
+  "hook": "Retiring soon? Your work life insurance probably ends when your job does.",
+  "headline": "Pre-Retirement Protection Check",
+  "subhead": "See what coverage stops when you retire and what your spouse would need.",
+  "problem": "Group life coverage usually ends at retirement - right when health makes new coverage harder to get.",
+  "offer": "Retirement coverage gap estimate",
+  "cta": "Check my retirement gap",
+  "tool": "dime_calc",
+  "steps": [
+   "coverage_for",
+   "age_range",
+   "state",
+   "coverage_amount",
+   "tobacco",
+   "health_rating",
+   "timeframe"
+  ],
+  "age_min": 50,
+  "age_max": 75,
+  "follow_up": "Agent call; mailed option",
+  "value_usd": {
+   "A": 50,
+   "B": 30,
+   "C": 6
+  },
+  "channels": [
+   "facebook_paid_social",
+   "direct_mail_postcard",
+   "seo_content",
+   "partner_financial_planners",
+   "youtube"
+  ]
+ },
+ {
+  "id": "policy-review",
+  "slug": "policy-review",
+  "product": "term_life",
+  "secondary_products": [],
+  "audience": "People who already have a policy (often old / employer-only)",
+  "source_signals": [
+   "NEW_HOMEOWNER",
+   "NEW_BUSINESS_FILING"
+  ],
+  "likely_need": "Coverage increase / replacement / conversion",
+  "hook": "Bought your policy years ago? Your life changed. Your coverage didn't.",
+  "headline": "Free Existing Policy Review",
+  "subhead": "Check whether the coverage you have still matches your mortgage, income and family today.",
+  "problem": "Coverage bought years ago rarely matches a new house, kids or business.",
+  "offer": "Coverage-vs-today check",
+  "cta": "Review my coverage",
+  "tool": "dime_calc",
+  "tool_extra": [
+   "existing"
+  ],
+  "steps": [
+   "coverage_for",
+   "age_range",
+   "state",
+   "coverage_amount",
+   "tobacco",
+   "timeframe"
+  ],
+  "age_min": 25,
+  "age_max": 75,
+  "follow_up": "Agent call; email summary",
+  "value_usd": {
+   "A": 45,
+   "B": 25,
+   "C": 6
+  },
+  "channels": [
+   "seo_content",
+   "google_search",
+   "partner_cpa_bookkeepers",
+   "meta_paid_social"
+  ]
+ },
+ {
+  "id": "do-i-need",
+  "slug": "do-i-need-life-insurance",
+  "product": "term_life",
+  "secondary_products": [],
+  "audience": "Top-of-funnel researchers",
+  "source_signals": [],
+  "likely_need": "Clarity",
+  "hook": "Do you actually need life insurance? Take the 60-second quiz.",
+  "headline": "Do I Actually Need Life Insurance?",
+  "subhead": "An honest 6-question quiz. Some people don't - find out which group you're in.",
+  "problem": "Most advice is a sales pitch. People want a straight answer.",
+  "offer": "Honest yes/no verdict",
+  "cta": "Take the quiz",
+  "tool": "need_quiz",
+  "steps": [
+   "coverage_for",
+   "age_range",
+   "state",
+   "coverage_amount",
+   "tobacco",
+   "timeframe"
+  ],
+  "age_min": 18,
+  "age_max": 75,
+  "follow_up": "Verdict shown free; agent only if they ask",
+  "value_usd": {
+   "A": 45,
+   "B": 25,
+   "C": 5
+  },
+  "channels": [
+   "seo_content",
+   "tiktok_organic",
+   "reddit_community",
+   "youtube_shorts",
+   "pinterest"
+  ]
+ },
+ {
+  "id": "how-much",
+  "slug": "how-much-life-insurance",
+  "product": "term_life",
+  "secondary_products": [],
+  "audience": "People who decided to buy and want the right amount",
+  "source_signals": [],
+  "likely_need": "Right-sized coverage",
+  "hook": "How much life insurance do you need? Most people guess wrong.",
+  "headline": "How Much Life Insurance Do I Need?",
+  "subhead": "The DIME method - debt, income, mortgage, education - calculated for you in 60 seconds.",
+  "problem": "The '10x income' rule misses debts, mortgage and kids' education.",
+  "offer": "Personal coverage number",
+  "cta": "Calculate my number",
+  "tool": "dime_calc",
+  "steps": [
+   "coverage_for",
+   "age_range",
+   "state",
+   "coverage_amount",
+   "tobacco",
+   "timeframe"
+  ],
+  "age_min": 18,
+  "age_max": 75,
+  "follow_up": "Agent call; email number",
+  "value_usd": {
+   "A": 60,
+   "B": 35,
+   "C": 8
+  },
+  "channels": [
+   "seo_content",
+   "google_search",
+   "youtube",
+   "pinterest",
+   "embed_partner_widget"
+  ]
+ },
+ {
+  "id": "health-issues",
+  "slug": "qualify-with-health-issues",
+  "product": "term_life",
+  "secondary_products": [
+   "final_expense"
+  ],
+  "audience": "People who assume they can't qualify",
+  "source_signals": [],
+  "likely_need": "Simplified / guaranteed-issue options",
+  "hook": "Think you can't get covered because of your health? You probably have more options than you think.",
+  "headline": "Could You Qualify With Health Issues?",
+  "subhead": "A quick, general check of which kinds of policies may be open to you - no medical details required.",
+  "problem": "People with conditions assume they're uninsurable and never ask.",
+  "offer": "Policy-type eligibility check (no diagnosis questions)",
+  "cta": "Check my options",
+  "tool": "qualify_quiz",
+  "steps": [
+   "age_range",
+   "state",
+   "health_rating",
+   "tobacco",
+   "coverage_amount",
+   "timeframe"
+  ],
+  "age_min": 18,
+  "age_max": 85,
+  "follow_up": "Agent call (specialist in impaired-risk)",
+  "value_usd": {
+   "A": 50,
+   "B": 28,
+   "C": 6
+  },
+  "channels": [
+   "seo_content",
+   "facebook_groups_support",
+   "google_search",
+   "youtube"
+  ]
+ },
+ {
+  "id": "cost",
+  "slug": "life-insurance-cost",
+  "product": "term_life",
+  "secondary_products": [],
+  "audience": "Price shoppers",
+  "source_signals": [],
+  "likely_need": "Price expectations",
+  "hook": "How much does life insurance cost? It depends on 5 things - here's yours.",
+  "headline": "What Will Life Insurance Cost You?",
+  "subhead": "See the 5 factors that set your price and where you stand - then get real quotes from a licensed agent.",
+  "problem": "People overestimate the cost and never get a quote.",
+  "offer": "Personal price-factor profile",
+  "cta": "See my price factors",
+  "tool": "cost_factors",
+  "steps": [
+   "age_range",
+   "state",
+   "coverage_amount",
+   "tobacco",
+   "health_rating",
+   "timeframe"
+  ],
+  "age_min": 18,
+  "age_max": 80,
+  "follow_up": "Agent call with real quotes",
+  "value_usd": {
+   "A": 55,
+   "B": 30,
+   "C": 6
+  },
+  "channels": [
+   "google_search",
+   "seo_content",
+   "youtube",
+   "meta_paid_social"
+  ]
+ },
+ {
+  "id": "work-life-ends",
+  "slug": "work-life-insurance-ending",
+  "product": "term_life",
+  "secondary_products": [],
+  "audience": "Florida workers losing employer group life insurance (layoffs, closures)",
+  "source_signals": [
+   "WARN_LAYOFF",
+   "WARN_CLOSURE"
+  ],
+  "likely_need": "Replace the group life coverage that ends with the job",
+  "hook": "Laid off? Your work life insurance usually ends with your job.",
+  "headline": "Your work life insurance is ending: what replaces it?",
+  "subhead": "Florida gives you 31 days to convert group life coverage without a health exam. See how much coverage your family would need in 30 seconds.",
+  "problem": "Group life ends with employment; most people don't know about the 31-day conversion window or that a new term policy may cost less.",
+  "offer": "Coverage estimate + your 31-day deadline",
+  "cta": "See how much coverage I need",
+  "tool": "income_calc",
+  "steps": [
+   "coverage_for",
+   "age_range",
+   "state",
+   "coverage_amount",
+   "tobacco",
+   "timeframe"
+  ],
+  "age_min": 18,
+  "age_max": 65,
+  "follow_up": "Delivered to a licensed life agent named in the consent",
+  "value_usd": {
+   "A": 45,
+   "B": 25,
+   "C": 8
+  },
+  "channels": [
+   "seo_content",
+   "warn_pages",
+   "partner_print",
+   "meta_paid_social"
+  ]
+ },
+ {
+  "id": "work-life-ends-es",
+  "slug": "seguro-de-vida-del-trabajo",
+  "product": "term_life",
+  "secondary_products": [],
+  "audience": "Trabajadores en Florida que pierden el seguro de vida del trabajo",
+  "source_signals": [
+   "WARN_LAYOFF",
+   "WARN_CLOSURE"
+  ],
+  "likely_need": "Replace the group life coverage that ends with the job",
+  "hook": "¿Te despidieron? El seguro de vida del trabajo normalmente termina con el empleo.",
+  "headline": "Tu seguro de vida del trabajo se termina: ¿qué lo reemplaza?",
+  "subhead": "En Florida tienes 31 días para convertir el seguro de vida de grupo sin examen médico. Calcula en 30 segundos cuánta cobertura necesita tu familia.",
+  "problem": "El seguro de vida de grupo termina con el empleo; mucha gente no sabe del plazo de 31 días.",
+  "offer": "Cálculo de cobertura + tu fecha límite de 31 días",
+  "cta": "Ver cuánta cobertura necesito",
+  "tool": "income_calc",
+  "steps": [
+   "coverage_for",
+   "age_range",
+   "state",
+   "coverage_amount",
+   "tobacco",
+   "timeframe"
+  ],
+  "age_min": 18,
+  "age_max": 65,
+  "follow_up": "Delivered to a licensed life agent named in the consent",
+  "value_usd": {
+   "A": 45,
+   "B": 25,
+   "C": 8
+  },
+  "channels": [
+   "seo_content",
+   "warn_pages",
+   "partner_print",
+   "meta_paid_social"
+  ],
+  "lang": "es"
+ },
+ {
+  "id": "military-life-ends",
+  "slug": "leaving-military-life-insurance",
+  "product": "term_life",
+  "secondary_products": [],
+  "audience": "Florida service members separating or recently separated (SGLI ending)",
+  "source_signals": [
+   "MILITARY_SEPARATION"
+  ],
+  "likely_need": "Replace SGLI before the 120-day and 240-day dates pass",
+  "hook": "Leaving the military? Your SGLI life insurance has deadlines.",
+  "headline": "Your military life insurance is ending: what replaces it?",
+  "subhead": "The VA gives you 120 days to convert and 240 days to apply for VGLI with no health review. See how much coverage your family would need in 30 seconds.",
+  "problem": "SGLI doesn't continue on its own; the no-health-review windows close and nobody explains the dates.",
+  "offer": "Coverage estimate + your 120/240-day dates",
+  "cta": "See how much coverage I need",
+  "tool": "income_calc",
+  "steps": [
+   "coverage_for",
+   "age_range",
+   "state",
+   "coverage_amount",
+   "tobacco",
+   "timeframe"
+  ],
+  "age_min": 18,
+  "age_max": 65,
+  "follow_up": "Delivered to a licensed life agent named in the consent",
+  "value_usd": {
+   "A": 45,
+   "B": 25,
+   "C": 8
+  },
+  "channels": [
+   "seo_content",
+   "partner_print",
+   "veteran_orgs"
+  ]
+ }
+]

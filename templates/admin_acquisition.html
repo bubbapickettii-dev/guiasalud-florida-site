@@ -1,0 +1,34 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1400px;padding:16px 16px 40px">
+<h2>Acquisition performance - partners &amp; tracked placements</h2>
+<div class="tabs" style="margin:8px 0">{% for t,l in [(0,'Real only'),(1,'TEST DATA only')] %}<a class="{{ 'on' if t==test }}" href="?token={{ token }}&test={{ t }}">{{ l }}</a>{% endfor %}
+· <a href="/admin/acquisition.csv?token={{ token }}&kind=partners">Partners CSV</a> · <a href="/admin/acquisition.csv?token={{ token }}&kind=placements">Placements CSV</a></div>
+{% if test %}<div class="note">Showing TEST DATA. These numbers say nothing about real performance.</div>{% endif %}
+
+<p class="mini">Every number here comes from existing attribution only: partner pages stamp <b>partner_id</b> on the visitor, the events and the lead; tracked placements carry their own <b>utm_content</b> (item id). Duplicate-flagged leads are counted separately and never inside Qualified. A dash means the data cannot say it — it is never a zero. Cost exists only where the operator recorded it in the Organic queue.</p>
+
+{% if gap and (gap.visits or gap.consented) and not test %}<div class="note" style="border-left:4px solid #b84"><b>Attribution gap:</b> {{ gap.visits }} real visitor{{ 's' if gap.visits != 1 }}, {{ gap.consented }} consented lead{{ 's' if gap.consented != 1 }} ({{ gap.qualified }} qualified, {{ gap.delivered }} delivered) arrived with <b>no partner attribution at all</b> — direct traffic is expected, links without <code>?utm_content</code> or a partner page are wasted evidence.</div>{% endif %}
+
+<h3 style="margin:18px 0 6px">Partners ({{ partners|length }} registered — including partners with zero activity so far)</h3>
+{% if not partners %}<p>No partners registered yet.</p>{% else %}<div style="overflow-x:auto"><table>
+<tr><th>Partner</th><th>Status</th><th class="num">Visits</th><th class="num">Check started</th><th class="num">Check done</th><th class="num">Asked for help</th><th class="num">Consented</th><th class="num">Qual %</th><th class="num">Qualified</th><th class="num">Dup</th><th class="num">Delivered</th><th class="num">Sold</th><th class="num">Returned</th><th class="num">Bad info</th><th class="num">DNC</th><th class="num">Email-only</th><th class="num">Revenue</th></tr>
+{% for p in partners %}<tr><td><b>{{ p.display_name }}</b><br><span class="mini">{{ p.partner_id }} · {{ p.type }} · {{ (p.language or 'en')|upper }}{% if p.audience %} · {{ p.audience }}{% endif %}</span></td><td class="mini">{{ p.status }}</td>
+<td class="num">{{ p.visits }}</td><td class="num">{{ p.form_starts }}</td><td class="num">{{ p.check_done }}</td><td class="num">{{ p.asked_help }}</td><td class="num">{{ p.consented }}</td>
+<td class="num">{{ p.qual_pct if p.qual_pct is not none else '-' }}</td><td class="num">{{ p.qualified }}</td><td class="num">{{ p.dup }}</td><td class="num">{{ p.delivered }}</td><td class="num">{{ p.sold }}</td>
+<td class="num">{{ p.returned }}</td><td class="num">{{ p.bad_info }}</td><td class="num">{{ p.dnc }}</td><td class="num">{{ p.email_only }}</td><td class="num">{{ '${:,.2f}'.format(p.revenue) if p.revenue else (0 if p.revenue == 0 else '-') }}</td></tr>{% endfor %}</table></div>{% endif %}
+<p class="mini">DNC is the agency honoring a stop request — counted, never penalized. Cost/attribution at partner level is unknown everywhere today: only placements carry recorded spend, never partners.</p>
+
+<h3 style="margin:22px 0 6px">Tracked placements (by link utm_content)</h3>
+{% if not items %}<p>No tracked placements configured.</p>{% else %}<div style="overflow-x:auto"><table>
+<tr><th>Placement</th><th>Where</th><th class="num">Visits</th><th class="num">Check done</th><th class="num">Consented</th><th class="num">Qual %</th><th class="num">Qualified</th><th class="num">Delivered</th><th class="num">Sold</th><th class="num">Returned</th><th class="num">Bad info</th><th class="num">Revenue</th><th class="num">Effort (min)</th><th class="num">Cost</th><th class="num">Cost/qualified</th></tr>
+{% for r in items %}<tr id="{{ r.id }}"><td><b>{{ r.id }}</b><br><span class="mini">{{ r.category }}</span></td><td class="mini">{{ r.where }}</td>
+<td class="num">{{ r.visits }}</td><td class="num">{{ r.check_done }}</td><td class="num">{{ r.consented }}</td><td class="num">{{ r.qual_pct if r.qual_pct is not none else '-' }}</td><td class="num">{{ r.qualified }}</td><td class="num">{{ r.delivered }}</td><td class="num">{{ r.sold }}</td>
+<td class="num">{{ r.returned }}</td><td class="num">{{ r.bad_info }}</td><td class="num">{{ '${:,.2f}'.format(r.revenue) if r.revenue else '-' }}</td><td class="num">{{ r.minutes or '-' }}</td>
+<td class="num">{{ '${:,.2f}'.format(r.cost_usd) if r.cost_usd is not none else '<span title="no cost recorded in the Organic queue">unknown</span>'|safe }}</td>
+<td class="num">{{ '${:,.2f}'.format(r.cost_per_qualified) if r.cost_per_qualified is not none else '-' }}</td></tr>{% endfor %}</table></div>{% endif %}
+
+{% if untracked and not test %}<div style="margin-top:16px"><h3 style="margin:0 0 6px">Attribution leaks: utm_content on real leads with no configured placement</h3><table>
+<tr><th style="width:280px">utm_content</th><th class="num">Leads</th><th class="num">Consented</th><th class="num">Qualified</th><th class="num">Delivered</th><th class="num">Sold</th><th class="num">Revenue</th></tr>
+{% for u in untracked %}<tr><td><code>{{ u.k }}</code></td><td class="num">{{ u.leads_all }}</td><td class="num">{{ u.consented }}</td><td class="num">{{ u.qualified }}</td><td class="num">{{ u.delivered }}</td><td class="num">{{ u.sold }}</td><td class="num">{{ '${:,.2f}'.format(u.revenue) if u.revenue else '-' }}</td></tr>{% endfor %}</table>
+<p class="mini">Values like <code>qr</code> or <code>guide</code> are per-partner sources (those leads are on the partner's row). Truly unknown values mean a link went out without its placement code — fix it before judging performance.</p></div>{% endif %}
+</div>{% endblock %}

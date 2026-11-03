@@ -1,0 +1,56 @@
+{% extends "base.html" %}{% block title %}{{ navtitle|default('Dashboard') }} - {{ b.name }}{% endblock %}
+{% block header %}{% endblock %}{% block footer %}{% endblock %}
+{% block head %}<style>
+/* the desk tables size to the content column (style.css forces 980px min-width for admin grids,
+   which clips the last column on a 1280px screen); they may still scroll on a phone */
+.dsk{grid-template-columns:252px minmax(0,1fr)}
+.dsk-main{min-width:0}
+.dsk-main .hscroll table{min-width:0;width:100%}
+.dsk-main .hscroll th,.dsk-main .hscroll td{padding:8px 9px}
+/* narrow screens: the nav becomes one scrollable row above the content instead of a hidden drawer */
+@media (max-width:900px){
+  .dsk{grid-template-columns:1fr}
+  .dsk-main{order:0}
+  .dsk-side{display:flex!important;flex-direction:row;align-items:center;gap:4px;overflow-x:auto;overflow-y:hidden;
+    padding:9px 12px;position:sticky;top:0;z-index:7;-webkit-overflow-scrolling:touch}
+  .dsk-side .dsk-on,.dsk-side .grp,.dsk-side .dsk-note{display:none}
+  .dsk-side a{display:inline-block;white-space:nowrap;padding:7px 11px;font-size:13px}
+  .dsk-side .dsk-user{margin:0 0 0 auto;display:flex;align-items:center;gap:6px;background:none;padding:0;white-space:nowrap;font-size:12.5px}
+  .dsk-side .dsk-user br,.dsk-side .dsk-user .mini{display:none}
+  .dsk-burger{display:none!important}
+  .dsk-top{position:static}
+  .tri{gap:12px 16px}
+}
+</style>{% endblock %}
+{% block body %}{% set NAV = [
+  ('home',   'Home',                '/agent/' ~ token),
+  ('markets','Markets',             '/agent/' ~ token ~ '/markets'),
+  ('leads',  'Leads',               '/agent/' ~ token ~ '/leads'),
+  ('outcomes','My outcomes',        '/agent/' ~ token ~ '/outcomes'),
+  ('billing','Billing & credits',   '/agent/' ~ token ~ '/billing?dnav=1#delivery'),
+] %}{% set GRPS = [('APP', ['home']), ('MY LEADS', ['markets', 'leads', 'outcomes']), ('ACCOUNT', ['billing'])] %}
+<div class="dsk">
+<input id="dsknav" type="checkbox" style="display:none">
+<aside class="dsk-side">
+<div class="dsk-on"><span class="wm">GS Allude</span>
+<span class="desc">Lead marketplace · agency desk</span></div>
+{% for g, keys in GRPS %}<div class="grp">{{ g }}</div>
+{% for item in NAV %}{% if item[0] in keys %}<a class="{{ 'on' if nav == item[0] }}" href="{{ item[2] }}">{{ item[1] }}</a>{% endif %}{% endfor %}{% endfor %}
+<div class="grp">DOWNLOADS</div>
+<a class="mini" href="/agent/{{ token }}/leads.csv?days=0">Lead list (CSV)</a>
+<a class="mini" href="/agent/{{ token }}/billing/statement.csv">Ledger statement (CSV)</a>
+<div class="grp">THIS PORTAL</div>
+<p class="dsk-note">Every lead on this desk is <b>exclusive</b> — one consumer, one consent, never re-sold. Statuses you record train routing quality; pricing never depends on them.</p>
+<div class="dsk-user">{% if b.is_demo %}<span class="pill TEST">TEST ACCOUNT</span><br>{% endif %}<span class="avail" aria-hidden="true">{{ ((b.contact_name or b.name or '?'))[:1] }}</span><b>{{ b.name }}</b><br><span class="mini">{{ b.id }}</span></div>
+</aside>
+<div class="dsk-main">
+<header class="dsk-top">
+<label for="dsknav" class="dsk-burger" aria-label="Menu">☰</label>
+<div class="dsk-bal">{% block topbar %}{% endblock %}</div>
+</header>
+<div class="dsk-page">
+{% block shell %}{% endblock %}
+</div>
+<div class="dsk-foot">Private portal · invitation-only access via your agency link · {{ 'TEST-mode rehearsal data — not a real account' if b.is_demo else 'operated by GS Allude' }}</div>
+</div></div>
+{% endblock %}

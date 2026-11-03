@@ -1,0 +1,163 @@
+{% extends "base.html" %}{% block title %}GS Allude — exclusive Florida health insurance leads for licensed agencies{% endblock %}
+{% block desc %}Consumer-initiated, consented Florida health insurance leads for licensed agencies: one consumer, one consent, one buyer. See exactly what arrives with every lead, how billing and credits work, and apply.{% endblock %}
+{% block header %}<header class="top"><div class="wrap" style="max-width:1080px"><a class="brand" href="/for-agents">GS Allude<span class="desc">Exclusive health leads</span></a><div class="trust">For licensed Florida insurance agencies</div><div style="display:flex;gap:10px;align-items:center"><a class="btn" style="width:auto;padding:9px 16px;text-decoration:none" href="#apply">Apply</a><a class="langswitch" href="/para-agencias" hreflang="es"><span aria-hidden="true">⇄</span> Español</a></div></div></header>{% endblock %}
+{% block body %}<div class="wrap adm" style="max-width:1080px;padding:0 16px 40px">
+
+<section class="hero-b">
+ <span class="eyebrow">Exclusive health insurance leads</span>
+ <h1>One consumer. One consent. One agency.</h1>
+ <p class="lead">A consumer finishes the Health Coverage Check on {{ site.brand }} — our consumer site — types their own phone number and agrees to be contacted. That request is assigned to exactly one licensed Florida agency: yours, or nobody's. We generate leads; we never call consumers and we never resell a lead.</p>
+ <div class="cta-row">
+  <a class="btn" href="#apply">Apply for an account</a>
+  <a class="btn ghost" href="#pricing">See pricing &amp; credits</a>
+ </div>
+ <p class="trustline">Florida-licensed agencies only · consent recorded per request with a versioned text and a form snapshot · prepaid credits, charged once at delivery · returns per the policy below</p>
+</section>
+
+<h2 class="sec-h" style="font-size:20px;margin:26px 0 4px">How it works</h2>
+<div class="bsteps">
+ <div class="bstep"><b>1. Apply</b><span>Send your legal agency name, Florida licence number, NPN and the products you sell. We reply within one business day.</span></div>
+ <div class="bstep"><b>2. We verify and agree terms</b><span>We check your licence and NPN, then agree your per-tier lead price and daily cap in writing. Nothing is live before that.</span></div>
+ <div class="bstep"><b>3. You receive leads</b><span>We issue your private desk link. Add prepaid credits; each lead is charged once when it is delivered to you.</span></div>
+</div>
+
+<h2 class="sec-h" style="font-size:20px;margin:26px 0 4px">What you receive with every lead</h2>
+<div class="tbl-wrap"><table>
+<tr><th style="width:190px">Piece</th><th>What it is</th></tr>
+<tr><td>The consumer's own phone</td><td>Validated NANP number the consumer typed (+1 E.164 and national format), with the consent timestamp and consent version attached. No appended or public-record numbers — it's enforced by the database.</td></tr>
+<tr><td>Consent proof</td><td>Versioned consent text naming {{ site.brand }} <i>and its licensed agent partner</i> (the platform phrase — consumers never pick an agency), with the timestamp, IP, user agent, page URL and a SHA-256 snapshot of the form as they saw it. Your agency is recorded on the lead assignment, not chosen by the consumer.</td></tr>
+<tr><td>Provenance &amp; context</td><td>Which page they read, what they told the tool (household, income band, urgency, timeframe, language), and the tracking source.</td></tr>
+<tr><td>Your desk</td><td>A private portal (the /agent link we issue you): every new lead with one-click outcome buttons (contacted / appointment / sold / DNC / return), plus your credit ledger.</td></tr>
+<tr><td>Instant alert</td><td>An email the second a lead lands, with Florida contact-window and record-keeping reminders.</td></tr>
+</table></div>
+
+<h2 class="sec-h" id="pricing" style="font-size:20px;margin:26px 0 4px">Pricing, credits and returns</h2>
+<div class="card-b">
+<p style="margin-top:0">Prepaid credits in USD, recorded on a ledger you can see at any time. A lead is charged once, at delivery, at your agreed per-tier price. Every sold lead is <b>exclusive</b>: one consumer, one consent, one buyer — never re-sold or shared.</p>
+<p class="mini">Per-lead prices are agreed per tier before activation — they are never generic list prices, and they are never set by a web form. The prices you see below are credit packs, not lead prices.</p>
+<div class="tbl-wrap"><table><tr><th>Credit pack</th><th>Amount</th></tr>
+{% for p in packages %}<tr><td>{{ p.label }}</td><td>${{ p.amount_usd }}</td></tr>{% else %}<tr><td colspan=2 class="small">Pack sizes are set per agreement.</td></tr>{% endfor %}</table></div>
+<p class="mini" style="margin-bottom:0">Return &amp; credit policy: {% if returns.get('enabled') %}a delivered lead can be returned for a balance credit within {{ returns.window_hours }} hours of delivery{% if not returns.allow_after_contact %} (and only before you marked it contacted){% endif %}{% if returns.get('reasons') %}, with a reason{% endif %}. Anything older goes back to us as an operator adjustment.{% else %} returns are currently disabled by the operator — anything else needs an operator adjustment.{% endif %}</p>
+</div>
+
+<h2 class="sec-h" style="font-size:20px;margin:26px 0 4px">What we need from you before you can receive leads</h2>
+<ul style="margin:4px 0 12px 20px">
+<li>Your exact legal agency name (recorded on your account and on each lead assignment)</li>
+<li>Your Florida insurance license number and NPN (we verify both before activation)</li>
+<li>The states and products you're licensed for, your accepted lead tiers and per-lead prices, and a daily cap</li>
+<li>For Florida health leads: participation in the Marketplace / FFM registration for {{ site.brand }}'s campaigns</li>
+</ul>
+
+<h2 class="sec-h" id="apply" style="font-size:20px;margin:26px 0 4px">Apply</h2>
+<p class="small" style="margin:0 0 10px">We reply within one business day. Fields marked * are required.</p>
+{% if done %}<div class="note good" style="border-left:4px solid #1a7">{{ done }}</div>
+<p class="mini" style="margin-top:8px">Next step: we review your details, agree per-lead prices and your daily cap, and send you your private desk link. Nothing is live until you have credits and we activate your account.</p>
+{% endif %}
+{% if err %}<div class="note" style="border-left:4px solid #b00">Application not saved — {{ err }}</div>{% endif %}
+<form method="post" action="/for-agents/apply" style="display:grid;gap:12px;max-width:680px;margin-top:10px">
+
+<div class="field req">
+ <label class="lbl" for="agency">Agency legal name</label>
+ <p class="fhint">Exactly as registered. It is recorded on your account and on each lead assignment — consumers never choose an agency.</p>
+ <input class="t" id="agency" name="agency" autocomplete="organization" required>
+</div>
+
+<div class="field req">
+ <label class="lbl" for="contact_name">Your name</label>
+ <input class="t" id="contact_name" name="contact_name" autocomplete="name" required>
+</div>
+
+<div class="field req">
+ <label class="lbl" for="contact_email">Email we can reply to</label>
+ <input class="t" id="contact_email" name="contact_email" type="email" autocomplete="email" required>
+</div>
+
+<div class="field">
+ <label class="lbl" for="contact_phone">Office phone <span class="mini">(optional)</span></label>
+ <input class="t" id="contact_phone" name="contact_phone" type="tel" autocomplete="tel">
+</div>
+
+<div style="display:flex;gap:12px;flex-wrap:wrap">
+ <div class="field" style="flex:1;min-width:180px">
+  <label class="lbl" for="license_number">Florida insurance licence number</label>
+  <p class="fhint">Your agency or agent licence (e.g. A123456).</p>
+  <input class="t" id="license_number" name="license_number">
+ </div>
+ <div class="field" style="flex:1;min-width:150px">
+  <label class="lbl" for="npn">NPN</label>
+  <p class="fhint">National Producer Number.</p>
+  <input class="t" id="npn" name="npn">
+ </div>
+</div>
+
+<div class="field">
+ <label class="lbl" for="licensed_states">States where you are licensed</label>
+ <p class="fhint">Comma-separated. We currently serve Florida only.</p>
+ <input class="t" id="licensed_states" name="licensed_states" value="FL">
+</div>
+
+<div class="field">
+ <span class="lbl">Products you are licensed to sell</span>
+ <p class="fhint">Select all that apply. Health (ACA / Marketplace) is the product this marketplace delivers today.</p>
+ <div class="grid2" style="gap:4px 20px">
+  <label class="small" style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="prod" value="health_aca" checked> Health insurance (ACA / Marketplace)</label>
+  <label class="small" style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="prod" value="term_life"> Term life</label>
+  <label class="small" style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="prod" value="final_expense"> Final expense</label>
+  <label class="small" style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="prod" value="mortgage_protection"> Mortgage protection</label>
+  <label class="small" style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="prod" value="key_person"> Key person</label>
+ </div>
+ <input type="hidden" name="products" id="products" value="health_aca">
+</div>
+
+<div class="field">
+ <label class="lbl" for="expected_volume">Leads per day you could realistically call</label>
+ <p class="fhint">A rough number is fine — it only helps us set your daily cap.</p>
+ <input class="t" id="expected_volume" name="expected_volume" placeholder="e.g. 5-10">
+</div>
+
+<div class="field">
+ <label class="lbl" for="delivery_method">How you want leads delivered</label>
+ <select class="t" id="delivery_method" name="delivery_method">
+  <option value="outbox">Keep leads in my private desk</option>
+  <option value="email">Email each new lead to my address</option>
+  <option value="webhook">POST to my CRM webhook</option>
+ </select>
+</div>
+
+<div class="field">
+ <label class="lbl" for="delivery_webhook">CRM webhook URL <span class="mini">(only if you chose webhook)</span></label>
+ <p class="fhint">Must be https:// — consumer contact data is never posted over plain http.</p>
+ <input class="t" id="delivery_webhook" name="delivery_webhook" type="url" placeholder="https://…">
+</div>
+
+<div class="field">
+ <label class="lbl" for="note">Anything else <span class="mini">(optional)</span></label>
+ <textarea class="t" id="note" name="note" rows="3" placeholder="Carriers, team size, preferred contact hours, questions"></textarea>
+</div>
+
+<input name="website" style="display:none" tabindex="-1" autocomplete="off">  <!-- honeypot -->
+<button class="btn" type="submit" style="max-width:340px">Send application</button>
+<p class="mini" style="margin-top:0">We use this only to set up your account and reply — never for marketing, and this form never asks about a consumer.</p>
+</form>
+
+<p class="small" style="margin-top:18px"><a href="/para-agencias" hreflang="es">Ver esta página en español</a> · <a href="/">See the consumer site ({{ site.brand }})</a></p>
+</div>
+
+<script>
+(function () {
+  var hidden = document.getElementById('products');
+  var boxes = document.querySelectorAll('input.prod');
+  function sync() {
+    var picked = [];
+    for (var i = 0; i < boxes.length; i++) { if (boxes[i].checked) picked.push(boxes[i].value); }
+    hidden.value = picked.join(',');
+  }
+  for (var i = 0; i < boxes.length; i++) { boxes[i].addEventListener('change', sync); }
+  sync();
+})();
+</script>
+{% endblock %}
+{% block footer %}<footer class="sitefoot"><div class="wrap" style="max-width:1080px">
+<p style="margin:0 0 8px"><b>GS Allude</b> — exclusive, consumer-initiated health insurance leads. We are not an insurance company, an insurance agency or a government site, and we do not sell insurance; coverage, pricing and eligibility are determined by insurers and the Marketplace. Not affiliated with HealthCare.gov or any government agency.{% if biz.legal_entity %} Operated by {{ biz.legal_entity }}{% if biz.mailing_address %}, {{ biz.mailing_address }}{% endif %}.{% endif %}</p>
+<p style="margin:0"><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/contact">Contact</a><a href="/">Consumer site ({{ site.brand }})</a><a href="/para-agencias" hreflang="es">Español</a></p>
+</div></footer>{% endblock %}

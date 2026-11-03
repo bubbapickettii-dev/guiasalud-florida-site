@@ -1,0 +1,40 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1400px;padding:16px 16px 40px">
+<h2>Where inquiries come from — arrival funnel by source</h2>
+<div class="tabs" style="margin:8px 0">{% for t,l in [(0,'Real consumers'),(1,'TEST DATA')] %}<a class="{{ 'on' if t==test }}" href="?token={{ token }}&test={{ t }}">{{ l }}</a>{% endfor %}
+· <a href="/admin/acquisition?token={{ token }}{{ '&test=1' if test }}">Partners &amp; placements</a>
+· <a href="/admin/funnel?token={{ token }}{{ '&test=1' if test }}">Full funnel</a></div>
+{% if test %}<div class="note">TEST DATA — QA submissions and internal checks. These numbers say nothing about real consumer behaviour.</div>{% endif %}
+
+<p class="mini">Every number is counted from recorded rows: first-party events for the top half, the lead row for the bottom half. A dash means the stage never happened for that source, never zero by default. Internal screens (admin, agent desk, partner pages, QA) and crawler/link-preview user agents are dropped before they can become a visitor, so they are absent from this table — not hidden inside it.</p>
+
+<p class="small" style="margin:10px 0"><b>Recorded traffic:</b> {{ split.real_visitors }} real visitor(s), {{ split.real_leads }} real lead(s) · <b>TEST:</b> {{ split.test_visitors }} QA visitor(s), {{ split.test_leads }} test lead(s).</p>
+
+<h3 style="margin:18px 0 6px">Totals ({{ 'TEST' if test else 'real' }})</h3>
+<table><tr>{% for k,l in stages %}<th class="num">{{ l }}</th>{% endfor %}</tr>
+<tr>{% for k,l in stages %}<td class="num"><b>{{ tot.get(k, 0) }}</b></td>{% endfor %}</tr></table>
+
+<h3 style="margin:22px 0 6px">By source ({{ rows|length }})</h3>
+{% if not rows %}<p class="small">No {{ 'TEST' if test else 'real' }} traffic recorded yet — nothing to attribute.</p>{% else %}
+<div style="overflow-x:auto"><table>
+<tr><th>Source</th>{% for k,l in stages %}<th class="num">{{ l }}</th>{% endfor %}<th>Biggest drop</th></tr>
+{% for r in rows %}<tr><td><b>{{ r.k }}</b>{% if r.channel %}<br><span class="mini">{{ r.channel }}</span>{% endif %}</td>
+{% for k,l in stages %}<td class="num">{{ r.get(k) or 0 }}</td>{% endfor %}
+<td class="mini">{{ r.worst_drop or '—' }}</td></tr>{% endfor %}
+</table></div>{% endif %}
+
+<h3 style="margin:24px 0 6px">By channel (how the person arrived, classed by config/engines.json)</h3>
+<p class="mini" style="margin:0 0 6px">A channel is the <i>kind</i> of route; a source is the exact place it came from. Search and community are demand the person already expressed; a partner code is an organization handing the resource out.</p>
+{% if not by_channel %}<p class="small">No {{ 'TEST' if test else 'real' }} traffic recorded yet.</p>{% else %}<div style="overflow-x:auto"><table>
+<tr><th>Channel</th>{% for k,l in stages %}<th class="num">{{ l }}</th>{% endfor %}<th>Biggest drop</th></tr>
+{% for r in by_channel %}<tr><td><b>{{ r.k }}</b></td>{% for k,l in stages %}<td class="num">{{ r.get(k) or 0 }}</td>{% endfor %}<td class="mini">{{ r.worst_drop or '—' }}</td></tr>{% endfor %}
+</table></div>{% endif %}
+
+<h3 style="margin:24px 0 6px">By campaign</h3>
+{% if not by_campaign %}<p class="small">No {{ 'TEST' if test else 'real' }} traffic recorded yet.</p>{% else %}<div style="overflow-x:auto"><table>
+<tr><th>Campaign</th>{% for k,l in stages %}<th class="num">{{ l }}</th>{% endfor %}<th>Biggest drop</th></tr>
+{% for r in by_campaign %}<tr><td><b>{{ r.k }}</b></td>{% for k,l in stages %}<td class="num">{{ r.get(k) or 0 }}</td>{% endfor %}<td class="mini">{{ r.worst_drop or '—' }}</td></tr>{% endfor %}
+</table></div>{% endif %}
+
+<p class="mini" style="margin-top:14px">How to read it: a source with visitors but no <i>Check started</i> is a traffic problem (wrong page, wrong promise). A source with starts but no <i>Check completed</i> is a friction problem in the check. A source with completions but no <i>Contact submitted</i> means people read their estimate and left without asking for help — the estimate screen's next step is what to fix. Consent+phone with zero <i>Delivered</i> is a marketplace problem (no eligible agency, cap or credits), visible per lead on <a href="/admin?token={{ token }}#unmatched">Unmatched</a>.</p>
+</div>{% endblock %}

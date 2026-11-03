@@ -1,0 +1,11 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1300px;padding:16px 16px 40px">
+<h2>Content engine</h2>
+<div class="note"><b>Guardrail:</b> {{ guardrail }}</div>
+<p class="small">Each page answers one real question, cites HealthCare.gov / IRS, and ends in the Check with the matching angle. Each one doubles as a short-video script. Use the per-channel links so every post is attributed. Status: all pages UNTESTED (nothing published).</p>
+{% for p in pages %}<details><summary>{{ (p.lang)|upper }} · {{ p.q }}</summary>
+<p class="mini">Page: <a href="/{{ 'aprende' if p.lang=='es' else 'learn' }}/{{ p.slug }}" target="_blank">{{ base }}/{{ 'aprende' if p.lang=='es' else 'learn' }}/{{ p.slug }}</a> · angle {{ p.angle }}</p>
+<table><tr><th>Hook (first 2 seconds)</th><td>{{ p.script.hook }}</td></tr><tr><th>Beats</th><td>{% for b in p.script.beats %}{{ loop.index }}. {{ b }}<br>{% endfor %}</td></tr><tr><th>CTA</th><td>{{ p.script.cta }}</td></tr>
+<tr><th>Tracked links</th><td class="mini">{% for ch in ['tiktok','instagram','youtube','facebook','reddit','partner_newsletter'] %}{{ ch }}: {{ base }}/check?a={{ p.angle }}&amp;utm_source={{ ch }}&amp;utm_medium=organic&amp;utm_content={{ p.slug }}<br>{% endfor %}</td></tr>
+<tr><th>Sources</th><td class="mini">{% for s in p.src %}<a href="{{ s }}" target="_blank">{{ s }}</a><br>{% endfor %}</td></tr></table></details>{% endfor %}
+</div>{% endblock %}

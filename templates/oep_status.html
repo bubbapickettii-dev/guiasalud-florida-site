@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% set es = lang=='es' %}
+{% block lang %}{{ lang }}{% endblock %}
+{% block title %}{{ s.title }} | {{ site.brand }}{% endblock %}
+{% block desc %}{{ s.answer }}{% endblock %}
+{% block head %}<script type="application/ld+json">{{ {"@context":"https://schema.org","@type":"FAQPage","inLanguage":lang,"dateModified":"2026-10-05","mainEntity":[{"@type":"Question","name":s.title,"acceptedAnswer":{"@type":"Answer","text":s.answer ~ " " ~ s.detail}}]}|tojson }}</script>{% endblock %}
+{% block footdisc %}{{ (site.disclosure_es if es else site.disclosure) }} {{ (site.gov_disclaimer_es if es else site.gov_disclaimer) }}{% endblock %}
+{% block lp %}{{ 'Política de Privacidad' if es else 'Privacy Policy' }}{% endblock %}{% block lt %}{{ 'Términos' if es else 'Terms' }}{% endblock %}{% block lo %}{{ 'No contactarme' if es else 'Do not contact me / opt out' }}{% endblock %}
+{% block body %}<article class="wrap learn" style="max-width:760px;padding:30px 16px 60px">
+<div class="chips"><span class="chip"><i class="senal"></i>{{ 'Fechas verificadas en HealthCare.gov el 5 de octubre de 2026' if es else 'Dates verified on HealthCare.gov on October 5, 2026' }}</span><span class="chip">{{ 'El conteo de días usa la fecha de hoy:' if es else 'Day count uses today\'s date:' }} {{ today_pretty }}</span></div>
+<h1>{{ s.title }}</h1>
+<div class="result" style="margin:16px 0"><div class="big" style="font-size:28px">{{ s.answer }}</div>{% if s.days is not none %}<p class="small" style="margin-top:8px"><b>{{ s.days }}</b> {{ s.days_label }}</p>{% endif %}</div>
+<p>{{ s.detail }}</p>
+<p>{{ 'Fechas para 2027 en Florida (CuidadoDeSalud.gov): la Inscripción Abierta va del 1 de noviembre de 2026 al 15 de enero de 2027. Si eliges plan antes del 15 de diciembre, la cobertura empieza el 1 de enero; del 16 de diciembre al 15 de enero, empieza el 1 de febrero.' if es else "Florida's 2027 dates (HealthCare.gov): Open Enrollment runs November 1, 2026 to January 15, 2027. Choose by December 15 and coverage starts January 1; choose December 16 to January 15 and it starts February 1." }}</p>
+<p class="small">{{ 'Algunas noticias publicaron que la inscripción terminaba el 15 de diciembre. Un tribunal anuló ese cambio y la fecha final sigue siendo el 15 de enero. Si eso cambia, actualizamos esta página.' if es else 'Some outlets reported that enrollment ends December 15. A federal court vacated that change, so the last day is still January 15. If that changes, we update this page.' }}</p>
+<div class="ctabox"><b style="font-size:20px">{{ 'Revisa tus opciones en 60 segundos' if es else 'Check your options in 60 seconds' }}</b><script>window.LE_PAGE={angle:{{ ('es_check' if es else 'timing')|tojson }},lang:{{ lang|tojson }},campaign:{{ ('oep-2027-health-es' if es else 'oep-2027-health')|tojson }}};</script>
+<a class="btn" href="/check?a={{ 'es_check' if es else 'timing' }}&via=oep-status">{{ 'Hacer el chequeo' if es else 'Start my check' }}</a></div>
+<p class="small"><b>{{ 'Fuentes' if es else 'Sources' }}:</b> <a href="https://www.healthcare.gov/quick-guide/dates-and-deadlines/" rel="nofollow noopener" target="_blank">HealthCare.gov</a>, <a href="https://www.cms.gov/files/document/statement-re-city-columbus-080426.pdf" rel="nofollow noopener" target="_blank">CMS (Aug 4, 2026)</a></p>
+<p class="small"><a href="{{ '/open-enrollment-2027' if es else '/inscripcion-abierta-2027' }}">{{ 'English' if es else 'Español' }}</a></p>
+</article>{% endblock %}

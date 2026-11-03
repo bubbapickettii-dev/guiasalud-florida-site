@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% set es = lang == 'es' %}
+{% block lang %}{{ lang }}{% endblock %}
+{% block title %}{{ s.title }}{% endblock %}
+{% block desc %}{{ s.intro }}{% endblock %}
+{% block bodyclass %}bridge-page{% endblock %}
+{% block trust %}{{ 'Gratis · Sin compromiso · Fuentes oficiales' if es else 'Free · No obligation · Official sources' }}{% endblock %}
+{% block body %}
+<div class="wrap" style="max-width:720px;padding:8px 16px 40px">
+  <section class="bridge-hero" style="padding:18px 0 8px">
+    <span class="eyebrow">{{ s.eyebrow }}</span>
+    <h1 style="font-size:clamp(26px,6vw,38px);line-height:1.15;margin:6px 0 10px">{{ s.title }}</h1>
+    <p class="sub" style="font-size:17px;line-height:1.5;margin:0 0 14px">{{ s.intro }}</p>
+
+    <ul class="bullets" style="margin:0 0 18px">
+      {% for b in s.bullets %}<li>{{ b }}</li>{% endfor %}
+    </ul>
+
+    <a id="cta" class="btn" href="{{ cta }}" style="display:block;text-align:center;font-size:18px;padding:16px 18px;border-radius:12px">
+      {{ 'Hacer el chequeo gratis' if es else 'Run the free check' }}
+    </a>
+    <p class="small" style="margin:10px 0 0;opacity:.85">
+      {{ 'Unos 2 minutos. No pedimos nombre, teléfono ni correo para mostrarte el resultado.' if es else
+         'About 2 minutes. We do not ask for your name, phone or email to show the result.' }}
+    </p>
+    {% if other_url %}<p style="margin:14px 0 0"><a class="small" href="{{ other_url }}" hreflang="{{ 'en' if es else 'es' }}">{{ 'Ver esta página en inglés' if es else 'Ver esta página en español' }}</a></p>{% endif %}
+  </section>
+
+  <section style="margin-top:22px;border-top:1px solid rgba(0,0,0,.08);padding-top:16px">
+    <h2 style="font-size:18px;margin:0 0 6px">{{ 'Qué pasa después' if es else 'What happens next' }}</h2>
+    <ol class="small" style="margin:0;padding-left:20px;line-height:1.55">
+      {% if es %}
+      <li>Respondes unas preguntas sobre tu situación y tu ingreso.</li>
+      <li>Ves tu periodo de inscripción y si tu ingreso está en el rango de ayuda, en la pantalla.</li>
+      <li>Si quieres que un agente con licencia te contacte, marcas la casilla y das tu permiso. Si no, no se envía nada y nadie te llama.</li>
+      {% else %}
+      <li>You answer a few questions about your situation and income.</li>
+      <li>You see your enrollment window and whether your income is in the help range, on screen.</li>
+      <li>If you want a licensed agent to contact you, you tick the box and give permission. If you don't, nothing is sent and nobody calls.</li>
+      {% endif %}
+    </ol>
+    <p class="small" style="margin:12px 0 0">{{ (site.disclosure_es if es else site.disclosure) }}</p>
+    <p class="small" style="margin:6px 0 0">{{ (site.gov_disclaimer_es if es else site.gov_disclaimer) }}</p>
+  </section>
+</div>
+<script>
+(function(){
+  try { if (window.LEA) { LEA.track("bridge_view", "", { situation: {{ s.situation|tojson }} }); } } catch (e) {}
+  var a = document.getElementById("cta");
+  if (a) a.addEventListener("click", function(){
+    try { if (window.LEA) { LEA.track("bridge_cta", "", { situation: {{ s.situation|tojson }} }); } } catch (e) {}
+  });
+})();
+</script>
+{% endblock %}
+{% block footer %}{% endblock %}

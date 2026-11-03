@@ -1,0 +1,15 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1450px;padding:16px 16px 40px">
+<h2>Audiences: market intelligence → experiments → evidence</h2>
+<p class="small">Audience signals are aggregate counts of public demand events (new 1099 licenses, new businesses, layoffs). They are <b>not leads</b> and nobody counted here is contacted. Everything in "where to reach them" is a <b>hypothesis</b> until a real experiment aimed at that audience produces consented phone leads. Status updates automatically from real (non-test) traffic.</p>
+<div style="overflow-x:auto"><table><tr><th>Audience</th><th class="num">Audience signals (FL)</th><th>Demand trigger</th><th>Questions they ask</th><th>Where to reach them (hypotheses)</th><th>Check angle</th><th>Experiments</th><th>Real results</th><th>Evidence</th></tr>
+{% for r in rows %}<tr><td><b>{{ r.segment }}</b></td>
+<td class="num">{% if r.signals.audience_signals %}{{ '{:,}'.format(r.signals.audience_signals) }}{% if r.signals.last_90d %}<br><span class="mini">{{ '{:,}'.format(r.signals.last_90d) }} in 90d</span>{% endif %}{% elif r.signals.employers %}{{ r.signals.employers }} employers<br><span class="mini">{{ '{:,}'.format(r.signals.employees_affected or 0) }} employees</span>{% else %}<span class="mini">{{ r.signals.note or 'no public dataset' }}</span>{% endif %}</td>
+<td class="mini">{{ r.circumstance }}</td><td class="mini">{% for q in r.questions %}{{ q }}<br>{% endfor %}</td>
+<td class="mini"><b>Orgs:</b> {{ r.where.organizations|join('; ') or '-' }}<br><b>Communities:</b> {{ r.where.communities|join('; ') or '-' }}<br><b>Search (volume not checked):</b> {{ r.where.search|join('; ') or '-' }}</td>
+<td class="mini">{{ r.angle }} / {{ r.angle_es }}</td>
+<td class="mini">{% for e in r.experiments_linked %}<a href="/admin/lab/{{ e.experiment_id }}?token={{ token }}">{{ e.experiment_id }}</a> {{ e.status }}<br>{% else %}-{% endfor %}</td>
+<td class="mini">visits {{ r.real.visits }} · phone step {{ r.real.phone_step_views }} · phone leads {{ r.real.consented_phone_leads }} · qualified {{ r.real.qualified_leads }}</td>
+<td><span class="pill {{ 'VALIDATED' if r.evidence.startswith('SUPPORTED') else ('LIVE' if r.evidence.startswith('TESTING') else 'UNTESTED') }}">{{ r.evidence }}</span></td></tr>{% endfor %}</table></div>
+<p class="mini">{{ note }}</p>
+</div>{% endblock %}

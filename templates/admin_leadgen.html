@@ -1,0 +1,60 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1400px;padding:16px 16px 40px">
+<h2>Consumer acquisition — the eight stages</h2>
+<div class="tabs" style="margin:8px 0">{% for t,l in [(0,'Real only'),(1,'TEST DATA only')] %}<a class="{{ 'on' if t==test }}" href="?token={{ token }}&test={{ t }}">{{ l }}</a>{% endfor %}
+· <a href="/admin/leadgen.csv?token={{ token }}&test={{ test }}">Stages CSV</a> · <a href="/admin/acquisition?token={{ token }}">Partners &amp; placements</a></div>
+{% if test %}<div class="note">TEST DATA. Nothing here is a real consumer.</div>{% endif %}
+
+<p class="mini">Every number is a count of recorded rows. TEST traffic is excluded. A stage that has not happened is <b>0</b>; a metric the data cannot supply is <b>-</b>. Organization contacts live in a separate ledger and are never summed into these stages.</p>
+
+{% if blocking %}<div class="note" style="border-left:4px solid #b84;margin:12px 0">
+<b>{{ blocking|length }} dependency(ies) are blocking real consumer leads today.</b> Ordered — fix from the top.
+<table style="margin-top:8px"><tr><th style="width:230px">Dependency</th><th>State</th><th style="width:38%">One action</th></tr>
+{% for b in blockers %}<tr><td><b>{{ b.label }}</b>{% if not b.blocking %}<br><span class="mini">not blocking</span>{% endif %}</td>
+<td class="mini">{{ b.detail }}<br><i>{{ b.why }}</i></td><td class="mini">{{ b.fix }}</td></tr>{% endfor %}</table></div>
+{% else %}<div class="note" style="border-left:4px solid #2a7">No blocking dependencies reported. Stages below are the real constraint.</div>{% endif %}
+
+<h3 style="margin:20px 0 6px">The funnel ({{ 'TEST' if test else 'REAL' }})</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Stage</th><th class="num">Count</th><th class="num">% of visitors</th><th class="num">Lost at this step</th><th>What it counts</th></tr>
+{% for s in stages %}{% set step = steps[loop.index0] if loop.index0 < steps|length else none %}
+<tr><td><b>{{ s[1] }}</b><br><span class="mini">{{ s[0] }}</span></td>
+<td class="num"><b>{{ s[2] if s[2] is not none else '-' }}</b></td>
+<td class="num">{{ ('%.1f%%'|format(100 * s[2] / visitors)) if (visitors and s[2] is not none) else '-' }}</td>
+<td class="num">{% if step %}{{ step.lost }}{% if step.drop_pct is not none %}<br><span class="mini">{{ '%.1f%%'|format(step.drop_pct) }}</span>{% endif %}{% else %}-{% endif %}</td>
+<td class="mini">{{ s[3] }}</td></tr>{% endfor %}
+</table></div>
+{% if st.demo_delivered %}<div class="note" style="border-left:4px solid #b84"><b>{{ st.demo_delivered }} delivery(ies) went to a DEMO placeholder on REAL-flagged rows.</b> No agency received them and nobody was charged, so they are excluded from "Purchased &amp; delivered". In production demo buyers are excluded from routing entirely — this means QA traffic escaped the test flag in staging.</div>{% endif %}
+<p class="mini">Duplicates removed before Qualified: <b>{{ st.duplicates }}</b>. Email-only inquiries (never sellable): <b>{{ st.email_only }}</b>. Qualified rows by product: {% for k,v in st.qualified_products.items() %}<code>{{ k }}</code>={{ v }} {% endfor %}{% if not st.qualified_products %}-{% endif %}.</p>
+
+<h3 style="margin:22px 0 6px">Buyer gate — can a lead legally be routed right now?</h3>
+<table><tr><th>Buyers configured</th><th>Non-demo</th><th>Demo placeholders</th><th>Usable (state + price + cap)</th><th>Routable products</th></tr>
+<tr><td class="num">{{ gate.buyers_total }}</td><td class="num">{{ gate.buyers_real }}</td><td class="num">{{ gate.buyers_demo }}</td>
+<td class="num"><b>{{ gate.buyers_usable }}</b></td><td>{% for p in gate.routable_products %}<code>{{ p }}</code> {% endfor %}{% if not gate.routable_products %}<b>none</b>{% endif %}</td></tr></table>
+<p class="mini">A buyer counts only with a licensed state, a positive contracted price and a daily cap. Demo placeholders are never shown to a real consumer, so they can never unlock the phone step.</p>
+
+<h3 style="margin:22px 0 6px">By channel (existing attribution, no second system)</h3>
+{% if not by_channel %}<p>No channel rows yet.</p>{% else %}<div style="overflow-x:auto"><table>
+<tr><th>Channel</th><th class="num">Visits</th><th class="num">Started</th><th class="num">Completed</th><th class="num">Phones submitted</th><th class="num">Consented</th><th class="num">Qualified</th><th class="num">Delivered</th><th class="num">Accepted</th><th class="num">Sales</th><th class="num">Revenue</th></tr>
+{% for r in by_channel %}<tr><td><b>{{ r.k }}</b></td><td class="num">{{ r.visits }}</td><td class="num">{{ r.form_starts }}</td><td class="num">{{ r.check_completions }}</td>
+<td class="num">{{ r.phones_submitted }}</td><td class="num">{{ r.consented_phone_leads }}</td><td class="num">{{ r.qualified }}</td><td class="num">{{ r.delivered }}</td>
+<td class="num">{{ r.accepted }}</td><td class="num">{{ r.sales }}</td><td class="num">{{ '${:,.2f}'.format(r.revenue) if r.revenue else '-' }}</td></tr>{% endfor %}</table></div>{% endif %}
+
+<h3 style="margin:22px 0 6px">Referral network (organizations — never consumer leads)</h3>
+<p class="mini">{{ network.coverage }}</p>
+<div class="kpis" style="display:flex;gap:10px;flex-wrap:wrap;margin:8px 0">
+  <div class="kpi"><span>In the network</span><b>{{ network.partners_total }}</b></div>
+  <div class="kpi"><span>Activated</span><b>{{ network.activated }}</b></div>
+  <div class="kpi"><span>With tracked visits</span><b>{{ network.with_activity }}</b></div>
+  <div class="kpi"><span>Visits</span><b>{{ network.totals.visits }}</b></div>
+  <div class="kpi"><span>Checks completed</span><b>{{ network.totals.check_done }}</b></div>
+  <div class="kpi"><span>Consented leads</span><b>{{ network.totals.consented }}</b></div>
+  <div class="kpi"><span>Qualified</span><b>{{ network.totals.qualified }}</b></div>
+  <div class="kpi"><span>Delivered</span><b>{{ network.totals.delivered }}</b></div>
+</div>
+<p class="mini">Stages: {% for k,v in network.stages.items() %}<code>{{ k }}</code>={{ v }} {% endfor %}</p>
+{% if network.by_type %}<table><tr><th>Partner type</th><th class="num">Partners</th><th class="num">Visits</th><th class="num">Consented</th><th class="num">Qualified</th></tr>
+{% for t in network.by_type %}<tr><td>{{ t.type }}</td><td class="num">{{ t.partners }}</td><td class="num">{{ t.visits }}</td><td class="num">{{ t.consented }}</td><td class="num">{{ t.qualified }}</td></tr>{% endfor %}</table>{% endif %}
+{% if network.last_run %}<p class="mini">Last build {{ network.last_run.ts }}: considered {{ network.last_run.records_considered }}, created {{ network.last_run.partners_created }}, already existed {{ network.last_run.partners_existing }}, no phone {{ network.last_run.skipped_no_phone }}, unverified {{ network.last_run.skipped_unverified }}, duplicates {{ network.last_run.skipped_duplicate }}, errors {{ network.last_run.errors }}.</p>{% endif %}
+<p class="mini"><a href="/admin/partners?token={{ token }}">Open the partner outreach queue →</a></p>
+</div>{% endblock %}

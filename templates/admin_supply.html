@@ -1,0 +1,25 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1300px;padding:16px 16px 40px">
+<h2>Lead supply — researched sources &amp; agreements</h2>
+<p class="small" style="border:2px solid #b00;padding:8px"><b>THE HARD RULE (evidenced in the registry): buying a lead is NOT permission to resell or redistribute it.</b>
+At least one reviewed publisher agreement forbids resale/transfer of a lead's consumer information unless the insertion order expressly permits it. Before ANY external supply flows into
+this marketplace: sign the vendor/publisher agreement, get named downstream recipients + channels + per-lead buyer caps in writing, require the consent certificate (TrustedForm/Jornaya)
+to accompany each lead, and record the agreement reference in Agents &gt; Buyers verification. Until then every row below stays supply-DISABLED: no consumer data may enter from it.</p>
+<p class="small">A consumer lead with <b>no</b> assignable buyer is still NEVER relieved of that rule: routing refuses it (NO_BUYER / NOT_ROUTABLE) and it is never "sold free" to a third party. {{ d.note }}</p>
+<table>
+<tr><th>Source</th><th>Category</th><th>What it is</th><th>Consent &amp; targeting</th><th>Access &amp; economics</th><th>Resale status</th><th>Fit &amp; next step</th></tr>
+{% for s in d.sources %}
+<tr>
+ <td><b>{{ s.name }}</b><br><span class="small"><a href="{{ s.url }}" rel="noopener" target="_blank">{{ s.url[:70] }}</a><br>
+   {% if s.verified.evidence %}<br><a href="{{ s.verified.evidence }}" rel="noopener" target="_blank">evidence ↗</a>{% endif %}</span></td>
+ <td class="small">{{ s.category }}</td>
+ <td class="small">{{ s.what }}<br><b>integration:</b> {{ s.integration }}</td>
+ <td class="small">{{ s.consent }}<br><b>targeting:</b> {{ s.targeting }}<br><b>exclusivity:</b> {{ s.exclusivity }}</td>
+ <td class="small">{{ s.access }}</td>
+ <td class="small" style="max-width:230px"><b>{{ s.resale_status }}</b></td>
+ <td class="small" style="max-width:280px">{{ s.fit }}<br><b>next:</b> {{ s.next_step }}</td>
+</tr>
+{% endfor %}
+</table>
+<p class="small">First-party row last (expanded): the only supply path with full provenance, exclusivity (sale_type='EXCLUSIVE'), and versioned consent — everything external is a later, gated diversification step.</p>
+</div>{% endblock %}

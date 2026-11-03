@@ -1,0 +1,95 @@
+{% extends "agent_base.html" %}{% block title %}Billing - {{ b.name }}{% endblock %}
+{% block topbar %}<span class="tri"><span><b>${{ '%.2f'|format(s.balance) }}</b><em>Available balance</em></span><span><b>${{ '%.2f'|format(s.last_7d_charged) }}</b><em>Spent last 7d</em></span><span><b>${{ '%.2f'|format(s.last_28d_charged) }}</b><em>Spent last 28d</em></span></span><a class="btn sm" href="#packages">+ Add Credit</a>{% endblock %}
+{% block shell %}<div class="adm">
+<h1 style="font-size:22px">Account &amp; billing</h1>
+{% if pay_msg == 'delivery_saved' %}<p class="note good" style="border-left:4px solid #1a7">Delivery preference saved — new leads will arrive by your chosen route.</p>
+{% elif pay_msg == 'delivery_url_missing' %}<p class="note" style="border-left:4px solid #b00">Webhook delivery needs your CRM endpoint URL (https://...). Nothing was changed.</p>
+{% elif pay_msg == 'delivery_url_bad' %}<p class="note" style="border-left:4px solid #b00">The webhook URL must start with https:// and be a valid URL. Nothing was changed.</p>
+{% elif pay_msg == 'delivery_email_bad' %}<p class="note" style="border-left:4px solid #b00">Email delivery needs a valid email address. Nothing was changed.</p>
+{% elif pay_msg == 'returning' %}<p class="note">Payment page reached — credits appear here automatically once the payment is confirmed (usually seconds; only after the confirmed, verified event — never on this page alone).</p>
+{% elif pay_msg == 'cancelled' %}<p class="note">Checkout cancelled — nothing was charged.</p>
+{% elif pay_msg == 'rail_off' %}<p class="note">Online purchase is not available right now. Use the operator top-up path below.{% if sandbox_ok %} You can also rehearse a purchase on the TEST sandbox below — that one records TEST credits only and never touches this balance.{% endif %}</p>
+{% elif pay_msg == 'sandbox_credited' %}<p class="note good" style="border-left:4px solid #1a7"><span class="pill TEST">TEST</span> {{ request.args.get('sandbox_msg','') }}</p>
+{% elif pay_msg == 'sandbox_cancelled' %}<p class="note">Sandbox purchase cancelled — no credits were recorded, no money moved.</p>
+{% elif pay_msg == 'sandbox_duplicate' %}<p class="note">{{ request.args.get('sandbox_msg','') }}</p>
+{% elif pay_msg == 'sandbox_refused' %}<p class="note" style="border-left:4px solid #b00">{{ request.args.get('sandbox_msg','') }}</p>{% endif %}
+<p class="mini" style="margin:4px 0 14px">Prepaid credits, in USD. {% if enforcing %}A lead is routed to you only while your balance covers the per-lead price (enforcement is ON).{% else %}Credit enforcement is currently OFF; this page is the record of delivered leads and credits.{% endif %} Per-lead prices come from your product/tier agreement, not from this page.</p>
+<div class="note" style="margin:0 0 14px">
+  <b>Balance: ${{ '%.2f'|format(s.balance) }}</b>
+  &nbsp;·&nbsp; credits purchased: ${{ '%.2f'|format(s.purchased) }}
+  &nbsp;·&nbsp; charged for leads: ${{ '%.2f'|format(s.charged) }}
+  &nbsp;·&nbsp; returned &amp; credited back: ${{ '%.2f'|format(s.credited) }}
+  <br><span class="mini">delivered leads {{ s.delivered }}{% if s.avg_per_lead is not none %} · avg ${{ '%.2f'|format(s.avg_per_lead) }}/lead{% endif %}
+  · spend last 7d ${{ '%.2f'|format(s.last_7d_charged) }} · last 28d ${{ '%.2f'|format(s.last_28d_charged) }}</span>
+</div>
+{% if ist %}<p><span class="pill TEST">TEST DATA</span> <span class="mini">This is a demo buyer account; the numbers reflect TEST leads only.</span></p>{% endif %}
+{% if test_s %}<div class="note" style="margin:0 0 14px;border-left:4px solid #b62">
+  <span class="pill TEST">TEST DATA</span> <b>TEST-mode activity is also on file for this account</b>
+  — deliberate rehearsal leads with fictional contacts recorded separately from real commercial traffic; the real balance above keeps being the authoritative one.
+  The sandbox was NOT credited or debited by your purchases: TEST balance <b>${{ '%.2f'|format(test_s.balance) }}</b>{% if test_s.txns %} — recent entries: {% for t in test_s.txns %}{{ t.ts[5:16].replace('T',' ') }} {{ t.kind }} ${{ '%.2f'|format(t.amount) }}{{ ', ' if not loop.last }}{% endfor %}{% endif %}
+</div>{% endif %}
+
+<h2 style="font-size:17px;margin:18px 0 6px">Delivered leads</h2>
+<table><tr><th>Delivered (UTC)</th><th>Lead</th><th>Sale</th><th>Tier</th><th>Price</th><th>Status</th><th>CRM delivery</th></tr>
+{% for l in lead_rows %}<tr><td class="small">{{ l.delivered_at[5:16].replace('T',' ') if l.delivered_at else '—' }}</td>
+<td><a href="/agent/{{ token }}/lead/{{ l.lead_id }}">{{ l.lead_id }}</a></td>
+<td>{% if l.sale_type == 'EXCLUSIVE' %}<span class="pill">Exclusive</span>{% endif %}</td>
+<td>{{ l.tier }}</td><td>${{ '%.2f'|format(l.price or 0) }}</td>
+<td>{% if l.agent_status == 'RETURNED' %}{% if credits.get(l.lead_id) %}returned &amp; credited{% else %}<span title="The request is recorded, but the return policy refused an automatic credit — it sits in the operator review queue with its refusal reason.">returned — credit refused (operator review)</span>{% endif %}{% elif l.agent_status == 'ACCEPTED' %}accepted{% elif l.agent_status %}{{ l.agent_status.lower() }}{% else %}new{% endif %}</td>
+<td class="small">{% if crm.get(l.lead_id) %}{% set c = crm.get(l.lead_id) %}{% if c.status == 'FAILED' %}<span style="color:#b00;font-weight:bold">failed</span> · latest {{ c.ts[5:16].replace('T',' ') }} <a href="/agent/{{ token }}/lead/{{ l.lead_id }}">retry →</a>{% elif c.status in ('SENT','RESENT') %}delivered {{ c.ts[5:16].replace('T',' ') }}{% else %}{{ c.status.lower() }}{% endif %}{% else %}—{% endif %}</td></tr>
+{% else %}<tr><td colspan="7" class="small">No leads delivered yet.</td></tr>{% endfor %}</table>
+<p class="mini" style="margin-top:6px">Return &amp; credit policy (the actual settings, not a promise):{% if return_window is none %} returns are currently disabled by the operator — anything else needs an operator adjustment.{% else %} a delivered lead can be returned for a balance credit within {{ return_window }}h of delivery{% if not allow_after_contact %}, before it was contacted{% endif %}. Older or contacted re-returns need an operator adjustment with a note.{% endif %}</p>
+
+<h2 style="font-size:17px;margin:18px 0 6px">Return &amp; credit history</h2>
+<p class="mini" style="margin:2px 0 6px">Every return you have submitted and what the platform recorded about it. Status comes from the actual records (your request, the operator decision, and the ledger entry that put money back) — the policy text above explains when a return is credited.</p>
+{% if rh %}<table><tr><th>Lead</th><th>Requested</th><th>Status</th><th>Recorded reason / decision</th><th>Credit</th></tr>
+{% for r in rh %}<tr><td><a href="/agent/{{ token }}/lead/{{ r.lead_id }}">{{ r.lead_id }}</a> · tier {{ r.tier or '-' }}</td>
+<td class="small">{{ (r.request_ts or '—')[5:16].replace('T',' ') }}{{ ' UTC' if r.request_ts }}{% if r.request_count and r.request_count > 1 %} · requested {{ r.request_count }}×{% endif %}</td>
+<td>{% if 'Credited back' in r.status %}<span class="good"><b>{{ r.status }}</b></span>{% elif 'Awaiting' in r.status %}<b>{{ r.status }}</b>{% else %}{{ r.status }}{% endif %}</td>
+<td class="small">{{ r.return_note }}{% if r.decision_note %}<br><span class="mini">{{ r.decision_ts[:16].replace('T',' ') if r.decision_ts }} · operator: {{ r.decision_note }}</span>{% endif %}</td>
+<td>{% if r.credit_amount is not none %}<b class="good">+${{ '%.2f'|format(r.credit_amount) }}</b> (ledger){% else %}—{% endif %}</td></tr>
+{% endfor %}</table>
+<p class="mini" style="margin-top:4px">{{ rh|length }} most recent return(s) shown — the lead page carries the same history for each lead.</p>
+{% else %}<p class="small">No returns submitted yet. Your delivered leads are exclusive to you; situations that qualify for a balance credit, and the exact return window, are on each lead's return button and the policy line above.</p>{% endif %}
+
+<h2 style="font-size:17px;margin:18px 0 6px">Delivery</h2>
+<p class="mini" style="margin:4px 0 8px">Where your sold leads land on the moment they're sold: this account page (portal), your CRM webhook, or email. You can change it any time; the sale and the ledger are unaffected.</p>
+<table><tr><th>Current</th><th>Detail</th></tr>
+<tr><td><b>{{ b.delivery.get('method','outbox') }}</b>{% if b.delivery.get('method','outbox') != 'outbox' %} <span class="mini">(on from your next saved lead)</span>{% endif %}</td>
+<td class="small">{% if b.delivery.get('webhook_url') %}webhook: <code>{{ b.delivery.webhook_url[:80] }}</code><br><span class="mini">every lead POST is signed in the <b>x-ticket-signature</b> header — <code onclick="this.select()">sha256=HMAC-SHA256</code> of the raw body with this secret:{% if b.delivery.get('webhook_secret') %} <code onclick="this.select()">{{ b.delivery.webhook_secret }}</code>{% else %} none yet (a secret appears once a webhook is active); POSTs are not verifiable until then{% endif %}</span> · {% endif %}email: {{ b.delivery.email or '—' }}</td></tr></table>
+<form method="post" action="/agent/{{ token }}/delivery" style="display:grid;gap:6px;max-width:640px;margin:8px 0 16px">
+<select name="method" class="t">
+  <option value="outbox" {{ 'selected' if b.delivery.get('method','outbox')=='outbox' }}>Portal only — leads appear on my desk</option>
+  <option value="email" {{ 'selected' if b.delivery.get('method','outbox')=='email' }}>Email me each lead (and portal)</option>
+  <option value="webhook" {{ 'selected' if b.delivery.get('method','outbox')=='webhook' }}>Push to my CRM webhook (and portal)</option>
+</select>
+<input class="t" name="email" type="email" value="{{ b.delivery.email or '' }}" placeholder="delivery email (for the email route)">
+<input class="t" name="webhook_url" value="{{ b.delivery.webhook_url or '' }}" placeholder="https://your-crm.example.com/hook (for the webhook route)">
+<button class="btn" type="submit">Save delivery preference</button>
+</form>
+
+<h2 id="packages" style="font-size:17px;margin:18px 0 6px">Credit packs</h2>
+{% if rail == 'off' %}{% if sandbox_ok %}<p class="mini">Every sold lead is <b>exclusive to you</b>: one consumer, one consent, one buyer — never re-sold or shared. The online rail is not configured yet: real credit packs are recorded on this ledger by the operator, only after an offline payment clears. While that is pending you can rehearse a purchase on the <b>TEST sandbox</b> below — it credits the TEST lane, moves no money, and is clearly labeled in your purchase history.</p>{% else %}<p class="mini">Every sold lead is <b>exclusive to you</b>: one consumer, one consent, one buyer — never re-sold or shared. To add credits: choose a pack and contact us — the pack is recorded on this ledger only after payment clears (operator-recorded, offline). Online purchase is not set up yet.</p>{% endif %}{% endif %}
+<table><tr><th>Pack</th><th>Amount</th><th></th></tr>
+{% for p in packages %}<tr><td>{{ p.label }}</td><td>${{ p.amount_usd }}</td>
+<td>{% if rail != 'off' %}<form method="post" action="/agent/{{ token }}/billing/package" style="margin:0"><input type="hidden" name="package" value="{{ p.id }}">{% if ist %}<input type="hidden" name="test" value="1">{% endif %}<button class="btn" type="submit">Buy (test mode)</button></form>
+{%- elif sandbox_ok %}<form method="post" action="/agent/{{ token }}/billing/package" style="margin:0"><input type="hidden" name="package" value="{{ p.id }}">{% if ist %}<input type="hidden" name="test" value="1">{% endif %}<button class="btn" type="submit">Buy (TEST sandbox)</button></form></td>{% else %}</td>{% endif %}</tr>
+{% else %}<tr><td colspan="3" class="small">No packages configured.</td></tr>{% endfor %}</table>
+
+<h2 style="font-size:17px;margin:18px 0 6px">Purchases</h2>
+<table><tr><th>When (UTC)</th><th>Pack</th><th>Amount</th><th>Status</th></tr>
+{% for p in purch %}<tr><td class="small">{{ p.ts[5:16].replace('T',' ') }}</td><td>{{ p.package_id }}{% if p.provider == 'sandbox' %} <span class="pill TEST">TEST</span>{% endif %}</td><td>${{ '%.2f'|format(p.amount_usd) }}</td>
+<td>{% if p.status == 'CREDITED' %}<span class="good">paid &amp; credited</span>{% elif p.status == 'PENDING' %}pending — {% if p.provider == 'sandbox' %}<a href="{{ url_for('agent_sandbox_checkout', token=token, rowid=p.id) }}">open TEST checkout</a>{% elif p.session_url %}<a href="{{ p.session_url }}">resume checkout</a>{% else %}awaiting payment{% endif %}{% elif p.status == 'PAID' %}paid, crediting…{% else %}{{ p.status.lower() }}{% endif %}</td></tr>
+{% else %}<tr><td colspan="4" class="small">No purchases yet.</td></tr>{% endfor %}</table>
+
+<h2 style="font-size:17px;margin:18px 0 6px">Ledger</h2>
+<p class="mini" style="margin:2px 0 6px"><a href="/agent/{{ token }}/billing/statement.csv">Download ledger statement (CSV) →</a> for your own accounting.</p>
+<table><tr><th>When (UTC)</th><th>Entry</th><th>Amount</th><th>Balance after</th><th>Ref / note</th></tr>
+{% for t in s.txns %}<tr><td class="small">{{ t.ts[5:16].replace('T',' ') }}</td>
+<td>{{ kinds.get(t.kind, t.kind) }}</td>
+<td><b class="{{ 'good' if t.amount >= 0 else 'bad' }}">{{ '+' if t.amount >= 0 else '-' }}${{ '%.2f'|format(t.amount if t.amount >= 0 else -t.amount) }}</b></td>
+<td>${{ '%.2f'|format(t.balance_after) }}</td>
+<td class="small">{% if t.lead_id %}<a href="/agent/{{ token }}/lead/{{ t.lead_id }}">{{ t.lead_id }}</a>{% if t.package_id %} · pack {{ t.package_id }}{% endif %}{% else %}{% if t.package_id %}pack {{ t.package_id }}{% endif %}{% endif %} {{ t.note }}</td></tr>
+{% else %}<tr><td colspan="5" class="small">No ledger entries yet.</td></tr>{% endfor %}</table>
+</div>{% endblock %}
+{% block footer %}{% endblock %}

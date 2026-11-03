@@ -1,0 +1,8 @@
+flask>=3.0
+qrcode[pil]>=7.4
+reportlab>=4.0
+openpyxl>=3.1
+requests>=2.31
+stripe>=7          # prepaid credit packs: Checkout sessions + webhook-verified fulfillment (OFF until keys are set in env)
+pytest>=8
+playwright>=1.45   # e2e test only

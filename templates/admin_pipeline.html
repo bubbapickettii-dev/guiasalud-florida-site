@@ -1,0 +1,62 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1400px;padding:16px 16px 40px">
+<h2>Partner pipeline - follow-up queue</h2>
+<p class="mini">This queue tracks what you actually did with each partner — nothing is sent to anyone. The highest-priority work floats to the top.</p>
+<div class="kpis" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin:10px 0">
+{% for k,label in [('OVERDUE','Overdue'),('DUE_TODAY','Due today'),('ACTIVATION_READY','Ready for activation'),
+                   ('AWAITING_FIRST_CONTACT','Awaiting first contact'),('INTERESTED_WAITING','Interested - waiting'),
+                   ('SCHEDULED','Upcoming'),('RECENT','Recently handled')] %}
+<div class="kpi"><span>{{ label }}</span><b style="font-size:20px">{{ counts.get(k, 0) }}</b></div>
+{% endfor %}
+</div>
+{% if saved %}<div class="note good" style="border-left:4px solid #1a7">{{ saved }}</div>{% endif %}
+
+<div style="margin:18px 0 8px"><h3 style="margin:0">Priorities — where attention goes next</h3>
+<p class="mini">Not a score: every partner sits in an evidence-labelled section with the recorded data behind it and one
+next action. Test traffic is excluded from all numbers. New partners are never penalised for young history, and
+unrecorded acquisition cost stays unknown — never counted as zero.</p></div>
+<div style="overflow-x:auto">
+{% set cap = 6 %}
+{% for s in pri.sections %}{% if s.entries %}
+<div style="margin:12px 0;border:1px solid #e3e8ee;border-radius:6px;padding:10px 12px">
+  <b>{{ s.label }}</b> <span class="pill">{{ s.entries|length }}</span>
+  <p class="mini" style="margin:3px 0">{{ s.hint }}</p>
+  <ul style="margin:6px 0 0;padding-left:16px">
+  {% for it in s.entries[:cap] %}
+    <li style="margin:4px 0"><a href="/admin/pipeline/{{ it.partner_id }}?token={{ token }}"><b>{{ it.display_name }}</b></a>
+      <span class="mini">· {{ stg_label[it.stage] }}</span><br>
+      {% for w in it.why %}<span style="color:#8a2b2b">why: {{ w }}</span>{{ ('<br>'|safe) if not loop.last else '' }}{% endfor %}
+      {% for kind, text in it.evidence %}<span class="pill" style="color:{{ EV[kind] }}">{{ text }}</span>{% endfor %}<br>
+      <span class="mini">next: {{ it.next }} · <a href="/admin/pipeline/{{ it.partner_id }}?token={{ token }}">open card</a></span></li>
+  {% endfor %}
+  {% if s.entries|length > cap %}<li class="mini">+ {{ s.entries|length - cap }} more in this group — see the queue below / their partner cards.</li>{% endif %}
+  </ul>
+</div>
+{% endif %}{% endfor %}
+</div>
+{% if pri.channels %}
+<div style="margin:16px 0"><h3 style="margin:0">Outreach methods (recorded data only)</h3>
+<p class="mini">Partners actually contacted by each method, with their verified outcomes so far. A snapshot — not a
+controlled test; methods with no recorded outreach stay out entirely.</p>
+<table style="max-width:640px"><tr><th>Method</th><th class="num">Partners contacted</th><th class="num">Reached interest+</th><th class="num">Qualified (verified)</th><th class="num">Revenue</th></tr>
+{% for c in pri.channels %}<tr><td>{{ c.method }}</td><td class="num">{{ c.contacted }}</td><td class="num">{{ c.beyond_contact }}</td><td class="num">{{ c.qualified }}</td><td class="num">${'{:,.2f}'.format(c.revenue)}</td></tr>{% endfor %}</table></div>
+{% endif %}
+
+<div style="overflow-x:auto"><table>
+<tr><th>Priority / partner</th><th>Stage</th><th>Last outreach</th><th>Next follow-up</th><th class="num">Visits</th><th class="num">Qualified</th><th class="num">Revenue</th><th>Record next step</th></tr>
+{% for r in rows %}
+{% set bm = metrics.get(r.partner_id) %}
+<tr id="{{ r.partner_id }}"><td><a href="/admin/pipeline/{{ r.partner_id }}?token={{ token }}"><b>{{ r.display_name }}</b></a><br><span class="mini">{{ r.partner_id }} · {{ r.type }}{% if r.notes %} · last note: {{ r.notes[:80] }}{% endif %}</span><br><span class="pill {{ 'bad' if r.bucket=='OVERDUE' else '' }}">{{ r.bucket }}</span></td>
+<td><span class="pill">{{ stg_label[r.stage] }}</span></td>
+<td class="mini">{{ (r.last_outreach_at or '-')[5:16].replace('T',' ') }}{% if r.outreach_method %} · {{ r.outreach_method }}{% endif %}{% if r.next_action %}<br>→ {{ r.next_action }}{% endif %}</td>
+<td class="mini">{{ r.next_followup or '-' }}</td>
+<td class="num">{{ (bm.visits if bm else 0) }}</td><td class="num">{{ (bm.qualified if bm else 0) }}</td><td class="num">{{ '${:,.2f}'.format(bm.revenue) if bm and bm.revenue else '-' }}</td>
+<td><form method="post" action="/admin/pipeline/{{ r.partner_id }}/action" style="display:flex;gap:4px;flex-wrap:wrap;margin:0">
+<input class="t" name="next_followup" type="date" style="max-width:150px" title="Schedule the next follow-up (YYYY-MM-DD)">
+<select class="t" name="method" style="max-width:110px"><option value="">method</option>{% for m in methods %}<option>{{ m }}</option>{% endfor %}</select>
+<select class="t" name="stage" style="max-width:150px"><option value="">stage ({{ stg_label[r.stage] }})</option>{% for s in stages %}{% if s != r.stage %}<option>{{ s }}</option>{% endif %}{% endfor %}</select>
+<input class="t quick" name="note" placeholder="note / outcome" style="max-width:170px">
+<button class="sb">Save</button><input type="hidden" name="return" value="1"></form></td></tr>
+{% endfor %}</table></div>
+<p class="mini">Stages: {{ stages|map('lower')|join(' → ') }}. Metrics columns are REAL acquisition data (dashes where no revenue yet). Dates are your promises to yourself — overdue rows float to the top.</p>
+</div>{% endblock %}

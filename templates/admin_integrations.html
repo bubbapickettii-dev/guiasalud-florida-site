@@ -1,0 +1,138 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1300px;padding:16px 16px 40px">
+<h2>Integrations &amp; signal sources — the honest connection registry</h2>
+<p class="small">Statuses are <b>derived at page load from the same configuration the code actually uses</b>
+(environment variables, buyer delivery settings, marketplace config) — this page cannot show a connector as
+live when it isn't. Nothing here activates anything: flipping a sink or source on is always an operator
+editing configuration or running the fetch CLI.</p>
+
+<h3>Outbound sinks — where records, notifications and bookkeeping go</h3>
+<table>
+<tr><th>Connector</th><th>Status</th><th>What configures it</th><th>Evidence right now</th></tr>
+{% for s in sinks %}
+<tr>
+ <td><b>{{ s.label }}</b></td>
+ <td><span class="pill">{{ s.status }}</span></td>
+ <td class="small">{{ s.auth }}<br>{{ s.notes }}
+   {% if s.cost and s.cost != "$0" %}<br><b>cost:</b> {{ s.cost }}{% endif %}</td>
+ <td class="small">{{ s.detail }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<h3>Inbound signal sources — what the discovery loop can really collect</h3>
+<p class="small"><b>COLLECTS</b> = a working collector runs offline-safe today ·
+<b>NEEDS_SETUP</b> = feasible, free, awaiting operator config · <b>NEEDS_KEY</b> = requires a paid
+credential (refused without approval) · <b>TOS_BLOCKED</b> = platform terms bar the collection; manual
+research + offline ingest only · <b>AGREEMENT_REQUIRED</b> = external lead supply, disabled until a
+signed agreement lands. A platform is "integrated" <i>only</i> when its status is COLLECTS with a
+named collector — nothing else counts.</p>
+<table>
+<tr><th>Source</th><th>Status</th><th>Auth / access</th><th>How it runs</th><th>Collection so far</th><th>How to enable (exact steps)</th></tr>
+{% for s in sources %}
+<tr>
+ <td><b>{{ s.label }}</b><br><span class="small">{{ s.notes }}</span></td>
+ <td><span class="pill">{{ s.status }}</span></td>
+ <td class="small">{{ s.auth }}{% if s.cost and s.cost != "$0" %}<br><b>cost:</b> {{ s.cost }}{% endif %}</td>
+ <td class="small"><code>{{ s.collector }}</code><br>evidence: {{ s.evidence }}</td>
+ <td class="small">
+   {% set cnt = sig_counts.get(s['id']) %}
+   {% if cnt %}{{ cnt.signals }} signal(s), {{ cnt.new }} new, {{ cnt.actioned }} actioned
+   {% elif s.status == 'COLLECTS' %}0 (first fetch pending: <code>tools/signals_watch.py fetch --network</code>)
+   {% else %}—{% endif %}</td>
+ <td class="small">{{ s.setup or '' }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<h3>Collection activity — last fetch results (real outcomes, not a status claim)</h3>
+<p class="small">One honest sweep command runs ALL eligible collectors together:
+<code>python tools/collect.py run --network</code> (same engine <code>signals_watch.py fetch</code>
+uses). Each row below is the actual outcome a recorded fetch produced: fetched/accepted counts, or the
+exact error. Recurring collection is only enabled when YOU schedule that command
+(<code>python tools/collect.py schedule-cmd</code> prints ready-to-use cron / Task Scheduler lines;
+nothing registers itself, per the no-collection-without-operator-action rule).</p>
+<table>
+<tr><th>Signal fetches</th><th>ts</th><th>query</th><th>fetched</th><th>accepted</th><th>outcome</th></tr>
+{% for r in recent_fetches %}
+<tr><td><b>{{ r.source }}</b></td><td class="small">{{ r.ts }}</td><td class="small">{{ r.query[:70] }}</td>
+<td>{{ r.fetched }}</td><td>{{ r.accepted }}</td>
+<td class="small"><span class="{{ 'err' if r.note.startswith('error') else 'pill' }}">{{ r.note[:120] }}</span></td></tr>
+{% else %}<tr><td colspan="6" class="small">No fetch has run yet — the first sweep fills this table.</td></tr>
+{% endfor %}
+</table>
+<table>
+<tr><th>Prospect-source fetches (Google Places)</th><th>ts</th><th>query</th><th>fetched</th><th>added</th><th>outcome</th></tr>
+{% for r in recent_prospects %}
+<tr><td><b>{{ r.source }}</b></td><td class="small">{{ r.ts }}</td><td class="small">{{ r.query[:70] }}</td>
+<td>{{ r.fetched }}</td><td>{{ r.added }}</td>
+<td class="small">{{ r.note[:120] }}</td></tr>
+{% else %}<tr><td colspan="6" class="small">No prospect-source fetch has run yet
+(<code>tools/prospects.py places</code> stays refused until the API key + budget approval exist).</td></tr>
+{% endfor %}
+</table>
+<h3>Web extraction / local-AI capability state (derived now)</h3>
+<p class="small">Reader: <b>{{ webreader.effective_mode }}</b> · scrapegraphai installed:
+<b>{{ webreader.sga_lib_installed }}</b> · model provider: <b>{{ webreader.provider }}</b> ·
+<strong>Python:</strong> {{ py_version }} ({{ py_path }}) · <strong>pip:</strong> {{ pip_version }}<br>
+fallback mode = stdlib HTML reader over public pages (robots.txt respected, same signal loop,
+same review). <b>ollama_json</b> mode = the LOCAL model extracts structured facts directly over the
+fetched page (stdlib HTTP, no extra dependency). SGA mode additionally runs the real ScrapeGraphAI
+graph via the subprocess runner in the separate venv. OpenAI-backed graphs are billed and stay off
+without explicit operator approval; the code refuses otherwise.</p>
+
+<h3>Local AI (Ollama) — status panel</h3>
+{% if webreader.ollama and webreader.ollama.running %}
+<p class="small">Ollama: <b>RUNNING</b> at <code>{{ webreader.ollama.ollama_url }}</code> ·
+selected model: <b>{{ webreader.ollama.selected_model or '(none selected)' }}</b> ·
+responds: <b>{{ webreader.ollama.model_responds }}</b> ·
+responsive mode now: <b>{{ webreader.effective_mode }}</b><br>
+models installed: {% if webreader.ollama.models %}{% for m in webreader.ollama.models %}<code>{{ m.name }}</code>
+({% set mb = (m.size_bytes or 0) / 1073741824 %}{{ '%.1f'|format(mb) }} GB){% if not loop.last %}, {% endif %}{% endfor %}
+{% else %}none — <code>ollama pull qwen2.5:14b</code> (~9 GB, needs your approval){% endif %}</p>
+{% else %}
+<p class="small">Ollama: <b>NOT REACHABLE</b> — start the Ollama desktop app (or <code>ollama serve</code>).
+Download: https://ollama.com/download</p>
+{% endif %}
+
+<h4>Last <code>collect.py ai-health</code> / <code>ai-smoke</code> result</h4>
+{% if ai_state %}
+<p class="small">Health: <b>{{ ai_state.health_overall or '(not run)' }}</b> ·
+smoke: <b>{{ ai_state.smoke_overall or '(not run)' }}</b> · recorded {{ ai_state.recorded_at }}</p>
+{% if ai_state.checks %}
+<table>
+<tr><th>Check</th><th>Status</th><th>Detail</th></tr>
+{% for c in ai_state.checks %}
+<tr><td><b>{{ c.name }}</b></td><td><span class="pill">{{ c.status }}</span></td><td class="small">{{ c.detail[:160] }}</td></tr>
+{% endfor %}
+</table>{% endif %}
+{% if ai_state.smoke %}
+<table>
+<tr><th>Smoke step</th><th>Result</th><th>Detail</th></tr>
+{% for s in ai_state.smoke %}
+<tr><td><b>{{ s.step }}</b></td><td>{{ 'PASS' if s.ok else 'FAIL' }}</td>
+<td class="small">{% if s.ok %}{{ (s.result | tojson)[:160] }} → {{ s.model }}{% else %}{{ (s.error or '')[:160] }}{% endif %}</td></tr>
+{% endfor %}
+</table>{% endif %}
+{% else %}
+<p class="small">No health snapshot yet. Run <code>python tools/collect.py ai-health</code>
+and <code>python tools/collect.py ai-smoke</code> to populate this panel (out/ai_state.json).
+Setup guide: <code>docs/LOCAL_AI_SETUP.md</code>.</p>
+{% endif %}
+
+<h2>Business-buyer prospect paths (separate registry — <em>not</em> the consumer-signal loop)</h2>
+<table>
+<tr><th>Path</th><th>Status</th><th>Auth / cost</th><th>How it runs / notes</th></tr>
+{% for s in prospect_sources %}
+<tr><td><b>{{ s.label }}</b></td><td><span class="pill">{{ s.status }}</span></td>
+<td class="small">{{ s.auth }}{% if s.cost %}<br>cost: {{ s.cost }}{% endif %}</td>
+<td class="small"><code>{{ s.collector }}</code><br>{{ s.notes }}<br>evidence: {{ s.evidence }}</td></tr>
+{% endfor %}
+</table>
+
+<p class="small">Rules baked into the collectors, not bolted on: explicit operator command only
+(<code>fetch --network</code>), polite pause + small limits, author usernames dropped <b>before</b> storage,
+retention pruning for irrelevant rows (<code>tools/signals_watch.py prune</code>), and every fetch outcome
+logged to <code>fetch_log</code> so failures are visible here tomorrow. See
+<code>docs/SOURCES.md</code> for the per-platform feasibility rulings.</p>
+</div>{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% set _es = True %}{% set lang = 'es' %}
+{% block lang %}es{% endblock %}
+{% block title %}¿Te despidieron en Florida? Guías de cobertura médica por empresa | {{ site.brand }}{% endblock %}
+{% block desc %}Guías gratis por empresa para quienes perdieron su seguro médico en Florida: tu ventana de 60 días, COBRA frente al Mercado y las fechas de Inscripción Abierta de 2027.{% endblock %}
+{% block body %}<article class="wrap learn" style="max-width:760px;padding:30px 16px 60px">
+<h1>¿Te despidieron en Florida? Tu plan de 60 días para el seguro médico</h1>
+{% for para in hub.a %}<p>{{ para }}</p>{% endfor %}
+<div class="ctabox"><b style="font-size:20px">Ve tus opciones en 60 segundos</b><script>window.LE_PAGE={angle:"es_life_change",lang:"es",campaign:"oep-2027-health-es"};</script>
+<a class="btn" href="/check?a=es_life_change&via=layoffs">Revisar mis opciones de 60 días</a></div>
+<div class="ctabox" style="background:#0c2b25"><b style="font-size:18px">Tu seguro de vida del trabajo también puede terminar</b><p style="color:#E3EDE6;margin:8px 0 0">Florida te da 31 días después de que termina la cobertura de vida grupal para convertirla sin examen médico (s. 627.566). Una póliza a término nueva puede costar menos si estás sano(a).</p>
+{% if not site.no_buyer %}<a class="btn" href="/c/work-life-insurance-ending?via=layoffs">Ver cuánta cobertura de vida necesito</a>{% endif %}</div>
+<h3>Despidos recientes en Florida</h3><p class="small">De avisos WARN públicos y noticias locales. No estamos afiliados con estas empresas.</p>
+<ul>{% for e in events %}<li style="margin:8px 0"><a href="/despidos/{{ e.slug }}"><b>{{ e.company }}</b>, {{ e.city }}</a> <span class="small">· {{ '{:,}'.format(e.employees) }} trabajadores · alrededor del {{ e.effective_pretty_es }}</span></li>{% endfor %}</ul>
+<p class="small"><a href="/layoffs" hreflang="en">Read this in English</a></p>
+</article>{% endblock %}

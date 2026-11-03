@@ -1,0 +1,20 @@
+{
+ "brand": "Guía Salud",
+ "brand_note": "Consumer brand Guía Salud (no geographic suffix; internal system name: Scout). Staging copy 2026-10-16. Legal entity, contact email and mailing address are still placeholders.",
+ "legal_entity": "[YOUR LLC NAME]",
+ "contact_email": "[support@yourdomain.com]",
+ "mailing_address": "[BUSINESS MAILING ADDRESS]",
+ "served_states": [
+  "FL"
+ ],
+ "base_url": "http://localhost:8000",
+ "disclosure": "We are not an insurance company, an insurance agency or a government site, and we do not sell insurance. Estimates on this site are educational, not quotes, eligibility decisions or offers of coverage. If you choose to ask for help, we show the name of the one licensed agency that would receive your details and ask for your permission before sharing anything.",
+ "meta_pixel_id": "",
+ "ga4_id": "",
+ "gov_disclaimer": "Not affiliated with HealthCare.gov, the Health Insurance Marketplace or any government agency.",
+ "disclosure_es": "No somos una aseguradora, ni una agencia de seguros, ni un sitio del gobierno, y no vendemos seguros. Los cálculos en este sitio son educativos, no cotizaciones, decisiones de elegibilidad ni ofertas de cobertura. Si decides pedir ayuda, te mostramos el nombre de la única agencia con licencia que recibiría tus datos y te pedimos permiso antes de compartir algo.",
+ "gov_disclaimer_es": "No estamos afiliados con HealthCare.gov, el Mercado de Seguros Médicos ni ninguna agencia del gobierno.",
+ "consent_reviewed_by_counsel": false,
+ "email_fallback": false,
+ "email_fallback_note": "False = we never email consumers; the Check result stays on screen. True re-enables 'email me this summary' (consumer-requested, not sellable)."
+}

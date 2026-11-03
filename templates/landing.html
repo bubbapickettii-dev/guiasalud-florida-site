@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{{ c.headline }} | {{ site.brand }}{% endblock %}
+{% block desc %}{{ c.subhead }}{% endblock %}
+{% set es = c.lang == 'es' %}{% set disc = (site.disclosure_es if es else site.disclosure) ~ ((' ' ~ (site.gov_disclaimer_es if es else site.gov_disclaimer)) if c.product == 'health_aca' else '') %}
+{% block lang %}{{ 'es' if c.lang == 'es' else 'en' }}{% endblock %}
+{% block trust %}{{ 'Gratis · Sin compromiso · Fuentes oficiales' if c.lang == 'es' else 'Free · No obligation · Official sources' }}{% endblock %}
+{% block footdisc %}{{ disc }}{% endblock %}{% block lp %}{{ 'Política de Privacidad' if c.lang=='es' else 'Privacy Policy' }}{% endblock %}{% block lt %}{{ 'Términos' if c.lang=='es' else 'Terms' }}{% endblock %}{% block lo %}{{ 'No contactarme' if c.lang=='es' else 'Do not contact me / opt out' }}{% endblock %}
+{% block bodyclass %}{{ 'embed' if embed else '' }}{% endblock %}
+{% block head %}<script type="application/ld+json">{{ {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+ {"@type":"Question","name":c.headline ~ "?","acceptedAnswer":{"@type":"Answer","text":c.problem}},
+ {"@type":"Question","name":"Is this a quote?","acceptedAnswer":{"@type":"Answer","text":"No. The tool gives an educational estimate. A licensed agent provides actual quotes if you ask for them."}},
+ {"@type":"Question","name":"Does it cost anything?","acceptedAnswer":{"@type":"Answer","text":"No. The check is free and there is no obligation to buy."}}]}|tojson }}</script>{% endblock %}
+{% block header %}{% if not embed %}{{ super() }}{% endif %}{% endblock %}
+{% block body %}
+<div class="wrap"><div class="hero" {% if embed %}style="grid-template-columns:1fr;padding:0"{% endif %}>
+{% if not embed %}<div class="copy"><span class="eyebrow">{{ c.offer }}</span><h1>{{ c.headline }}</h1><p class="sub">{{ c.subhead }}</p>
+<p class="problem">{{ c.problem }}</p>
+{% if es %}<ul class="bullets"><li>Toma unos 60 segundos</li><li>Vea su resultado antes de que alguien le contacte</li><li>Hable con un agente con licencia solo si usted quiere</li></ul>{% else %}<ul class="bullets"><li>Takes about 60 seconds</li><li>See your number before anyone contacts you</li><li>Talk to a licensed agent only if you want to</li></ul>{% endif %}</div>{% endif %}
+<div class="card" id="app">{% if partner %}<p class="small" style="margin:-6px 0 12px">Shared with you by <b>{{ partner.display_name }}</b></p>{% endif %}<div class="progress"><i id="prog"></i></div><div id="steps"></div>
+<input class="hp" tabindex="-1" autocomplete="off" id="website" name="website" aria-hidden="true">
+<p class="disclosure">{{ disc }}</p></div>
+</div></div>
+{% if not embed and es %}<section class="edu"><div class="wrap" style="max-width:760px">
+<h2>Por qué importa</h2><p>{{ c.problem }}</p><h2>Cómo funciona</h2><p>Usted contesta unas preguntas, la herramienta calcula con sus propios números y ve el resultado al instante. Si quiere opciones reales, un agente con licencia puede contactarle. Esa parte es opcional.</p>
+<div class="faq"><h2>Preguntas</h2><details><summary>¿Es una cotización?</summary><p>No. Es un estimado educativo. Los precios y la elegibilidad reales los determina el Mercado o la aseguradora.</p></details>
+<details><summary>¿Alguien me va a llamar?</summary><p>Solo si marca la casilla de consentimiento y pide opciones. También puede elegir "envíenme mis resultados por correo".</p></details>
+<details><summary>¿Quiénes son ustedes?</summary><p>{{ disc }}</p></details></div></div></section>{% endif %}
+{% if not embed and not es %}<section class="edu"><div class="wrap" style="max-width:760px">
+<h2>Why this matters</h2><p>{{ c.problem }}</p>
+<h2>How the check works</h2><p>You answer a few questions, the calculator runs on your own numbers, and you see the result immediately. If you want real quotes, you can ask a licensed agent to reach out - that part is optional.</p>
+<div class="faq"><h2>Questions</h2>
+<details><summary>Is this a quote?</summary><p>No. It's an educational estimate. Actual prices and approval come from an insurance company after an application.</p></details>
+<details><summary>Will someone call me?</summary><p>Only if you check the consent box and ask for options. You can choose "email me my results" instead.</p></details>
+<details><summary>Who are you?</summary><p>{{ site.disclosure }}</p></details></div></div></section>{% endif %}
+<script>window.LE_NO_AUTO_PV=true;window.LE={emailFallback:{{ 'true' if site.email_fallback else 'false' }},lang:{{ (c.lang or 'en')|tojson }},variant:{{ (c.variant or '')|tojson }},campaign:{{ c|tojson }},steps:{{ steps|tojson }},states:{{ states|tojson }},embed:{{ 'true' if embed else 'false' }}};</script>
+<script src="/static/app.js"></script>
+{% endblock %}
+{% block footer %}{% if not embed %}{{ super() }}{% endif %}{% endblock %}

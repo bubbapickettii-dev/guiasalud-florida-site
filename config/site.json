@@ -1,0 +1,26 @@
+{
+ "brand": "Gia Salud",
+ "brand_note": "Public brand and business name: Gia Salud, Miami, Florida. Earlier drafts used the accented working name 'Guía Salud'; the brand now lives only in this file (templates read site.brand). Legal-entity suffix, street address and support inbox are intentionally NOT invented: an empty or bracketed value is treated as not supplied and is never printed.",
+ "legal_entity": "Gia Salud",
+ "location": "Miami, Florida",
+ "founded": "Miami, Florida",
+ "contact_email": "",
+ "support_email": "",
+ "support_phone": "",
+ "mailing_address": "",
+ "_identity_note": "Identity values may also be supplied by environment (BRAND / LEGAL_ENTITY / LOCATION / SUPPORT_EMAIL / CONTACT_EMAIL / MAILING_ADDRESS / SUPPORT_PHONE) so nothing real has to be committed to the repo; the environment wins, including after an admin config reload. While a value is empty or bracketed, no public page prints it: the footer, privacy policy, terms and contact page show only what is real, and /contact falls back to the on-site form. See docs/BUSINESS_IDENTITY.md for every surface each field appears on.",
+ "served_states": [
+  "FL"
+ ],
+ "base_url": "http://localhost:8000",
+ "_base_url_note": "Staging default. A deployment sets BASE_URL in the host environment; canonical URLs, sitemap, robots, QR codes and prepared links all read it. Nothing is baked into the repo.",
+ "disclosure": "We are not an insurance company, an insurance agency or a government site, and we do not sell insurance. Estimates on this site are educational, not quotes, eligibility decisions or offers of coverage. If you choose to ask for help, we tell you that one licensed agency, assigned by us, would receive your details, and we ask your permission before sharing anything.",
+ "meta_pixel_id": "",
+ "ga4_id": "",
+ "gov_disclaimer": "Not affiliated with HealthCare.gov, the Health Insurance Marketplace or any government agency.",
+ "disclosure_es": "No somos una aseguradora, ni una agencia de seguros, ni un sitio del gobierno, y no vendemos seguros. Los cálculos en este sitio son educativos, no cotizaciones, decisiones de elegibilidad ni ofertas de cobertura. Si decides pedir ayuda, te decimos que una agencia con licencia, asignada por nosotros, recibiría tus datos, y te pedimos permiso antes de compartir algo.",
+ "gov_disclaimer_es": "No estamos afiliados con HealthCare.gov, el Mercado de Seguros Médicos ni ninguna agencia del gobierno.",
+ "consent_reviewed_by_counsel": false,
+ "email_fallback": false,
+ "email_fallback_note": "False = we never email consumers; the Check result stays on screen. True re-enables 'email me this summary' (consumer-requested, not sellable)."
+}

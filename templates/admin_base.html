@@ -1,0 +1,48 @@
+{% extends "base.html" %}{% block title %}GS Allude — operations{% endblock %}
+{% block header %}
+{% set groups = [
+  ('leads','Leads',[('overview','Overview','/admin'),('quality','Lead quality','/admin/quality'),
+                    ('credits','Credit queue','/admin/credits'),('discards','Discards','/admin/discards'),
+                    ('inquiries','Inquiries','/admin/inquiries'),
+                    ('funnel','Funnel','/admin/funnel')]),
+  ('prospects','Prospects',[('prospectsbuyer','Business prospects','/admin/prospects'),
+                            ('people','Consumer prospects','/admin/people'),
+                            ('contacts','Imported contacts','/admin/contacts')]),
+  ('buyers','Buyers',[('bpipeline','Buyer pipeline','/admin/buyer-pipeline'),
+                      ('readiness','Readiness','/admin/readiness'),
+                      ('pipeline','Sales pipeline','/admin/pipeline'),
+                      ('partners','Partners','/admin/partners')]),
+  ('growth','Growth',[('organic','Organic queue','/admin/organic'),('opportunities','Opportunities','/admin/opportunities'),
+                      ('audiences','Audiences','/admin/audiences'),('lab','Distribution lab','/admin/lab'),
+                      ('content','Content','/admin/content'),('ideas','Content ideas','/admin/content-ideas'),
+                      ('leadgen','Lead gen','/admin/leadgen'),('assets','Asset queue','/admin/assets'),
+                      ('sources','Sources','/admin/sources'),('channels','Channels & links','/admin/channels'),
+                      ('briefs','Regional briefs','/admin/intel/briefs')]),
+  ('intel','Intelligence',[('intel','Intelligence','/admin/intel'),('signals','Signal watch','/admin/intel/signals'),
+                           ('clusters','Clusters','/admin/intel/clusters'),('supply','Supply sources','/admin/intel/supply')]),
+  ('ops','Settings',[('acquisition','Acquisition','/admin/acquisition'),('econ','Economics','/admin/economics'),
+                     ('integrations','Integrations','/admin/integrations'),('walkthrough','Walkthrough','/admin/walkthrough')])
+] %}
+<header class="top" style="position:relative;z-index:60">
+ <div class="wrap" style="max-width:1440px;gap:12px">
+  <a class="brand" href="/admin?token={{ token }}" style="min-width:132px;white-space:nowrap">GS Allude<span class="desc">Operations</span></a>
+  <nav class="navgroups" aria-label="Admin sections">
+   {% for gk, glabel, items in groups %}
+    {% set active = items|selectattr(0,'equalto',tab)|list %}
+    <details class="{{ 'on' if active }}" {% if active %}data-active="1"{% endif %}>
+     <summary>{{ glabel }}</summary>
+     <div class="navmenu">
+      {% for k, label, href in items %}<a class="{{ 'on' if tab==k }}" href="{{ href }}?token={{ token }}">{{ label }}</a>{% endfor %}
+      {% if gk == 'leads' %}
+      <div class="sep"></div>
+      <a href="/admin/export.csv?token={{ token }}">Export leads CSV</a>
+      <a href="/admin/consents.csv?token={{ token }}">Export consents CSV</a>
+      {% endif %}
+     </div>
+    </details>
+   {% endfor %}
+  </nav>
+ </div>
+</header>
+{% endblock %}
+{% block footer %}{% endblock %}

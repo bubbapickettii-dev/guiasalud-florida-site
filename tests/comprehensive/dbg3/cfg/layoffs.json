@@ -1,0 +1,269 @@
+{
+ "note": "Company-level layoff events from public WARN notices / news. No individual is ever named or contacted. status: ready = page live, draft = waiting for review. Facts verified Oct 5, 2026 against the cited source; WARN mirrors can lag or disagree, so re-check before publishing new ones.",
+ "events": [
+  {
+   "slug": "magic-leap-plantation-2026",
+   "company": "Magic Leap",
+   "city": "Plantation",
+   "county": "Broward",
+   "employees": 193,
+   "effective_date": "2026-10-01",
+   "detail": "Two WARN notices (193 + 272 workers)",
+   "source": "https://www.layofftracker.us/layoffs/state/florida/2026",
+   "source_label": "Florida WARN notices via LayoffTracker",
+   "status": "ready",
+   "confidence": "VERIFIED (2 sources)",
+   "sources_checked": [
+    "https://www.warntracker.com/layoff/magic-leap-2026-10-01 (193 Plantation, notice Jul 17, effective Oct 1)",
+    "https://roadtovr.com/magic-leap-lay-off-2026-waveguide-pivot/"
+   ]
+  },
+  {
+   "slug": "astrion-eglin-2026",
+   "company": "Astrion",
+   "city": "Eglin AFB",
+   "county": "Okaloosa",
+   "employees": 204,
+   "effective_date": "2026-09-30",
+   "detail": "WARN notices: 204 workers at Eglin AFB plus 16 at Patrick AFB (defense contractor)",
+   "source": "https://www.layofftracker.us/layoffs/state/florida/2026",
+   "source_label": "Florida WARN notices via LayoffTracker",
+   "status": "ready",
+   "confidence": "SINGLE SOURCE - verify before outreach",
+   "sources_checked": [
+    "https://layofftracker.us/layoff-tracker/astrion-eglin-air-force-base-fl-sep-2026-layoffs/Y6FJID"
+   ]
+  },
+  {
+   "slug": "assistrx-orlando-2026",
+   "company": "AssistRX",
+   "city": "Orlando",
+   "county": "Orange",
+   "employees": 86,
+   "effective_date": "2026-11-30",
+   "detail": "86 workers, possibly rising to 137; layoffs from Nov 30 into December",
+   "source": "https://www.clickorlando.com/news/local/2026/10/02/mass-layoffs-reported-at-two-orlando-companies/",
+   "source_label": "WKMG News 6",
+   "status": "ready",
+   "confidence": "UNVERIFIED this pass"
+  },
+  {
+   "slug": "hancock-whitney-orlando-2026",
+   "company": "Hancock Whitney",
+   "city": "Orlando",
+   "county": "Orange",
+   "employees": 52,
+   "effective_date": "2026-12-01",
+   "detail": "Layoffs from Nov 30 into December",
+   "source": "https://www.clickorlando.com/news/local/2026/10/02/mass-layoffs-reported-at-two-orlando-companies/",
+   "source_label": "WKMG News 6",
+   "status": "ready",
+   "confidence": "UNVERIFIED this pass"
+  },
+  {
+   "slug": "amentum-kennedy-space-center-2026",
+   "company": "Amentum",
+   "city": "Merritt Island (Kennedy Space Center)",
+   "county": "Brevard",
+   "employees": 70,
+   "effective_date": "2026-11-30",
+   "detail": "NASA bringing the work in-house",
+   "source": "https://talkoftitusville.com/2026/09/28/nasa-to-insource-operations-resulting-in-70-layoffs-at-kennedy-space-center/",
+   "source_label": "Talk of Titusville",
+   "status": "ready",
+   "confidence": "UNVERIFIED this pass"
+  },
+  {
+   "slug": "amazon-homestead-2026",
+   "company": "Amazon",
+   "city": "Homestead",
+   "county": "Miami-Dade",
+   "employees": 616,
+   "effective_date": "2026-07-15",
+   "detail": "616 of 1,110 workers across two Florida sites (July 2026; exact date approximate)",
+   "source": "https://www.layofftracker.us/layoffs/state/florida/2026",
+   "source_label": "Florida WARN notices via LayoffTracker",
+   "status": "ready",
+   "confidence": "UNVERIFIED this pass"
+  },
+  {
+   "slug": "spirit-airlines-florida-2026",
+   "company": "Spirit Airlines",
+   "city": "Miramar and other Florida sites",
+   "county": "Broward",
+   "employees": 5683,
+   "effective_date": "2026-05-02",
+   "detail": "Shutdown on May 2, 2026; WARN lists 5,683 workers at 9 Florida sites",
+   "source": "https://www.local10.com/news/2026/05/05/spirit-airlines-reports-4800-job-cuts-in-florida/",
+   "source_label": "Local 10 / Florida WARN",
+   "status": "ready",
+   "closure": true,
+   "confidence": "UNVERIFIED this pass"
+  },
+  {
+   "slug": "saddle-creek-plant-city-2026",
+   "company": "Saddle Creek Logistics",
+   "city": "Plant City",
+   "county": "Hillsborough",
+   "employees": 178,
+   "effective_date": "2026-10-15",
+   "detail": "WARN notice: 178 workers",
+   "source": "https://www.layofftracker.us/layoffs/state/florida/2026",
+   "source_label": "Florida WARN notices via LayoffTracker",
+   "status": "ready",
+   "confidence": "VERIFIED (2 sources)",
+   "sources_checked": [
+    "https://www.businessobserverfl.com/news/2026/aug/17/lakeland-logistics-company-job-cuts-plant-city/ (178, effective Oct 15, not a full closure)"
+   ]
+  },
+  {
+   "slug": "nearly-natural-hialeah-2026",
+   "company": "Nearly Natural",
+   "city": "Hialeah",
+   "county": "Miami-Dade",
+   "employees": 60,
+   "effective_date": "2026-10-12",
+   "detail": "WARN notice: 60 workers",
+   "source": "https://www.layofftracker.us/layoffs/state/florida/2026",
+   "source_label": "Florida WARN notices via LayoffTracker",
+   "status": "ready",
+   "confidence": "SINGLE SOURCE - verify on the FloridaCommerce WARN list before outreach",
+   "sources_checked": [
+    "https://www.layofftracker.us/layoffs/state/florida/2026 (date shown Oct 12; unclear if notice or effective)"
+   ]
+  },
+  {
+   "slug": "temco-logistics-hialeah-2026",
+   "company": "Temco Logistics",
+   "city": "Hialeah",
+   "county": "Miami-Dade",
+   "employees": 60,
+   "effective_date": "2026-10-03",
+   "detail": "WARN notice: 60 workers",
+   "source": "https://www.layofftracker.us/layoffs/state/florida/2026",
+   "source_label": "Florida WARN notices via LayoffTracker",
+   "status": "ready",
+   "confidence": "SINGLE SOURCE - verify before outreach",
+   "sources_checked": [
+    "https://www.layofftracker.us/layoffs/state/florida/2026 (date shown Oct 3)"
+   ]
+  },
+  {
+   "slug": "west-marine-fort-lauderdale-2026",
+   "company": "West Marine (Florida support center)",
+   "city": "Fort Lauderdale",
+   "county": "Broward",
+   "employees": 80,
+   "effective_date": "2026-10-03",
+   "detail": "WARN notice: 80 workers",
+   "source": "https://www.layofftracker.us/layoffs/state/florida/2026",
+   "source_label": "Florida WARN notices via LayoffTracker",
+   "status": "ready",
+   "confidence": "SINGLE SOURCE - verify before outreach",
+   "sources_checked": [
+    "https://www.layofftracker.us/layoffs/state/florida/2026 (date shown Oct 3)"
+   ]
+  },
+  {
+   "slug": "colsa-eglin-2026",
+   "company": "COLSA",
+   "city": "Eglin AFB",
+   "county": "Okaloosa",
+   "employees": 97,
+   "effective_date": "2026-09-30",
+   "detail": "WARN notice: 97 workers (defense contractor)",
+   "source": "https://www.layofftracker.us/layoffs/state/florida/2026",
+   "source_label": "Florida WARN notices via LayoffTracker",
+   "status": "ready",
+   "confidence": "VERIFIED (WARN record: 97, notice Jul 27, effective Sep 30)",
+   "sources_checked": [
+    "https://www.warntracker.com/layoff/colsa-corporation-2026-09-30"
+   ]
+  },
+  {
+   "slug": "mv-transportation-naples-2026",
+   "company": "MV Transportation",
+   "city": "Naples",
+   "county": "Collier",
+   "employees": 151,
+   "effective_date": "2026-09-30",
+   "detail": "WARN notice: 151 workers",
+   "source": "https://www.layofftracker.us/layoffs/state/florida/2026",
+   "source_label": "Florida WARN notices via LayoffTracker",
+   "status": "ready",
+   "confidence": "VERIFIED (151, effective Sep 30 or within 14 days) - CONTRACT TURNOVER: workers were interviewing with successor WeDriveU, so many may be rehired",
+   "sources_checked": [
+    "https://www.gulfshorebusiness.com/collier/union-talks-heat-up-as-wedriveu-manages-collier-area-transit/article_300f302e-ba4b-466a-be91-8c02ceed42fd.html",
+    "https://www.businessobserverfl.com/news/2026/aug/04/collier-transit-contract-expires-jobs-cut/"
+   ],
+   "contract_turnover": true
+  },
+  {
+   "slug": "amazon-port-st-lucie-2026",
+   "company": "Amazon (PBI3 fulfillment center)",
+   "city": "Port St. Lucie",
+   "county": "St. Lucie",
+   "employees": 494,
+   "effective_date": "2026-09-17",
+   "detail": "WARN notice: 494 workers",
+   "source": "https://www.wqcs.org/wqcs-news/2026-07-23/amazon-to-cut-494-jobs-at-port-st-lucie-site-in-september",
+   "source_label": "WQCS / Florida WARN",
+   "status": "ready",
+   "confidence": "VERIFIED (2 sources)",
+   "sources_checked": [
+    "https://www.warntracker.com/layoff/amazon-2026-09-17 (494, notice Jul 16, effective Sep 17)",
+    "https://www.wqcs.org/wqcs-news/2026-07-23/amazon-to-cut-494-jobs-at-port-st-lucie-site-in-september"
+   ]
+  },
+  {
+   "slug": "health-first-rockledge-2026",
+   "company": "Health First",
+   "city": "Rockledge",
+   "county": "Brevard",
+   "employees": 214,
+   "effective_date": "2026-11-15",
+   "detail": "214 positions (about 2% of staff), mostly administrative, management and clerical",
+   "source": "https://www.layofftracker.us/layoffs/state/florida/2026",
+   "source_label": "Florida WARN notices via LayoffTracker",
+   "status": "ready",
+   "date_note": "Announced Sep 16 with a 60-day paid notice period (full pay and benefits), so separation and loss of coverage are estimated around Nov 15, not Sep 16.",
+   "confidence": "VERIFIED count; separation date ESTIMATED",
+   "sources_checked": [
+    "https://www.wftv.com/news/local/health-first-announces-layoffs-ends-some-local-programs/X4FGTXAHYFHM5KHZNE7NIDVMAI/ (Sep 16: 214 jobs, 60-day paid notice with benefits)"
+   ]
+  },
+  {
+   "slug": "freight-handlers-lakeland-sarasota-2026",
+   "company": "Freight Handlers (Publix distribution contract)",
+   "city": "Lakeland and Sarasota",
+   "county": "Polk",
+   "employees": 92,
+   "effective_date": "2026-09-19",
+   "detail": "WARN: 75 Lakeland + 17 Sarasota (one tracker lists more Lakeland rows; Business Observer reported 168). Publix distribution contract ended.",
+   "source": "https://www.businessobserverfl.com/news/2026/jul/21/layoffs-publix-facilities-lakeland-sarasota/",
+   "source_label": "Business Observer / Florida WARN",
+   "status": "ready",
+   "confidence": "VERIFIED date; COUNT DISPUTED (92-168)",
+   "sources_checked": [
+    "https://www.warntracker.com/layoff/freight-handlers-2026-09-19 (75 Lakeland + 17 Sarasota, notice Jul 20, effective Sep 19)",
+    "https://www.businessobserverfl.com/news/2026/jul/21/layoffs-publix-facilities-lakeland-sarasota/ (168)"
+   ]
+  },
+  {
+   "slug": "management-training-corp-panama-city-2026",
+   "company": "Management & Training Corp",
+   "city": "Panama City",
+   "county": "Bay",
+   "employees": 161,
+   "effective_date": "2026-08-31",
+   "detail": "WARN notice: 161 workers",
+   "source": "https://www.layofftracker.us/layoffs/state/florida/2026",
+   "source_label": "Florida WARN notices via LayoffTracker",
+   "status": "ready",
+   "confidence": "SINGLE SOURCE - verify before outreach",
+   "sources_checked": [
+    "https://www.layofftracker.us/layoffs/state/florida/2026 (date shown Aug 31)"
+   ]
+  }
+ ]
+}

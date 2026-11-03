@@ -1,0 +1,40 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:980px;padding:16px 16px 40px">
+<p><a href="/admin/pipeline?token={{ token }}">← Partner pipeline queue</a> ·
+   <a href="/qr.png?u=/p/{{ p.partner_id }}" target="_blank">QR code</a> ·
+   <a href="/admin/partners/{{ p.partner_id }}/guide.pdf?token={{ token }}" target="_blank">guide PDF</a> ·
+   <a href="/partner/{{ p.token }}" target="_blank">partner stats page</a> ·
+   <a href="/p/{{ p.partner_id }}?src=admin_preview" target="_blank">landing preview</a></p>
+<h2>{{ p.display_name }} <span class="pill">{{ stg_label[stage] }}</span></h2>
+<p class="mini">{{ p.partner_id }} · {{ p.type }} · {{ (p.language or 'en')|upper }}{% if p.audience %} · {{ p.audience }}{% endif %} · registered {{ (p.created_at or '-')[5:16].replace('T',' ') }}
+{% if p.contact_hint %} · contact hint (internal): {{ p.contact_hint }}{% endif %}{% if p.evidence %} · evidence: {{ p.evidence }}{% endif %}</p>
+
+{% if metrics %}<div class="kpis" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin:12px 0">
+<div class="kpi"><span>Real visits</span><b>{{ metrics.visits }}</b></div>
+<div class="kpi"><span>Check done</span><b>{{ metrics.check_done }}</b></div>
+<div class="kpi"><span>Consented</span><b>{{ metrics.consented }}</b></div>
+<div class="kpi"><span>Qualified</span><b>{{ metrics.qualified }}</b></div>
+<div class="kpi"><span>Delivered</span><b>{{ metrics.delivered }}</b></div>
+<div class="kpi"><span>Returned / bad info</span><b>{{ metrics.returned }} / {{ metrics.bad_info }}</b></div>
+<div class="kpi"><span>Revenue</span><b>{{ '${:,.2f}'.format(metrics.revenue) if metrics.revenue else '0' }}</b></div>
+</div>{% else %}<p class="mini">No acquisition activity yet — this is a genuine zero (the partner has the assets, traffic hasn't followed).</p>{% endif %}
+
+<h3 style="margin:16px 0 6px">Record outreach / update stage</h3>
+<form method="post" action="/admin/pipeline/{{ p.partner_id }}/action" class="grid2" style="max-width:640px">
+<label class="mini">Stage<select class="t" name="stage">{% for s in stages %}<option value="{{ s }}" {{ 'selected' if s==stage }}>{{ stg_label[s] }}</option>{% endfor %}</select></label>
+<label class="mini">Outreach method<select class="t" name="method"><option value="">(none logged)</option>{% for m in methods %}<option>{{ m }}</option>{% endfor %}</select></label>
+<label class="mini">Outcome of this interaction<input class="t" name="outcome" placeholder="e.g. not ready until spring" maxlength="200"></label>
+<label class="mini">Next action<input class="t" name="next_action" placeholder="e.g. resend guide with QR" maxlength="200"></label>
+<label class="mini">Next follow-up date<input class="t" name="next_followup" type="date"></label>
+<label class="mini">Note (internal)<input class="t" name="note" placeholder="what actually happened" maxlength="500"></label>
+<div><button class="btn">Save record</button></div>
+</form>
+<p class="mini">Saves are append-only: every record stays in history. Resubmitting the identical form adds nothing (a guard reports 'already recorded'). No message is sent to the partner — this is your own notebook.</p>
+
+<h3 style="margin:20px 0 6px">Activity history ({{ hist|length }})</h3>
+{% if not hist %}<p class="small">Nothing recorded yet — that is expected for partners you have not contacted.</p>{% else %}<table>
+<tr><th style="width:150px">When (UTC)</th><th style="width:110px">Kind</th><th>Detail</th><th style="width:90px">By</th></tr>
+{% for h in hist %}<tr><td class="small">{{ h.ts[:19].replace('T',' ') }}</td><td class="small"><span class="pill">{{ h.kind }}</span>
+{% if h.kind == 'STAGE' %}<br><span class="mini">{{ h.stage_from }} → {{ h.stage_to }}</span>{% endif %}</td>
+<td class="small">{% if h.method %}{{ h.method }} · {% endif %}{% if h.stage_to %}stage set to {{ stg_label.get(h.stage_to, h.stage_to) }}{% endif %}{% if h.note %}{{ h.note }}{% endif %}</td><td class="small">{{ h.operator }}</td></tr>{% endfor %}</table>{% endif %}
+</div>{% endblock %}

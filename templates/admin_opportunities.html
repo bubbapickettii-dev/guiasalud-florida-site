@@ -1,0 +1,23 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1450px;padding:16px 16px 40px">
+<h2>Opportunity discovery: where high-intent consumers are hiding</h2>
+<p class="small">Researched {{ as_of }}. Score = weighted research score (intent ×3, phone potential ×3, freshness, audience quality, reach, distribution cost, competition, lead quality, speed to test, free leverage ×2; scalability, defensibility, AI leverage ×1). <b>Scores are judgments, not evidence.</b> Status moves past READY TO TEST only from real consumer behavior: TESTING = real visits on a linked experiment; PROVEN = ≥3 real consented phone leads and ≥1 agent-confirmed contact; DISPROVEN = a human decision after the read point.</p>
+<div class="tabs" style="margin:8px 0">{% for k,l in [('all','All'),('main','Researched'),('hidden','Hidden / non-obvious')] %}<a class="{{ 'on' if f==k }}" href="?token={{ token }}&f={{ k }}">{{ l }}</a>{% endfor %}</div>
+<table><tr><th>#</th><th>Opportunity</th><th class="num">Score</th><th>Status</th><th>Trigger · why now</th><th>Distribution</th><th>Competition</th><th>Real results</th><th>Experiments</th></tr>
+{% for o in rows %}<tr><td>{{ loop.index }}</td><td><b>{{ o.title }}</b><br><span class="mini">{{ o.id }}{{ ' · HIDDEN' if o.hidden }} · {{ o.language }} · {{ o.geography }}</span>
+<details style="margin:6px 0 0;padding:6px 10px"><summary class="mini">Full thesis</summary>
+<p class="mini"><b>Who:</b> {{ o.who }}</p><p class="mini"><b>Search:</b> {{ o.search_behavior }}</p><p class="mini"><b>Community:</b> {{ o.community }}</p><p class="mini"><b>Who already reaches them:</b> {{ o.who_reaches_them }}</p>
+<p class="mini"><b>Content:</b> {{ o.content }}</p><p class="mini"><b>Offer / CTA:</b> {{ o.offer }} · "{{ o.cta }}" · angle {{ o.check_angle }}</p>
+<p class="mini"><b>Why click / Check / phone:</b> {{ o.why_click }} / {{ o.why_check }} / {{ o.why_phone }}</p>
+<p class="mini"><b>Lead quality:</b> {{ o.lead_quality }} · <b>Cost:</b> {{ o.est_cost }} · <b>Scalability:</b> {{ o.scalability }} · <b>Difficulty:</b> {{ o.difficulty }}</p>
+<p class="mini"><b>Different from the normal playbook:</b> {{ o.different }}</p><p class="mini"><b>Test:</b> {{ o.test }}</p>
+<p class="mini"><b>Evidence:</b><br>{% for ev in o.evidence %}{{ ev[2] }}: {{ ev[0] }}{% if ev[1] != '-' %} (<a href="{{ ev[1] }}" target="_blank" rel="noopener">source</a>){% endif %}<br>{% endfor %}</p>
+<p class="mini"><b>Scores:</b> {% for k,v in o.scores.items() %}{{ k.replace('_',' ') }} {{ v }}{{ ' · ' if not loop.last }}{% endfor %}</p>
+{% if o.decision %}<p class="mini"><b>Decision:</b> {{ o.decision }}</p>{% endif %}
+<form method="post" style="margin-top:6px"><input type="hidden" name="opp_id" value="{{ o.id }}"><select class="t" name="status">{% for s in ['HYPOTHESIS','RESEARCHED','READY TO TEST','DISPROVEN'] %}<option {{ 'selected' if o.status_now==s }}>{{ s }}</option>{% endfor %}</select><input class="t" name="result" placeholder="result / reason (required for DISPROVEN)" value="{{ o.result or '' }}"><button class="sb">Save</button></form>
+</details></td>
+<td class="num"><b>{{ o.score }}</b></td><td><span class="pill {{ 'VALIDATED' if o.status_now=='PROVEN' else 'LIVE' if o.status_now=='TESTING' else 'TEST' if o.status_now=='READY TO TEST' else 'UNTESTED' }}">{{ o.status_now }}</span><br><span class="mini">{{ o.status_basis }}</span></td>
+<td class="mini">{{ o.trigger }}<br><i>{{ o.why_now }}</i></td><td class="mini">{{ o.distribution }}</td><td class="mini">{{ o.competition }}</td>
+<td class="mini">visits {{ o.real.visits }} · phone step {{ o.real.phone_step_views }} · phone leads {{ o.real.consented_phone_leads }} · contacted {{ o.real.contacted }}</td>
+<td class="mini">{% for x in o.linked %}<a href="/admin/lab/{{ x.id }}?token={{ token }}">{{ x.id }}</a> {{ x.status }}<br>{% else %}-{% endfor %}</td></tr>{% endfor %}</table>
+</div>{% endblock %}

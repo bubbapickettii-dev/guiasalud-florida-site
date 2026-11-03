@@ -1,0 +1,47 @@
+# Render Blueprint — FREE Web Service for the Gia Salud public site.
+#
+# This is the free-tier counterpart of render.yaml (the paid production service with a persistent
+# disk). Use THIS one when the goal is the free https://<name>.onrender.com URL; it does not touch
+# staging, does not buy anything and does not activate commerce.
+#
+#   Render Dashboard > New > Blueprint > pick the repo
+#   Blueprint Path: <folder containing app.py>/render-free.yaml
+#   If that folder is not the repository root, uncomment rootDir below.
+#
+# Free-plan facts that shape this file (verified against render.com docs, cited in
+# docs/RENDER_DEPLOY.md):
+#   * 0.1 CPU / 512 MB, 750 instance hours per workspace per month, spins down after 15 minutes
+#     without traffic (about a minute to wake), plus build-minute and bandwidth allowances.
+#   * NO persistent disk. The database therefore sits on the ephemeral filesystem, which is why
+#     LEADENGINE_STORAGE=ephemeral is declared below: the app then runs a READ-ONLY PUBLIC PREVIEW
+#     and REFUSES consumer submissions, buyer applications and contact messages instead of storing
+#     records a restart would erase. Consent evidence (10 years) and buyer/payment rows need the
+#     persistent-disk service in render.yaml.
+#   * The assigned origin arrives in RENDER_EXTERNAL_URL, and the app uses it as BASE_URL
+#     (engine/hosting.py), so canonical URLs, hreflang, sitemap, robots and QR codes are correct at
+#     the assigned URL with no configuration. BASE_URL overrides it when a custom domain exists.
+services:
+  - type: web
+    name: giasalud                    # -> https://giasalud.onrender.com if the name is still free
+    runtime: python                   # current Render key (the old `env:` spelling is deprecated)
+    plan: free
+    # rootDir: staging_source/leadengine_staging      # uncomment when this file is not at the repo root
+    buildCommand: pip install -r requirements-prod.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 60 --access-logfile -
+    healthCheckPath: /healthz
+    autoDeployTrigger: commit
+    envVars:
+      - key: LEADENGINE_ENV
+        value: production             # real guards ON: strong token, demo buyers and demo portals refused
+      - key: ADMIN_TOKEN
+        generateValue: true           # Render generates it; read it in Dashboard > Environment (never commit it)
+      - key: LEADENGINE_STORAGE
+        value: ephemeral              # no disk on the free plan -> read-only public preview
+      - key: LEADENGINE_DB
+        value: /tmp/leads.db          # explicitly temporary: this host is not the system of record
+      - key: ALLOW_INDEXING
+        value: "0"                    # hidden from search engines until you deliberately launch
+      - key: LEADENGINE_LIVE_DELIVERY
+        value: "0"                    # no lead email/webhook ever leaves this deployment
+      - key: SUPPORT_EMAIL
+        sync: false                   # fill in ONLY after the inbox exists and is verified; blank = contact form only

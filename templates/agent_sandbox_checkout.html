@@ -1,0 +1,40 @@
+{% extends "agent_base.html" %}{% block title %}TEST checkout - {{ b.name }}{% endblock %}
+{% block shell %}<div class="adm">
+<p><a href="/agent/{{ token }}/billing">← Account &amp; billing</a></p>
+
+<h1 style="font-size:22px;margin:2px 0 4px">SANDBOX checkout <span class="pill TEST">TEST — no money moves</span></h1>
+<p class="mini" style="max-width:720px">This is a simulated purchase for rehearsing your buying workflow. There is no payment
+provider involved, nothing is charged, and nothing here can touch your <b>real</b>-lane balance: confirming records the credits
+on this account's <b>TEST lane</b> only (labeled TEST in your purchase history and ledger), so demo materials and funnel
+rehearsals can exercise the full buy → desk → outcome loop honestly.</p>
+
+<div class="panelcard" style="max-width:560px;margin-top:14px">
+  <div class="hrow panel-row"><b style="font-family:var(--serif);font-size:18px">{{ pkg.label }}</b>
+  <b style="font-size:24px">${{ '%.2f'|format(row.amount_usd) }}</b></div>
+  <p class="mini" style="margin:6px 0 10px">Package <code>{{ pkg.id }}</code> for {{ b.name }} — amount comes from the
+  platform's pack configuration, never from your browser.</p>
+  <table style="margin:0"><tr><th>What confirming will record</th><th>Exactly</th></tr>
+  <tr><td>Ledger</td><td>one <b>PACKAGE_PURCHASE</b> row, <b class="good">+${{ '%.2f'|format(row.amount_usd) }}</b>, <span class="pill TEST">TEST lane</span></td></tr>
+  <tr><td>TEST balance now</td><td><b>${{ '%.2f'|format(testing_balance) }}</b> → <b>${{ '%.2f'|format(testing_balance + row.amount_usd) }}</b></td></tr>
+  <tr><td>Real-lane balance</td><td>unchanged, always</td></tr>
+  <tr><td>Buyer purchases history</td><td>one row marked <span class="pill TEST">TEST</span></td></tr></table>
+</div>
+
+{% if row.status == 'PENDING' %}
+<div style="display:flex;gap:10px;max-width:560px;margin-top:14px">
+  <form method="post" action="{{ url_for('agent_sandbox_confirm', token=token, rowid=row.id) }}" style="flex:1;margin:0">
+    <input type="hidden" name="action" value="confirm"><button class="btn sm" type="submit">Confirm TEST purchase (+${{ '%.2f'|format(row.amount_usd) }} TEST credits)</button></form>
+  <form method="post" action="{{ url_for('agent_sandbox_confirm', token=token, rowid=row.id) }}" style="flex:1;margin:0">
+    <input type="hidden" name="action" value="cancel"><button class="btn sm ghost" type="submit">Cancel — record nothing</button></form>
+</div>
+<p class="mini" style="margin-top:8px">Confirming twice also stays safe: the purchase resolves exactly once, whatever you click.</p>
+{% elif row.status == 'CREDITED' %}
+<p class="note good" style="border-left:4px solid #1a7;max-width:720px">Already confirmed: +${{ '%.2f'|format(row.amount_usd) }} was credited to the TEST lane once. <a href="/agent/{{ token }}/billing">See it on your ledger →</a></p>
+{% else %}
+<p class="note" style="max-width:720px">This sandbox purchase was cancelled ({{ row.ts[5:16].replace('T',' ') }} UTC) — nothing was recorded. Start a new one from <a href="/agent/{{ token }}/billing#packages">Credit packs →</a>.</p>
+{% endif %}
+
+<p class="mini" style="margin-top:18px">Need real credits? The pack is recorded on your ledger by the operator after an
+offline payment clears — contact us to arrange it. This sandbox cannot substitute for that.</p>
+</div>{% endblock %}
+{% block footer %}{% endblock %}

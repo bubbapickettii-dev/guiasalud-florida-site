@@ -1,0 +1,639 @@
+{
+ "version": "2027.1",
+ "facts": {
+  "_source": "HealthCare.gov dates & glossary (verified 2026-10-05); 2026 HHS guidelines are used for 2027 premium tax credits; enhanced credits expired 2025-12-31 (not extended as of late Jul 2026)",
+  "fpl_base": 15960,
+  "fpl_add": 5680,
+  "oep_start": "2026-11-01",
+  "dec15": "2026-12-15",
+  "oep_end": "2027-01-15",
+  "exiting_2027": [
+   "cigna"
+  ],
+  "_note_molina": "2027 Florida ACA exits: ONLY Cigna is confirmed (KFF 'Tracking Insurer Participation Changes in 2027', insurer info as of Jul 2 2026, published Oct 7: FL = Cigna exit only; Cigna announced Apr 30 2026, 369k members in 11 states). Sunshine State Health Plan = a legal entity behind Ambetter (Centene press release Nov 2025); reported move to another Centene entity, brand continues (single broker source, unconfirmed). Molina FL exit: only ACASignups (rate filings); KFF does not list it; Molina says it is cutting from 14 to 6 states without naming them. Sunshine/Molina CMS Plan switch on Oct 1 2026 is MEDICAID/CHIP (AHCA), unrelated to the Marketplace. Re-verify on HealthCare.gov plan data from Nov 1."
+ },
+ "needs": [
+  {
+   "id": "individual",
+   "en": "Coverage for myself",
+   "es": "Cobertura para mí"
+  },
+  {
+   "id": "family",
+   "en": "Coverage for my family",
+   "es": "Cobertura para mi familia"
+  },
+  {
+   "id": "lost",
+   "en": "I lost (or am losing) coverage",
+   "es": "Perdí (o voy a perder) mi seguro"
+  },
+  {
+   "id": "plan_change",
+   "en": "My 2027 plan is ending or going up",
+   "es": "Mi plan 2027 se termina o sube de precio"
+  },
+  {
+   "id": "self_employed",
+   "en": "I'm self-employed / 1099",
+   "es": "Trabajo por mi cuenta / 1099"
+  },
+  {
+   "id": "medicare",
+   "en": "I'm 65+ or on Medicare",
+   "es": "Tengo 65+ o Medicare"
+  },
+  {
+   "id": "other",
+   "en": "Just exploring my options",
+   "es": "Solo estoy viendo opciones"
+  }
+ ],
+ "paths": {
+  "individual": [
+   "zip",
+   "household",
+   "age",
+   "income",
+   "coverage_now",
+   "timing"
+  ],
+  "family": [
+   "zip",
+   "household",
+   "age",
+   "income",
+   "coverage_now",
+   "timing"
+  ],
+  "lost": [
+   "zip",
+   "lost_when",
+   "lost_reason",
+   "household",
+   "age",
+   "income"
+  ],
+  "self_employed": [
+   "zip",
+   "work_type",
+   "household",
+   "age",
+   "income",
+   "coverage_now",
+   "timing"
+  ],
+  "other": [
+   "zip",
+   "household",
+   "age",
+   "income",
+   "timing"
+  ],
+  "plan_change": [
+   "zip",
+   "current_insurer",
+   "letter_type",
+   "bought_where",
+   "household",
+   "age",
+   "income"
+  ]
+ },
+ "questions": {
+  "zip": {
+   "type": "zip",
+   "en": "What's your ZIP code?",
+   "es": "¿Cuál es tu código postal?",
+   "hint_en": "Plans and prices depend on where you live.",
+   "hint_es": "Los planes y precios dependen de dónde vives."
+  },
+  "age": {
+   "type": "choice",
+   "en": "Your age",
+   "es": "Tu edad",
+   "options": [
+    [
+     "18-25",
+     "18-25"
+    ],
+    [
+     "26-34",
+     "26-34"
+    ],
+    [
+     "35-44",
+     "35-44"
+    ],
+    [
+     "45-54",
+     "45-54"
+    ],
+    [
+     "55-64",
+     "55-64"
+    ],
+    [
+     "65+",
+     "65+"
+    ]
+   ]
+  },
+  "household": {
+   "type": "choice",
+   "en": "How many people are in your tax household?",
+   "es": "¿Cuántas personas hay en tu hogar (para impuestos)?",
+   "hint_en": "You, your spouse if married, and anyone you claim as a dependent.",
+   "hint_es": "Tú, tu cónyuge si estás casado(a) y tus dependientes.",
+   "options": [
+    [
+     "1",
+     "1"
+    ],
+    [
+     "2",
+     "2"
+    ],
+    [
+     "3",
+     "3"
+    ],
+    [
+     "4",
+     "4"
+    ],
+    [
+     "5",
+     "5"
+    ],
+    [
+     "6",
+     "6+"
+    ]
+   ]
+  },
+  "income": {
+   "type": "income",
+   "en": "Estimated household income for 2027",
+   "es": "Ingreso estimado del hogar para 2027",
+   "hint_en": "Self-employed: use net profit. A range is fine.",
+   "hint_es": "Si trabajas por tu cuenta: usa la ganancia neta. Un rango está bien."
+  },
+  "coverage_now": {
+   "type": "choice",
+   "en": "What coverage do you have right now?",
+   "es": "¿Qué cobertura tiene ahora?",
+   "options": [
+    [
+     "none",
+     {
+      "en": "None",
+      "es": "Ninguna"
+     }
+    ],
+    [
+     "marketplace",
+     {
+      "en": "A Marketplace plan",
+      "es": "Un plan del Mercado"
+     }
+    ],
+    [
+     "employer",
+     {
+      "en": "Through a job",
+      "es": "Por un trabajo"
+     }
+    ],
+    [
+     "medicaid",
+     {
+      "en": "Medicaid / CHIP",
+      "es": "Medicaid / CHIP"
+     }
+    ],
+    [
+     "other",
+     {
+      "en": "Other / not sure",
+      "es": "Otra / no sé"
+     }
+    ]
+   ]
+  },
+  "timing": {
+   "type": "choice",
+   "en": "When do you want coverage to start?",
+   "es": "¿Cuándo quiere que empiece la cobertura?",
+   "options": [
+    [
+     "asap",
+     {
+      "en": "As soon as possible",
+      "es": "Lo antes posible"
+     }
+    ],
+    [
+     "jan1",
+     {
+      "en": "January 1",
+      "es": "El 1 de enero"
+     }
+    ],
+    [
+     "renewal",
+     {
+      "en": "I'm reviewing my current plan",
+      "es": "Estoy revisando mi plan actual"
+     }
+    ],
+    [
+     "exploring",
+     {
+      "en": "Just exploring",
+      "es": "Solo estoy explorando"
+     }
+    ]
+   ]
+  },
+  "lost_when": {
+   "type": "choice",
+   "en": "When did (or will) your coverage end?",
+   "es": "¿Cuándo terminó (o terminará) tu cobertura?",
+   "options": [
+    [
+     "soon",
+     {
+      "en": "In the next 60 days",
+      "es": "En los próximos 60 días"
+     }
+    ],
+    [
+     "recent",
+     {
+      "en": "In the last 60 days",
+      "es": "En los últimos 60 días"
+     }
+    ],
+    [
+     "older",
+     {
+      "en": "More than 60 days ago",
+      "es": "Hace más de 60 días"
+     }
+    ]
+   ]
+  },
+  "lost_reason": {
+   "type": "choice",
+   "en": "Why?",
+   "es": "¿Por qué?",
+   "options": [
+    [
+     "job",
+     {
+      "en": "Left or lost a job",
+      "es": "Dejé o perdí un trabajo"
+     }
+    ],
+    [
+     "age26",
+     {
+      "en": "Turned 26 (parent's plan)",
+      "es": "Cumplí 26 (plan de mis padres)"
+     }
+    ],
+    [
+     "medicaid",
+     {
+      "en": "Lost Medicaid/CHIP",
+      "es": "Perdí Medicaid/CHIP"
+     }
+    ],
+    [
+     "moved",
+     {
+      "en": "Moved",
+      "es": "Me mudé"
+     }
+    ],
+    [
+     "other",
+     {
+      "en": "Other",
+      "es": "Otra razón"
+     }
+    ]
+   ]
+  },
+  "work_type": {
+   "type": "choice",
+   "en": "What kind of work?",
+   "es": "¿Qué tipo de trabajo?",
+   "options": [
+    [
+     "realestate",
+     {
+      "en": "Real estate",
+      "es": "Bienes raíces"
+     }
+    ],
+    [
+     "beauty",
+     {
+      "en": "Beauty / barber",
+      "es": "Belleza / barbería"
+     }
+    ],
+    [
+     "driving",
+     {
+      "en": "Trucking / driving / delivery",
+      "es": "Camiones / transporte / entregas"
+     }
+    ],
+    [
+     "healthcare",
+     {
+      "en": "Healthcare / therapy",
+      "es": "Salud / terapia"
+     }
+    ],
+    [
+     "trades",
+     {
+      "en": "Construction / trades",
+      "es": "Construcción / oficios"
+     }
+    ],
+    [
+     "business",
+     {
+      "en": "Own business",
+      "es": "Negocio propio"
+     }
+    ],
+    [
+     "other",
+     {
+      "en": "Other 1099 / freelance",
+      "es": "Otro 1099 / freelance"
+     }
+    ]
+   ]
+  },
+  "current_insurer": {
+   "type": "choice",
+   "en": "Which company is your current Marketplace plan with?",
+   "es": "¿Con qué compañía es tu plan actual del Mercado?",
+   "hint_en": "We only use this to explain your letter on this screen.",
+   "hint_es": "Solo lo usamos para explicarte tu carta en esta pantalla.",
+   "options": [
+    [
+     "molina",
+     {
+      "en": "Molina",
+      "es": "Molina"
+     }
+    ],
+    [
+     "cigna",
+     {
+      "en": "Cigna",
+      "es": "Cigna"
+     }
+    ],
+    [
+     "sunshine",
+     {
+      "en": "Sunshine Health",
+      "es": "Sunshine Health"
+     }
+    ],
+    [
+     "florida_blue",
+     {
+      "en": "Florida Blue",
+      "es": "Florida Blue"
+     }
+    ],
+    [
+     "ambetter",
+     {
+      "en": "Ambetter",
+      "es": "Ambetter"
+     }
+    ],
+    [
+     "oscar",
+     {
+      "en": "Oscar",
+      "es": "Oscar"
+     }
+    ],
+    [
+     "other",
+     {
+      "en": "Another company",
+      "es": "Otra compañía"
+     }
+    ],
+    [
+     "unsure",
+     {
+      "en": "Not sure",
+      "es": "No estoy seguro(a)"
+     }
+    ]
+   ]
+  },
+  "letter_type": {
+   "type": "choice",
+   "en": "What did your 2027 letter say?",
+   "es": "¿Qué dice tu carta de 2027?",
+   "options": [
+    [
+     "ending",
+     {
+      "en": "My plan is ending / the company is leaving",
+      "es": "Mi plan se termina / la compañía se va"
+     }
+    ],
+    [
+     "price_up",
+     {
+      "en": "My price is going up",
+      "es": "Mi precio sube"
+     }
+    ],
+    [
+     "changes",
+     {
+      "en": "Other changes (doctors, benefits)",
+      "es": "Otros cambios (médicos, beneficios)"
+     }
+    ],
+    [
+     "no_letter",
+     {
+      "en": "No letter yet / not sure",
+      "es": "Todavía no me llegó / no estoy seguro(a)"
+     }
+    ]
+   ]
+  },
+  "bought_where": {
+   "type": "choice",
+   "en": "Where did you buy this plan?",
+   "es": "¿Dónde compraste este plan?",
+   "show_if": {
+    "exiting_or_ending": true
+   },
+   "options": [
+    [
+     "marketplace",
+     {
+      "en": "HealthCare.gov / the Marketplace (often with a subsidy)",
+      "es": "CuidadoDeSalud.gov / el Mercado (muchas veces con subsidio)"
+     }
+    ],
+    [
+     "direct",
+     {
+      "en": "Directly from the insurance company",
+      "es": "Directamente con la aseguradora"
+     }
+    ],
+    [
+     "not_sure",
+     {
+      "en": "Not sure / an agent did it",
+      "es": "No sé / lo hizo un agente"
+     }
+    ]
+   ]
+  }
+ },
+ "angles": {
+  "health_check": {
+   "lang": "en",
+   "need": null,
+   "eyebrow": "Free · 2 minutes",
+   "headline": "See what health coverage options may be available to you",
+   "subhead": "Answer a few questions to see your 2027 enrollment window and whether your income falls in the range that gets help paying premiums.",
+   "cta": "Start my check"
+  },
+  "savings": {
+   "lang": "en",
+   "need": null,
+   "eyebrow": "2027 financial help",
+   "headline": "Find out whether you may qualify for financial help with health insurance",
+   "subhead": "The extra subsidies ended after 2025. See where your 2027 income falls before you pick a plan.",
+   "cta": "Check if I may qualify"
+  },
+  "timing": {
+   "lang": "en",
+   "need": null,
+   "eyebrow": "Open Enrollment: Nov 1 - Jan 15",
+   "headline": "Find out when you can enroll or change your health coverage",
+   "subhead": "Open Enrollment, the Dec 15 deadline for Jan 1 coverage, and whether a life change opens a window for you now.",
+   "cta": "See my enrollment window"
+  },
+  "self_employed": {
+   "lang": "en",
+   "need": "self_employed",
+   "eyebrow": "For 1099 & self-employed workers",
+   "headline": "Self-employed? Check your health coverage options",
+   "subhead": "No employer plan? See your 2027 enrollment window and whether your income may qualify for help.",
+   "cta": "Check my options"
+  },
+  "life_change": {
+   "lang": "en",
+   "need": "lost",
+   "eyebrow": "Lost coverage or changed jobs?",
+   "headline": "Lost coverage or changed jobs? See what options may be available",
+   "subhead": "Losing job-based coverage usually opens a 60-day window to enroll. Check yours in 60 seconds.",
+   "cta": "Check my window"
+  },
+  "family": {
+   "lang": "en",
+   "need": "family",
+   "eyebrow": "For families",
+   "headline": "Check your family's health coverage options",
+   "subhead": "See your enrollment window and whether your household income may qualify for help with premiums.",
+   "cta": "Check for my family"
+  },
+  "es_check": {
+   "lang": "es",
+   "need": null,
+   "eyebrow": "Gratis · 2 minutos",
+   "headline": "Revisa tus opciones de cobertura médica",
+   "subhead": "Contesta unas preguntas y ve tu periodo de inscripción 2027 y si tu ingreso está en el rango que recibe ayuda para pagar la prima.",
+   "cta": "Empezar"
+  },
+  "es_self_employed": {
+   "lang": "es",
+   "need": "self_employed",
+   "eyebrow": "Para trabajadores 1099",
+   "headline": "¿Trabajas por tu cuenta? Revisa tus opciones de seguro médico",
+   "subhead": "Sin plan del empleador: ve tu periodo de inscripción 2027 y si tu ingreso podría calificar para ayuda.",
+   "cta": "Revisar mis opciones"
+  },
+  "es_life_change": {
+   "lang": "es",
+   "need": "lost",
+   "eyebrow": "¿Perdiste tu seguro?",
+   "headline": "¿Perdiste tu seguro o cambiaste de trabajo? Mira qué opciones podrías tener",
+   "subhead": "Perder la cobertura del trabajo normalmente abre un periodo de 60 días para inscribirte.",
+   "cta": "Revisar mi periodo"
+  },
+  "es_family": {
+   "lang": "es",
+   "need": "family",
+   "eyebrow": "Para familias",
+   "headline": "Revisa las opciones de cobertura médica para tu familia",
+   "subhead": "Ve tu periodo de inscripción y si el ingreso de tu hogar podría calificar para ayuda con la prima.",
+   "cta": "Revisar para mi familia"
+  },
+  "plan_change": {
+   "lang": "en",
+   "need": "plan_change",
+   "eyebrow": "Got a 2027 letter from your plan?",
+   "headline": "Your 2027 health plan is ending or going up. Here's your deadline.",
+   "subhead": "Cigna is leaving Florida's Marketplace for 2027, and most prices are going up. See what to do before Dec 15 in 60 seconds.",
+   "cta": "Check what to do before Dec 15"
+  },
+  "es_plan_change": {
+   "lang": "es",
+   "need": "plan_change",
+   "eyebrow": "¿Te llegó una carta de tu plan 2027?",
+   "headline": "Tu plan médico 2027 se termina o sube de precio. Esta es tu fecha límite.",
+   "subhead": "Cigna sale del Mercado de Florida en 2027, y la mayoría de los precios suben. Revisa qué hacer antes del 15 de diciembre en 60 segundos.",
+   "cta": "Revisa qué hacer antes del 15 de diciembre"
+  }
+ },
+ "phone_copy": {
+  "A": {
+   "label": "Agent checks real plans (control)",
+   "q": {
+    "en": "What's the best number for your licensed agent to reach you?",
+    "es": "¿Cuál es el mejor número para que tu agente con licencia te contacte?"
+   },
+   "hint": {
+    "en": "A licensed agent uses it to check real 2027 plans and prices with you. Only the one licensed agency you approve on the next screen gets it - no one else.",
+    "es": "Un agente con licencia lo usa para revisar contigo planes y precios reales de 2027. Solo la agencia con licencia que apruebes en la siguiente pantalla lo recibe, nadie más."
+   }
+  },
+  "B": {
+   "label": "Get your real prices (outcome-first)",
+   "q": {
+    "en": "Where should a licensed agent send your real 2027 prices?",
+    "es": "¿A qué número te envía un agente con licencia tus precios reales de 2027?"
+   },
+   "hint": {
+    "en": "Your summary is an estimate. A licensed agent can check the actual plans in your ZIP with you by call or text. Only the agency you approve on the next screen gets your number.",
+    "es": "Tu resumen es un estimado. Un agente con licencia puede revisar contigo los planes reales en tu código postal por llamada o texto. Solo la agencia que apruebes en la siguiente pantalla recibe tu número."
+   }
+  }
+ }
+}

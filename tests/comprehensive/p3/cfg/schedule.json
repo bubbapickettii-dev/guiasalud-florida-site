@@ -1,0 +1,6 @@
+{
+  "enabled": true,
+  "min_interval_hours": 20,
+  "daily_time": "07:15",
+  "task_name": "GS-Allude-Collect"
+}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% set _es = lang == 'es' %}
+{% block lang %}{{ lang }}{% endblock %}
+{% block title %}{{ ('Ayuda gratis para inscribirte en cobertura médica en Florida' if _es else 'Free in-person help enrolling in Florida health coverage') }} · {{ site.brand }}{% endblock %}
+{% block desc %}{{ ('Directorio de centros de salud y organizaciones comunitarias en Florida que ofrecen ayuda gratis con la inscripción, con teléfono y dirección publicados por la fuente oficial.' if _es else 'Florida health centers and community organizations that give free in-person enrollment help, with the phone and address their official registry publishes.') }}{% endblock %}
+{% block head %}{% if rows %}<script type="application/ld+json">{{ jsonld|safe }}</script>{% endif %}{% endblock %}
+{% block body %}
+<div class="wrap" style="max-width:900px;padding:26px 16px 60px">
+  <h1 style="font-size:1.9rem;line-height:1.2">{{ 'Ayuda gratis, en persona, para inscribirte' if _es else 'Free, in-person help to enroll' }}</h1>
+  <p>{{ ('Si necesitas ayuda para inscribirte o para entender qué te conviene, estas organizaciones atienden en persona. Los teléfonos y direcciones vienen del archivo público oficial de HRSA y de registros públicos de CMS; llama antes de ir porque los horarios cambian.' if _es else 'If you want a person to help you enroll or understand your options, these organizations serve people in person. Phone numbers and addresses come from the official HRSA site file and CMS public registries - call before you go, because hours change.') }}</p>
+  <p style="background:#eef6f2;border-left:4px solid #123B33;padding:10px 14px;border-radius:8px"><b>{{ 'No somos una agencia del gobierno ni una aseguradora.' if _es else 'We are not a government agency or an insurer.' }}</b> {{ ('Esta lista es informativa. No cobramos por aparecer aquí y ninguna organización paga por estar en la lista.' if _es else 'This list is informational. Nobody pays to appear here, and we do not charge these organizations.') }}</p>
+
+  <div style="margin:22px 0;padding:18px;border:1px solid #cdd;border-radius:14px">
+    <h2 style="margin:0 0 6px;font-size:1.15rem">{{ '¿Prefieres hacerlo tú, en 2 minutos?' if _es else 'Rather do it yourself, in 2 minutes?' }}</h2>
+    <p style="margin:0 0 12px">{{ ('El chequeo gratis te muestra tu periodo de inscripción 2027 y si tu ingreso califica para ayuda con las primas. No pide tu teléfono a menos que tú decidas pedir que te llamen.' if _es else 'The free check shows your 2027 enrollment window and whether your income qualifies for help with premiums. It does not ask for your phone unless you choose to ask for a call.') }}</p>
+    <a class="btn" href="{{ '/check?a=es_check&utm_source=free-help&utm_medium=organic&utm_campaign=oep-2027-health-es&utm_content=help-directory' if _es else '/check?a=health_check&utm_source=free-help&utm_medium=organic&utm_campaign=oep-2027-health&utm_content=help-directory' }}">{{ 'Hacer el chequeo gratis' if _es else 'Take the free check' }}</a>
+  </div>
+
+  <form method="get" style="margin:18px 0;display:flex;gap:10px;align-items:end;flex-wrap:wrap">
+    <label class="f" style="margin:0">{{ 'Ciudad' if _es else 'City' }}<br>
+      <select name="city" class="t" style="min-width:220px">
+        <option value="">{{ 'Todas (%d)'|format(grand_total) if _es else 'All (%d)'|format(grand_total) }}</option>
+        {% for c in cities %}<option value="{{ c }}" {{ 'selected' if c|lower == city|lower }}>{{ c }}</option>{% endfor %}
+      </select></label>
+    <button class="btn" type="submit">{{ 'Filtrar' if _es else 'Filter' }}</button>
+    {% if city %}<a href="?">{{ 'Quitar filtro' if _es else 'Clear' }}</a>{% endif %}
+  </form>
+
+  <p class="small">{{ '%d lugar(es)'|format(total) if _es else '%d location(s)'|format(total) }}{% if city %} {{ 'en' if _es else 'in' }} {{ city }}{% endif %} · {{ 'página' if _es else 'page' }} {{ page }} / {{ pages }}</p>
+  {% if not rows %}<p>{{ 'No hay lugares para esa ciudad.' if _es else 'No locations for that city.' }}</p>{% endif %}
+  {% for r in rows %}
+  <div style="border-bottom:1px solid #e3e8ee;padding:14px 0">
+    <div style="font-weight:700">{{ r.name }}</div>
+    <div class="small">{{ r.street }}{% if r.street and r.city %}, {% endif %}{{ r.city }}{% if r.zip %} {{ r.zip }}{% endif %}</div>
+    {% if r.phone %}<div><a href="tel:{{ r.phone|replace(' ','')|replace('(','')|replace(')','')|replace('-','') }}">{{ r.phone }}</a></div>{% endif %}
+    <div class="small" style="opacity:.7">{{ ('Fuente' if _es else 'Source') }}: {{ r.source }}</div>
+  </div>
+  {% endfor %}
+
+  {% if pages > 1 %}<p style="margin-top:18px">
+    {% if page > 1 %}<a href="?page={{ page-1 }}{% if city %}&city={{ city|urlencode }}{% endif %}">← {{ 'Anterior' if _es else 'Previous' }}</a>{% endif %}
+    {% if page < pages %}<a style="float:right" href="?page={{ page+1 }}{% if city %}&city={{ city|urlencode }}{% endif %}">{{ 'Siguiente' if _es else 'Next' }} →</a>{% endif %}
+  </p>{% endif %}
+
+  <p class="small" style="margin-top:26px">{{ source_note }}{% if _es %} Horarios y servicios cambian: llama antes de ir.{% endif %}</p>
+</div>
+{% endblock %}

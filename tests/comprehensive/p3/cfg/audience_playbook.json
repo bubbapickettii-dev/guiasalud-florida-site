@@ -1,0 +1,391 @@
+{
+ "note": "Public data = audience signals, not leads. Each segment below says where those people can be legitimately reached and what would make them voluntarily start the Health Coverage Check. Reach/where/search items are HYPOTHESES (UNTESTED) until the Distribution Lab shows real visits and phone submissions from them. Search terms are not volume-checked (no keyword tool connected).",
+ "segments": [
+  {
+   "segment": "2027 re-shoppers (carrier exits / rate shock)",
+   "triggers": [
+    "RATE_FILINGS_2027"
+   ],
+   "circumstance": "Cigna, Molina and Sunshine State Health Plan leave Florida's individual market for 2027; proposed increases average ~15.9% (Florida Blue PPO ~26%). Letters arrive in October; the Dec 15 deadline decides Jan 1 coverage.",
+   "questions": [
+    "My insurance company is leaving, what do I do?",
+    "¿Molina se va de Florida?",
+    "Why did my renewal go up so much?",
+    "¿Qué pasa si no escojo otro plan?"
+   ],
+   "where": {
+    "organizations": [
+     "Spanish news outlets already covering 2027 changes (DirectorioCubano, Periódico Cubano, Telemundo 51)"
+    ],
+    "communities": [
+     "WhatsApp family groups",
+     "r/HealthInsurance",
+     "r/florida"
+    ],
+    "search": [
+     "molina se va de florida 2027",
+     "cigna leaving marketplace 2027",
+     "florida blue rate increase 2027",
+     "carta de renovación obamacare 2027"
+    ],
+    "content": [
+     "Insurer-specific dated pages",
+     "WhatsApp share cards"
+    ]
+   },
+   "angle": "plan_change",
+   "angle_es": "es_plan_change",
+   "experiments": [
+    "X016",
+    "X017"
+   ]
+  },
+  {
+   "segment": "New realtors",
+   "triggers": [
+    "NEW_REALTOR_LICENSE"
+   ],
+   "circumstance": "Just licensed; brokerages treat agents as 1099 contractors, so no employer health plan. Often left a W-2 job (60-day SEP) or are buying their own plan for the first time.",
+   "questions": [
+    "Do real estate agents get health insurance from the brokerage?",
+    "Can I deduct health insurance as a 1099 agent?",
+    "How do I estimate income for the Marketplace when commissions are uneven?"
+   ],
+   "where": {
+    "organizations": [
+     "Pre-licensing schools (Gold Coast, Florida Realtors School, Aprendiendo Real Estate USA)",
+     "Brokerage onboarding (eXp, Keyes, Avanti Way)",
+     "Local Realtor associations (new-member orientation)"
+    ],
+    "communities": [
+     "New-agent Facebook groups",
+     "r/realtors",
+     "Brokerage Slack/WhatsApp channels"
+    ],
+    "search": [
+     "health insurance for realtors florida",
+     "seguro médico para agentes de bienes raíces"
+    ],
+    "content": [
+     "'Your brokerage doesn't give you health insurance' short video",
+     "1099 income estimate explainer"
+    ]
+   },
+   "angle": "self_employed",
+   "angle_es": "es_self_employed",
+   "experiments": [
+    "X003",
+    "X004"
+   ]
+  },
+  {
+   "segment": "Beauty & barber pros",
+   "triggers": [
+    "NEW_BEAUTY_LICENSE",
+    "NEW_BARBER_LICENSE"
+   ],
+   "circumstance": "Booth renters and suite operators are self-employed and have to arrange their own coverage.",
+   "questions": [
+    "Can booth renters get health insurance?",
+    "How much is health insurance if I'm self-employed in Florida?"
+   ],
+   "where": {
+    "organizations": [
+     "Salon-suite operators (Sola, MY SALON Suite, local suites)",
+     "Beauty and barber schools",
+     "Beauty supply stores (counter QR)"
+    ],
+    "communities": [
+     "Stylist/barber Instagram and TikTok",
+     "Spanish-language barber communities"
+    ],
+    "search": [
+     "seguro médico para estilistas",
+     "health insurance booth renter"
+    ],
+    "content": [
+     "Day-in-the-life booth renter + 'who covers you?' hook",
+     "Spanish creator collab"
+    ]
+   },
+   "angle": "self_employed",
+   "angle_es": "es_self_employed",
+   "experiments": [
+    "X011"
+   ]
+  },
+  {
+   "segment": "Salon & barbershop owners",
+   "triggers": [
+    "NEW_SALON_OWNER"
+   ],
+   "circumstance": "New shop owner covering themselves; may also ask about covering staff (small-group question for the agent).",
+   "questions": [
+    "Do I have to offer my staff health insurance?",
+    "Can I get a plan for myself as a shop owner?"
+   ],
+   "where": {
+    "organizations": [
+     "Suppliers/distributors",
+     "Barber/cosmetology schools",
+     "Local chambers"
+    ],
+    "communities": [
+     "Owner groups on Facebook"
+    ],
+    "search": [
+     "health insurance for salon owners florida"
+    ],
+    "content": [
+     "Owner checklist"
+    ]
+   },
+   "angle": "self_employed",
+   "angle_es": "es_self_employed",
+   "experiments": []
+  },
+  {
+   "segment": "New business owners",
+   "triggers": [
+    "NEW_LOCAL_BUSINESS",
+    "NEW_BUSINESS_LOCATION",
+    "NEW_BUSINESS_FILING"
+   ],
+   "circumstance": "Left employer benefits to start a business; needs individual coverage, often with family.",
+   "questions": [
+    "What do I do about health insurance after leaving my job to start a business?",
+    "Is health insurance tax deductible for LLC owners?"
+   ],
+   "where": {
+    "organizations": [
+     "CPAs and bookkeepers",
+     "SBDC / SCORE / chambers",
+     "Coworking spaces",
+     "Business-formation services"
+    ],
+    "communities": [
+     "Local small-business Facebook groups",
+     "r/smallbusiness"
+    ],
+    "search": [
+     "health insurance for small business owner florida",
+     "seguro médico para dueños de negocio"
+    ],
+    "content": [
+     "'I just started a business' checklist",
+     "Form 7206 deduction explainer (education only)"
+    ]
+   },
+   "angle": "self_employed",
+   "angle_es": "es_self_employed",
+   "experiments": []
+  },
+  {
+   "segment": "Owner-operator truckers",
+   "triggers": [
+    "NEW_TRUCKING_OWNER_OPERATOR"
+   ],
+   "circumstance": "Got their own authority; the company's benefits stayed with the company (60-day SEP if coverage just ended).",
+   "questions": [
+    "Health insurance for owner operators?",
+    "How do I count income after fuel and truck payments?"
+   ],
+   "where": {
+    "organizations": [
+     "CDL schools",
+     "Freight factoring companies",
+     "Dispatch services",
+     "Truck stops and repair shops (QR)"
+    ],
+    "communities": [
+     "Owner-operator Facebook groups (admin-approved posts)",
+     "r/Truckers",
+     "Trucker YouTube channels"
+    ],
+    "search": [
+     "owner operator health insurance florida"
+    ],
+    "content": [
+     "'Your truck is insured. Are you?' hook"
+    ]
+   },
+   "angle": "self_employed",
+   "angle_es": "es_self_employed",
+   "experiments": [
+    "X010"
+   ]
+  },
+  {
+   "segment": "Self-employed health pros",
+   "triggers": [
+    "NEW_SELF_EMPLOYED_PROVIDER"
+   ],
+   "circumstance": "1099 Behavior Technicians, therapists and clinicians: contractors without employer plans.",
+   "questions": [
+    "Do 1099 RBTs get health insurance?",
+    "How much would a Marketplace plan cost on my hours?"
+   ],
+   "where": {
+    "organizations": [
+     "ABA agencies (contractor onboarding)",
+     "Home-health and therapy staffing agencies",
+     "BACB/RBT training programs"
+    ],
+    "communities": [
+     "RBT Facebook groups",
+     "r/ABA"
+    ],
+    "search": [
+     "health insurance for RBT 1099"
+    ],
+    "content": [
+     "1099 provider benefits guide"
+    ]
+   },
+   "angle": "self_employed",
+   "angle_es": "es_self_employed",
+   "experiments": [
+    "X005"
+   ]
+  },
+  {
+   "segment": "New healthcare workers",
+   "triggers": [
+    "NEW_HEALTHCARE_PROVIDER"
+   ],
+   "circumstance": "Mostly employed; lower intent unless between jobs or per-diem.",
+   "questions": [
+    "Health insurance between jobs?"
+   ],
+   "where": {
+    "organizations": [
+     "Staffing agencies (per-diem)"
+    ],
+    "communities": [],
+    "search": [],
+    "content": []
+   },
+   "angle": "life_change",
+   "angle_es": "es_life_change",
+   "experiments": []
+  },
+  {
+   "segment": "New practice owners",
+   "triggers": [
+    "NEW_HEALTHCARE_PRACTICE_OWNER"
+   ],
+   "circumstance": "Owner coverage plus a staff question (small group = agent conversation).",
+   "questions": [
+    "Health insurance for a new practice owner?"
+   ],
+   "where": {
+    "organizations": [
+     "Practice-management consultants",
+     "CPAs"
+    ],
+    "communities": [],
+    "search": [],
+    "content": []
+   },
+   "angle": "self_employed",
+   "angle_es": "es_self_employed",
+   "experiments": []
+  },
+  {
+   "segment": "Laid-off workers (WARN employers)",
+   "triggers": [
+    "WARN"
+   ],
+   "circumstance": "Losing job-based coverage opens a 60-day SEP. WARN notices are company-level: they tell us which employers and when, never which person.",
+   "questions": [
+    "I lost my job, what happens to my health insurance?",
+    "COBRA vs Marketplace?"
+   ],
+   "where": {
+    "organizations": [
+     "The employer's HR/outplacement (offer a free coverage-loss resource)",
+     "CareerSource centers",
+     "Unions/associations"
+    ],
+    "communities": [
+     "Local news comment sections / community groups after a layoff story"
+    ],
+    "search": [
+     "lost job health insurance florida",
+     "perdí mi seguro médico del trabajo"
+    ],
+    "content": [
+     "'Lost your job-based coverage? You have 60 days' page"
+    ]
+   },
+   "angle": "life_change",
+   "angle_es": "es_life_change",
+   "experiments": []
+  },
+  {
+   "segment": "Fitness & combat-sports pros (1099)",
+   "triggers": [],
+   "circumstance": "Trainers, coaches, fighters and gym staff are mostly independent contractors with no employer plan. No public license dataset exists for this group (Florida doesn't license personal trainers), so audience size is unknown.",
+   "questions": [
+    "Do personal trainers get health insurance?",
+    "What do 1099 trainers do for health insurance?",
+    "¿Qué seguro médico tienen los entrenadores independientes?"
+   ],
+   "where": {
+    "organizations": [
+     "Gyms and boxing/MMA clubs",
+     "Trainer certification programs"
+    ],
+    "communities": [
+     "Bubba's boxing Instagram (existing audience)",
+     "Fighter/trainer IG and TikTok"
+    ],
+    "search": [
+     "health insurance for personal trainers florida"
+    ],
+    "content": [
+     "'Fighters and trainers are 1099' story + reel"
+    ]
+   },
+   "angle": "self_employed",
+   "angle_es": "es_self_employed",
+   "experiments": []
+  },
+  {
+   "segment": "Spanish-speaking self-employed (Miami-Dade)",
+   "triggers": [
+    "NEW_BEAUTY_LICENSE",
+    "NEW_BARBER_LICENSE",
+    "NEW_REALTOR_LICENSE",
+    "NEW_LOCAL_BUSINESS",
+    "NEW_TRUCKING_OWNER_OPERATOR"
+   ],
+   "circumstance": "Miami-Dade has the largest concentration of new self-employed signals in the data (Miami, Hialeah, Doral, Homestead). Spanish-first is an inference (Miami-Dade county), not verified against Census language data.",
+   "questions": [
+    "¿Cómo consigo seguro médico si trabajo por mi cuenta?",
+    "¿Cuándo es la inscripción abierta 2027?",
+    "¿Califico para ayuda con la prima?"
+   ],
+   "where": {
+    "organizations": [
+     "Spanish-language RE schools (Aprendiendo)",
+     "Beauty/barber schools and supply stores in Hialeah"
+    ],
+    "communities": [
+     "Spanish-language TikTok/IG/Shorts",
+     "Hialeah/Miami Facebook groups"
+    ],
+    "search": [
+     "seguro médico trabajador independiente florida",
+     "obamacare florida 2027"
+    ],
+    "content": [
+     "Spanish explainer shorts"
+    ]
+   },
+   "angle": "es_self_employed",
+   "angle_es": "es_self_employed",
+   "experiments": []
+  }
+ ]
+}

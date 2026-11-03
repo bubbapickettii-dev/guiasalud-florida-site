@@ -1,0 +1,52 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1400px;padding:16px 16px 40px">
+<h2>Tracking links (QR codes, bios, partner flyers, ads)</h2>
+<p class="mini">One code per place a real person will see the link. Every visit and every request it produces is grouped under that source in <a href="/admin/sources?token={{ token }}">Admin &rsaquo; Sources</a>, so a channel that works never hides inside &ldquo;direct&rdquo;. The link is a plain URL — no cookie wall, no personal data, and it changes nothing about consent or delivery.</p>
+
+{% if err %}<div class="note" style="border-left:4px solid #b00">{{ err }}</div>{% endif %}
+{% if made %}
+<div class="note" style="border-left:4px solid #1a7">
+  <b>Created: {{ made.note }}</b> <span class="mini">({{ made.code }})</span>
+  <div style="margin:8px 0 4px"><code id="newurl">{{ base }}/go/{{ made.code }}</code></div>
+  <p class="mini" style="margin:4px 0">Share this exact URL. Add <code>?c=&lt;placement&gt;</code> to tell two placements of the same link apart
+    (e.g. <code>/go/{{ made.code }}?c=story</code> / <code>?c=reel</code>).<br>
+    Testing it yourself? Open <code>{{ base }}/go/{{ made.code }}?test=1</code> — a QA click is recorded as TEST and never counts as traffic or a lead.
+    If this is a link you will test on your own phone or laptop, mark the device first at <a href="/qa?on=1">/qa?on=1</a>.</p>
+  <img src="/qr.png?u=/go/{{ made.code }}" alt="QR code for this link" width="132" height="132" style="background:#fff;padding:4px;border-radius:6px">
+</div>
+{% endif %}
+
+<h3 style="margin:18px 0 6px">Create a link</h3>
+<form method="post" action="/admin/channels/new?token={{ token }}" style="display:grid;gap:8px;max-width:820px;background:#fff;border:1px solid #dfe7e2;border-radius:10px;padding:12px">
+  <input class="t" name="label" maxlength="140" required placeholder="Label — where exactly will people see this? (e.g. 'r/Florida answer: laid off, no COBRA' or 'Miami library flyer QR')">
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <input class="t" name="utm_source" maxlength="40" required placeholder="source (reddit, google, org, qr)" style="flex:1;min-width:150px">
+    <input class="t" name="utm_medium" maxlength="40" required placeholder="medium (organic, community, partner, email)" style="flex:1;min-width:170px">
+    <input class="t" name="utm_content" maxlength="40" placeholder="placement (optional: story, flyer-a)" style="flex:1;min-width:170px">
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <input class="t" name="utm_campaign" maxlength="60" placeholder="campaign (default oep-2027-health)" style="flex:1;min-width:200px">
+    <select class="t" name="lang" style="max-width:150px"><option value="en">English page</option><option value="es">Página en español</option></select>
+    <select class="t" name="angle" style="max-width:220px"><option value="">check angle: default for language</option>
+      {% for a in angles %}<option value="{{ a }}">{{ a }}</option>{% endfor %}</select>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <input class="t" name="landing" maxlength="200" placeholder="landing path (optional, e.g. /learn/laid-off-florida) — blank = the check" style="flex:2;min-width:280px">
+    <input class="t" name="partner_id" maxlength="60" placeholder="partner id (optional, must be registered)" style="flex:1;min-width:220px">
+  </div>
+  <div><button class="btn" type="submit">Create tracked link</button>
+    <span class="mini">Tip: use the same source+medium for the same channel so the report rolls up; use placement for each individual post or piece.</span></div>
+</form>
+
+<h3 style="margin:22px 0 6px">Existing links ({{ links|length }})</h3>
+<table><tr><th>Code</th><th>URL</th><th>Campaign</th><th>Channel</th><th>Partner</th><th class="num">Clicks</th><th>Note</th></tr>
+{% for l in links %}<tr id="l-{{ l.code }}"><td><b>{{ l.code }}</b><br><span class="mini">{{ (l.lang or 'en')|upper }}{% if l.angle %} · {{ l.angle }}{% endif %}</span></td>
+<td class="small"><a href="/go/{{ l.code }}">{{ base }}/go/{{ l.code }}</a>{% if l.landing_page %}<br><span class="mini">→ {{ l.landing_page }}</span>{% endif %}</td>
+<td>{{ l.campaign }}</td><td>{{ l.channel }}</td><td>{{ l.partner_id or '' }}</td><td class="num">{{ l.clicks }}</td><td class="small">{{ l.note }}</td></tr>{% endfor %}</table>
+{% if not links %}<p class="small">No tracked links yet. Every channel you use should get one first — otherwise its traffic is un-attributable.</p>{% endif %}
+
+<h3 style="margin:22px 0 6px">Channel matrix</h3>
+<p class="mini" style="margin:0 0 6px">Two different jobs. <b>Demand discovery</b> (scrapers, signal watch, public registries) finds people who are already asking for help and feeds the prospect ledger — it never contacts them. <b>Demand capture</b> (the links above, guides, partner pages, the free-help directory) brings those people to this site to run the check themselves. Only a capture visit can become a consented inquiry.</p>
+<table><tr><th>#</th><th>Channel</th><th>Type</th><th>Cost</th><th>Setup</th><th>Scale</th><th>Intent</th><th>Organic</th><th>Auto</th><th>Paid req.</th><th>Lead quality</th><th>Public-data use</th><th>Compliance</th><th>Built in MVP</th></tr>
+{% for c in ch|sort(attribute='priority') %}<tr><td>{{ c.priority }}</td><td><b>{{ c.channel }}</b></td><td>{{ c.type }}</td><td class="small">{{ c.cost }}</td><td>{{ c.setup }}</td><td>{{ c.scalability }}</td><td>{{ c.intent }}</td><td>{{ c.organic }}</td><td>{{ c.automatable }}</td><td>{{ c.paid_required }}</td><td>{{ c.lead_quality }}</td><td class="small">{{ c.intel_use }}</td><td class="small">{{ c.compliance }}</td><td class="small">{{ c.built_in_mvp }}</td></tr>{% endfor %}</table>
+</div>{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1200px;padding:16px 16px 40px">
+<h2>Discards — quarantined consumer submissions</h2>
+<p class="small">These submissions reached the server but their <b>hidden trap field</b> arrived
+filled — usually a browser profile-autofill tripping the bot honeypot, occasionally an actual bot.
+The server answered <b>200 (bots get no feedback)</b>: the submission was <b>never silently thrown
+away</b>, it is recorded here completely enough for a human decision.</p>
+<p class="small"><b>Nothing below was qualified, routed, sold, delivered, or contacted.</b>
+Recovery is your decision only:
+{% if rows %}enter a genuine inquiry via <a href="/admin/leads/new?token={{ token }}">Admin ▸ New lead</a> using the details below{% endif %}
+— or, if it was your own walkthrough submission, simply resubmit via the public /check form.</p>
+{% if not rows %}<p class="small">No quarantined submissions. A normal consumer submission has one
+path: real fields → consent → qualification → routing. A quarantined row only appears when the
+trap field came in filled.</p>{% endif %}
+<table style="margin-top:10px">
+<tr><th>When</th><th>Campaign</th><th>Who (as submitted)</th><th>Consent</th><th>Trap value</th><th>Where from</th></tr>
+{% for r in rows %}
+<tr>
+ <td class="small">{{ (r.ts or '')[:16].replace('T',' ') }}</td>
+ <td class="small">{{ r.campaign }}</td>
+ <td class="small"><b>{{ r.first_name }} {{ r.last_name }}</b><br>{{ r.email }}<br>{{ r.phone }}{% if r.zip %} · {{ r.zip }}{% endif %}</td>
+ <td class="small">{{ 'full (consented to be contacted)' if r.consent_checked else 'email-only / none recorded' }}</td>
+ <td class="small"><code>{{ r.trap_value }}</code></td>
+ <td class="small">{{ r.ip }}<br>{{ (r.user_agent or '')[:80] }}<br>{{ r.page_url }}</td>
+</tr>
+{% endfor %}
+</table>
+</div>{% endblock %}

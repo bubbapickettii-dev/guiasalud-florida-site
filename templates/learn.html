@@ -1,0 +1,26 @@
+{% extends "base.html" %}{% set es = lang=='es' %}{% set ang = flow.angles.get(p.angle, flow.angles['es_check' if es else 'health_check']) %}
+{% block lang %}{{ lang }}{% endblock %}
+{% block title %}{{ p.q }} | {{ site.brand }}{% endblock %}
+{% block desc %}{{ p.a[0][:155] }}{% endblock %}
+{% block head %}<script type="application/ld+json">{{ {"@context":"https://schema.org","@type":"FAQPage","inLanguage":lang,"dateModified":(p.reviewed or none),"mainEntity":[{"@type":"Question","name":p.q,"acceptedAnswer":{"@type":"Answer","text":p.a|join(' ')}}]}|tojson }}</script>{% endblock %}
+{% block footdisc %}{{ (site.disclosure_es if es else site.disclosure) }} {{ (site.gov_disclaimer_es if es else site.gov_disclaimer) }}{% endblock %}
+{% block lp %}{{ 'Política de Privacidad' if es else 'Privacy Policy' }}{% endblock %}{% block lt %}{{ 'Términos' if es else 'Terms' }}{% endblock %}{% block lo %}{{ 'No contactarme' if es else 'Do not contact me / opt out' }}{% endblock %}
+{% block trust %}{{ 'Gratis · Sin compromiso' if es else 'Free · No obligation' }}{% endblock %}
+{% block body %}<article class="wrap learn" style="max-width:760px;padding:30px 16px 60px">
+<p class="small"><a href="/{{ 'aprende' if es else 'learn' }}">{{ '← Todas las preguntas' if es else '← All questions' }}</a>{% if p.twin %} · <a href="/{{ 'learn' if es else 'aprende' }}/{{ p.twin }}" hreflang="{{ 'en' if es else 'es' }}">{{ 'Read this in English' if es else 'Leer en español' }}</a>{% endif %}</p>
+<h1>{{ p.q }}</h1>
+<div class="chips">{% if p.reviewed %}<span class="chip"><i class="senal"></i>{{ 'Revisado' if es else 'Reviewed' }} {{ p.reviewed }}</span>{% else %}<span class="chip" style="background:var(--warn-soft);color:var(--warn)">{{ 'En revisión: esta página aún no tiene fecha de verificación' if es else 'Pending review: this page has no verification date yet' }}</span>{% endif %}{% if p.src %}<span class="chip">{{ 'Con fuentes enlazadas abajo' if es else 'Sources linked below' }}</span>{% endif %}</div>
+{% for para in p.a %}<p>{{ para }}</p>{% endfor %}
+{% if p.life_campaign %}{% if not site.no_buyer %}<div class="ctabox"><b style="font-size:20px">{{ p.cta_head }}</b><p style="color:#E3EDE6;margin:8px 0 0">{{ p.cta_sub }}</p>
+<script>window.LE_PAGE={angle:{{ p.angle|tojson }},lang:{{ lang|tojson }},campaign:{{ p.life_campaign_id|tojson }}};</script>
+<a class="btn" href="/c/{{ p.life_campaign }}?via={{ p.slug }}">{{ p.cta_btn }}</a></div>{% endif %}
+{% else %}<div class="ctabox"><b style="font-size:20px">{{ ang.headline }}</b><p style="color:#E3EDE6;margin:8px 0 0">{{ ang.subhead }}</p>
+<script>window.LE_PAGE={angle:{{ p.angle|tojson }},lang:{{ lang|tojson }},campaign:{{ ('oep-2027-health-es' if es else 'oep-2027-health')|tojson }}};</script>
+<a class="btn" href="/check?a={{ p.angle }}&via={{ p.slug }}">{{ ang.cta }}</a></div>{% endif %}
+{% if p.share %}<div class="share" style="margin:-8px 0 22px"><a class="btn ghost" id="wa" style="text-decoration:none;text-align:center" target="_blank" rel="noopener">{{ 'Compartir por WhatsApp' if es else 'Share on WhatsApp' }}</a></div>
+<script>(function(){var u=new URL(location.origin+location.pathname),f=(window.LEA&&LEA.fields)||{};u.searchParams.set('utm_source','whatsapp');u.searchParams.set('utm_medium','share');u.searchParams.set('utm_content',{{ p.slug|tojson }});if(f.experiment_id)u.searchParams.set('x',f.experiment_id);
+var t={{ (p.script.hook if p.script else p.q)|tojson }}+' '+u.toString();var a=document.getElementById('wa');a.href='https://wa.me/?text='+encodeURIComponent(t);a.onclick=function(){if(window.LEA)LEA.track('share_click','whatsapp',null,{angle:{{ p.angle|tojson }},lang:{{ lang|tojson }}});};})();</script>{% endif %}
+<p class="small"><b>{{ 'Fuentes' if es else 'Sources' }}:</b> {% for s in p.src %}<a href="{{ s }}" rel="nofollow noopener" target="_blank">{{ s.split('/')[2] }}{{ '/' + s.split('/')[3] if s.split('/')|length > 3 and s.split('/')[3] else '' }}</a>{{ ', ' if not loop.last }}{% endfor %}</p>
+<p class="small">{{ 'Información general, no asesoría de seguros ni de impuestos. La elegibilidad y la ayuda financiera las determina el Mercado.' if es else 'General information, not insurance or tax advice. Eligibility and financial help are determined by the Marketplace.' }}</p>
+{% if others %}<h3>{{ 'Más preguntas' if es else 'More questions' }}</h3><ul>{% for o in others %}<li><a href="/{{ 'aprende' if es else 'learn' }}/{{ o.slug }}">{{ o.q }}</a></li>{% endfor %}</ul>{% endif %}
+</article>{% endblock %}

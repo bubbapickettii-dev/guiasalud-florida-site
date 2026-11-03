@@ -1,0 +1,137 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1400px;padding:16px 16px 40px">
+<h2>Public prospects — automated discovery, human review</h2>
+<p class="small">These rows come from <code>engine/discovery.py</code> reading <b>permitted public pages</b> for people openly describing a health-coverage need, classified by <code>engine/prospector.py</code>, and stored in the lead database (<code>data/leads.db</code>, table <code>public_prospects</code>) — never in <code>leads</code>. A post is <b>not consent and not a lead</b>: nothing here can be dialed, emailed or texted from this page, and the only way a row becomes sellable is the person's own <a href="/check">/check</a> submission (<code>ROUTING_ELIGIBLE</code>).</p>
+
+<h3 style="margin:12px 0 4px">Status ladder</h3>
+<div class="kpis" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin:6px 0">
+{% for s in stages %}<div class="kpi"><span>{{ s|replace('_',' ')|lower }}</span><b style="font-size:20px">{{ c.stages.get(s, 0) }}</b></div>{% endfor %}
+<div class="kpi"><span>with a public contact</span><b style="font-size:20px">{{ c.with_contact }}</b></div>
+<div class="kpi"><span>duplicates</span><b style="font-size:20px">{{ c.duplicates }}</b></div>
+<div class="kpi"><span>names verified</span><b style="font-size:20px">{{ irep.name_verified }}</b></div>
+<div class="kpi"><span>phones verified</span><b style="font-size:20px">{{ irep.phone_verified }}</b></div>
+<div class="kpi"><span>usable name+phone</span><b style="font-size:20px">{{ irep.usable }}</b></div>
+<div class="kpi"><span>rows total</span><b style="font-size:20px">{{ c.total }}</b></div>
+</div>
+<p class="mini">Automation stops at <b>CONTACT_PERMISSION_REQUIRED</b> / <b>CONTACT_INFORMATION_FOUND</b>. <b>CONSENTED</b>, <b>VERIFIED</b> and <b>QUALIFIED</b> exist only through the operator actions below, each with a recorded note. <b>ROUTING_ELIGIBLE</b> is never set here: it happens when the same person submits /check themselves and the row is linked to that consented lead.</p>
+
+{% if yields %}<h3 style="margin:16px 0 4px">Measured yield per source adapter</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Source</th><th class="num">Fetched</th><th class="num">Candidates</th><th class="num">Accepted</th><th class="num">New rows</th><th class="num">Duplicates</th><th class="num">Skipped</th><th class="num">Errors</th><th>Last run</th></tr>
+{% for y in yields %}<tr><td><b>{{ y.source }}</b></td><td class="num">{{ y.fetched }}</td><td class="num">{{ y.candidates }}</td><td class="num">{{ y.accepted }}</td><td class="num">{{ y.new_rows }}</td><td class="num">{{ y.duplicates }}</td><td class="num">{{ y.skipped }}</td><td class="num">{{ y.errors }}</td><td class="mini">{{ (y.last_run or '')[:16] }}</td></tr>{% endfor %}
+</table></div>{% endif %}
+
+{% if c.by_source %}<p class="mini">Stored rows by source: {% for s in c.by_source %}<code>{{ s.source }}</code> {{ s.total }} (contact {{ s.with_contact }}, advanced {{ s.advanced }}, dupes {{ s.dupes }}){% if not loop.last %} · {% endif %}{% endfor %}</p>{% endif %}
+
+<h3 style="margin:16px 0 4px">Registry</h3>
+<form method="get" action="/admin/people" class="small" style="margin:8px 0">
+ <select name="status"><option value="">any status</option>
+  {% for s in stages %}<option value="{{ s }}" {{ 'selected' if f.status==s }}>{{ s|replace('_',' ') }}</option>{% endfor %}</select>
+ <select name="source"><option value="">any source</option>
+  {% for s in facets.sources or [] %}<option value="{{ s }}" {{ 'selected' if f.source==s }}>{{ s }}</option>{% endfor %}</select>
+ <select name="contact"><option value="">any contact state</option>
+  <option value="CONTACT_AVAILABLE" {{ 'selected' if f.contact=='CONTACT_AVAILABLE' }}>contact available</option>
+  <option value="CONTACT_NOT_AVAILABLE" {{ 'selected' if f.contact=='CONTACT_NOT_AVAILABLE' }}>no contact</option></select>
+ <select name="match"><option value="">any identity match</option>
+  <option value="MATCHED" {{ 'selected' if f.match=='MATCHED' }}>identity matched</option>
+  <option value="PARTIAL" {{ 'selected' if f.match=='PARTIAL' }}>partial (name not corroborated)</option>
+  <option value="REJECTED" {{ 'selected' if f.match=='REJECTED' }}>conflict / refused</option>
+  <option value="UNRESOLVED" {{ 'selected' if f.match=='UNRESOLVED' }}>not resolved</option></select>
+ <select name="dup"><option value="">any dedup state</option>
+  <option value="UNIQUE" {{ 'selected' if f.dup=='UNIQUE' }}>unique</option>
+  <option value="DUPLICATE" {{ 'selected' if f.dup=='DUPLICATE' }}>duplicate</option></select>
+ <button type="submit">filter</button>
+</form>
+{% if msg %}<p class="small"><b>{{ msg }}</b></p>{% endif %}
+{% if link_url %}<div class="note" style="border-left:4px solid #1a7"><b>Tracked check link ready</b>
+  <div style="margin:6px 0"><code>{{ link_url }}</code></div>
+  <p class="mini" style="margin:0">Place it in that same public thread as an answer. Every visit it produces is attributed to
+  prospect #{{ link_pid }}, and if the person submits, the lead links back to this row automatically. No DM, no email, no number needed.
+  Do not contact anyone directly: a public post is not consent.</p></div>{% endif %}
+
+<div style="overflow-x:auto"><table>
+<tr><th>#</th><th>What they wrote</th><th>Intent &amp; route</th><th>Identity &amp; contact (resolved)</th><th>Published in the post</th><th>Status</th><th>Operator actions</th></tr>
+{% for r in rows %}
+<tr>
+ <td class="small">{{ r.id }}<br><span class="mini">{{ r.source }}<br>{{ (r.observed_at or r.discovered_at or '')[:10] }}<br>conf {{ r.confidence }}{% if r.dup_status=='DUPLICATE' %}<br><span class="pill bad">dup of {{ r.dup_of[:10] }}</span>{% endif %}</span></td>
+ <td class="small" style="max-width:430px">{{ (r.stated_need or '')[:340] }}
+   {% if r.author_handle %}<br><span class="mini">public handle: {{ r.author_handle }}</span>{% endif %}
+   {% if r.need_topics %}<br><span class="mini">topics: {{ r.need_topics }}</span>{% endif %}
+   {% if r.geo %}<br><span class="mini">location (as written): {{ r.geo }}</span>{% endif %}
+   <br><a href="{{ r.source_url }}" rel="noopener" target="_blank">open source &#8599;</a>
+   {% if r.profile_url %}<span class="mini"> · <a href="{{ r.profile_url }}" rel="noopener" target="_blank">profile &#8599;</a></span>{% endif %}
+   {% if r.evidence_data.matched %}<br><span class="mini">matched: {{ r.evidence_data.matched|join(' · ') }}</span>{% endif %}
+ </td>
+ <td class="small" style="max-width:170px">
+   <b>{{ r.intent_strength or '—' }}</b>
+   {% if r.state_relevant == 'TARGET' %}<br><span class="pill good">Florida</span>
+   {% elif r.state_relevant == 'OTHER' %}<br><span class="pill bad">other state</span>
+   {% else %}<br><span class="mini">state not stated</span>{% endif %}
+   {% if r.engagement == 'THREAD_REPLY' %}<br><span class="mini">public reply possible</span>{% endif %}
+   {% if r.observed_at %}<br><span class="mini">posted {{ r.observed_at[:10] }}</span>{% endif %}
+ </td>
+ <td class="small" style="max-width:310px">
+   {% if r.match_status == 'MATCHED' %}<span class="pill good">identity matched</span>
+   {% elif r.match_status == 'PARTIAL' %}<span class="pill" style="background:#fff3cd">partial — not corroborated</span>
+   {% elif r.match_status == 'REJECTED' %}<span class="pill bad">refused — conflict</span>
+   {% else %}<span class="mini">not resolved</span>{% endif %}
+   <br><b>{{ r.identity_name or 'name: unknown' }}</b>
+   {% if r.identity_name_status and r.identity_name_status != 'UNRESOLVED' %}<span class="mini"> — {{ r.identity_name_status }} ({{ r.identity_name_confidence }})</span>{% endif %}
+   {% if r.identity_name_source %}<br><span class="mini">name from <a href="{{ r.identity_name_source }}" rel="noopener" target="_blank">{{ r.identity_name_source[:60] }}</a></span>{% endif %}
+   <br><b>{{ r.identity_phone or 'phone: unknown' }}</b>
+   {% if r.identity_phone_status and r.identity_phone_status != 'UNRESOLVED' %}<span class="mini"> — {{ r.identity_phone_status }}{% if r.identity_phone_status == 'PROBABLE' %} (held, not usable){% endif %}</span>{% endif %}
+   {% if r.identity_phone_source %}<br><span class="mini">number from <a href="{{ r.identity_phone_source }}" rel="noopener" target="_blank">{{ r.identity_phone_source[:60] }}</a></span>{% endif %}
+   {% if r.location_resolved %}<br><span class="mini">location: {{ r.location_resolved }}</span>{% endif %}
+   <br><span class="mini">permission: <b>{{ r.contact_permission }}</b> · marketing: <b>{{ r.marketing_eligibility }}</b></span>
+   {% if r.match_reason %}<br><span class="mini">{{ r.match_reason[:200] }}</span>{% endif %}
+   {% set ev = r.identity_evidence_data or {} %}
+   {% if ev.rejected_claims %}<br><span class="mini">refused: {% for x in ev.rejected_claims[:2] %}{{ x.kind|lower }} {{ x.value }} — {{ x.why }}{% if not loop.last %}; {% endif %}{% endfor %}</span>{% endif %}
+   <form method="post" action="{{ url_for('admin_people_resolve', pid=r.id) }}" style="margin:4px 0 0">
+     <input type="hidden" name="probes" value="1">
+     <button type="submit">resolve identity</button>
+     {% if r.resolved_at %}<span class="mini">last: {{ r.resolved_at[:10] }}</span>{% endif %}
+   </form>
+ </td>
+ <td class="small" style="max-width:300px">
+   {% if r.contact_status == 'CONTACT_AVAILABLE' %}
+     {% for m in r.methods %}<b>{{ m.kind }}</b>: {{ m.value }}<br>{% endfor %}
+     <span class="mini">evidence: {{ (r.contact_evidence or 'not provided')[:160] }}</span>
+     <br><span class="mini">permission: <b>{{ r.permission_status }}</b>{% if r.permission_evidence %} — {{ r.permission_evidence[:140] }}{% endif %}</span>
+   {% else %}
+     <b>No public contact</b> — nothing the author published is usable for contact.{% if r.engagement == 'THREAD_REPLY' %}
+     <br><span class="mini">Engagement route: answer in the thread with the tracked /check link. No contact detail is used.</span>{% endif %}
+   {% endif %}
+ </td>
+ <td class="small" style="max-width:230px"><span class="pill">{{ r.status|replace('_',' ')|lower }}</span><br>
+   <span class="mini">{{ action.get(r.status, '') }}</span>
+   {% if r.operator_note %}<br><span class="mini">note: {{ r.operator_note[:180] }}</span>{% endif %}
+   {% if r.lead_id %}<br><span class="mini">lead: {{ r.lead_id }}</span>{% endif %}
+ </td>
+ <td class="small" style="max-width:320px">
+   <form method="post" action="{{ url_for('admin_people_status', pid=r.id) }}" style="margin-bottom:3px">
+    <select name="status">
+     <option value="VERIFIED">VERIFIED — I opened it and it is a real, current need</option>
+     <option value="CONSENTED">CONSENTED — the person authorized contact (quote them)</option>
+     <option value="QUALIFIED">QUALIFIED — may be offered the check link (verified thread, or consented contact)</option>
+     <option value="REJECTED">REJECTED — not a prospect (say why)</option>
+     <option value="DUPLICATE">DUPLICATE — merge into an earlier key</option>
+    </select>
+    <input name="note" placeholder="evidence / reason (required)" size="30">
+    <button type="submit">record</button>
+   </form>
+   {% if r.status == 'QUALIFIED' %}
+   <form method="post" action="{{ url_for('admin_people_link', pid=r.id) }}" style="margin:2px 0 4px">
+     <button type="submit">get tracked /check link</button>
+     {% if r.tracked_link %}<span class="mini">issued {{ (r.link_issued_at or '')[:10] }} · <code>{{ r.tracked_link }}</code></span>{% endif %}
+   </form>
+   {% elif r.tracked_link %}
+   <span class="mini">tracked link: <code>{{ r.tracked_link }}</code></span>
+   {% endif %}
+   <span class="mini">No send, call, email or DM exists on this page. Contact happens only if the person submits /check themselves.</span>
+ </td>
+</tr>
+{% else %}
+<tr><td colspan="6" class="small">No rows yet. Run <code>python tools/discovery.py run --network</code>, then reload.</td></tr>
+{% endfor %}
+</table></div>
+</div>{% endblock %}

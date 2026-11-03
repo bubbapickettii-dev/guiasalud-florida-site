@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% set es = lang=='es' %}
+{% block lang %}{{ lang }}{% endblock %}
+{% block title %}{{ 'Preguntas sobre seguro médico en Florida' if es else 'Florida health insurance questions, answered' }} | {{ site.brand }}{% endblock %}
+{% block desc %}{{ 'Respuestas cortas, con fuentes oficiales, a las preguntas más comunes sobre seguro médico en Florida: despidos, inscripción, costos y planes.' if es else 'Short answers, with official sources, to the questions Florida residents ask most about health insurance: layoffs, open enrollment, costs and plans.' }}{% endblock %}
+{% block footdisc %}{{ (site.disclosure_es if es else site.disclosure) }} {{ (site.gov_disclaimer_es if es else site.gov_disclaimer) }}{% endblock %}
+{% block lp %}{{ 'Política de Privacidad' if es else 'Privacy Policy' }}{% endblock %}{% block lt %}{{ 'Términos' if es else 'Terms' }}{% endblock %}{% block lo %}{{ 'No contactarme' if es else 'Do not contact me / opt out' }}{% endblock %}
+{% block trust %}{{ 'Gratis · Sin compromiso' if es else 'Free · No obligation' }}{% endblock %}
+{% block body %}<div class="wrap learn" style="max-width:760px;padding:30px 16px 60px">
+<h1>{{ 'Preguntas reales sobre seguro médico, respondidas' if es else 'Real health insurance questions, answered' }}</h1>
+<p>{{ 'Respuestas cortas con fuentes oficiales. Cuando quieras ver tus opciones, haz el chequeo gratis de 60 segundos.' if es else 'Short answers with official sources. When you want to see your own options, take the free 60-second check.' }}</p>
+<ul>{% for p in pages %}<li style="margin:10px 0"><a href="/{{ 'aprende' if es else 'learn' }}/{{ p.slug }}"><b>{{ p.q }}</b></a></li>{% endfor %}</ul>
+<p><a class="btn" style="text-decoration:none;text-align:center" href="/check?a={{ 'es_check' if es else 'health_check' }}&via=learn_index">{{ 'Hacer el chequeo gratis' if es else 'Take the free check' }}</a></p>
+<p class="small"><a href="/{{ 'learn' if es else 'aprende' }}">{{ 'English' if es else 'Español' }}</a></p>
+</div>{% endblock %}

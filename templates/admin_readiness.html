@@ -1,0 +1,81 @@
+{% extends "admin_base.html" %}{% block title %}Readiness - Lead Engine Admin{% endblock %}
+{% block body %}<div class="wrap adm" style="max-width:1200px;padding:16px 16px 40px">
+<h2>Launch readiness — what actually stands between us and activation</h2>
+<p class="small" style="margin:2px 0 10px">One screen, three sources kept separate so nothing is overstated:
+<b>(1)</b> the same blocker checks <span style="font-family:monospace">launch_check.py</span> prints on the CLI, recomputed live against <b>this</b> app's config (the CLI and this page cannot drift),
+<b>(2)</b> the buyer readiness ladder from recorded state, and
+<b>(3)</b> recorded TEST vs real activity plus rejected/failed routing demand with its reasons — recorded facts, never projections.
+Nothing on this page activates, sends, spends, or contacts anyone: blockers name the page that owns the action.</p>
+
+<h3 style="margin-top:14px">Live safety modes (source of truth: this process's environment + config)</h3>
+<table><tr><th>Switch</th><th>Now</th><th>Meaning</th></tr>
+<tr><td>LEADENGINE_ENV</td><td><b>{{ modes.env }}</b></td><td class="small">staging is the safe default; production flips stricter guards ON (strong token, demo hidden)</td></tr>
+<tr><td>Payment rail</td><td><b>{{ modes.rail }}</b></td><td class="small">{% if modes.rail == 'off' %}off: buyers use the operator recorded top-up path (no card payment){% else %}TEST rail books to the Stripe TEST dashboard, not a bank — live money requires deliberate approval{% endif %}</td></tr>
+<tr><td>Live lead delivery</td><td><b>{{ 'ON' if modes.live_delivery else 'OFF' }}</b></td><td class="small">{% if modes.live_delivery %}consumer data IS emailed/posted to buyers on sale{% else %}every delivery is a dry run to outbox/ — no consumer contact data leaves the server{% endif %}</td></tr>
+<tr><td>Search indexing</td><td><b>{{ 'ON' if modes.indexing else 'OFF' }}</b></td><td class="small">{% if modes.indexing %}public pages may be indexed{% else %}pages are hidden from search engines{% endif %}</td></tr>
+<tr><td>Credit enforcement</td><td><b>{{ 'ON' if modes.enforce_credits else 'OFF' }}</b></td><td class="small">{% if modes.enforce_credits %}routing pauses a buyer whose prepaid balance cannot cover the lead price{% else %}ledger-only mode. This is a live deployment, so REAL traffic still enforces credits: a buyer without prepaid credit is never named in a consumer's consent{% endif %}</td></tr>
+<tr><td>Database storage</td><td><b>{{ modes.storage }}</b></td><td class="small">{% if modes.storage == 'ephemeral' %}this host wipes the database on restart, so the app runs a <b>read-only public preview</b>: consumer submissions, buyer applications and contact messages are refused rather than stored and lost ({% if modes.read_only_preview %}active now{% else %}not active, because this run is not production{% endif %}){% else %}persistent disk — leads, consent evidence and payment rows survive a restart and redeploy{% endif %}</td></tr>
+<tr><td>Public origin</td><td><b style="font-family:monospace">{{ lbase }}</b></td><td class="small">source: <b>{{ modes.base_url_source }}</b> — canonical URLs, hreflang, sitemap, robots, QR codes and prepared links all read this one value (engine/hosting.py)</td></tr>
+</table>
+
+<h3 style="margin-top:18px">Public business identity (one source: config/site.json + env)</h3>
+<p class="small" style="margin:2px 0 8px">These values are what the footer, privacy policy, terms, contact page and buyer pages print. A bracketed or empty value is shown here as MISSING and is never printed on a public page — the site falls back to the brand plus the contact form. Env overrides: BRAND, LEGAL_ENTITY, LOCATION, FOUNDED, SUPPORT_EMAIL, CONTACT_EMAIL, MAILING_ADDRESS, SUPPORT_PHONE. A street address is not required for this website configuration.</p>
+<table><tr><th>Field</th><th>Configured</th><th>Where it appears</th></tr>
+<tr><td>Business / legal name</td><td>{% if biz.legal_entity %}<b>{{ biz.legal_entity }}</b>{% else %}<span class="pill UNTESTED">MISSING</span>{% endif %}</td><td class="small">footer, privacy (EN/ES), terms, contact; the buyer-facing pages name the same operator</td></tr>
+<tr><td>Public brand</td><td><b>{{ biz.brand }}</b></td><td class="small">every page title, header, footer, consent intro</td></tr>
+<tr><td>Location / founded</td><td>{% if biz.location %}<b>{{ biz.location }}</b>{% if biz.founded %}<span class="small"> · founded {{ biz.founded }}</span>{% endif %}{% else %}<span class="pill UNTESTED">MISSING</span>{% endif %}</td><td class="small">footer, privacy (EN/ES), terms, contact — the public location stands in where a street address would go</td></tr>
+<tr><td>Street address (optional)</td><td>{% if biz.mailing_address %}<b>{{ biz.mailing_address }}</b>{% else %}<span class="small">not set — not required for this website; never invented</span>{% endif %}</td><td class="small">footer, privacy (EN/ES), terms, contact; becomes the CAN-SPAM postal address whenever consumer email is switched on</td></tr>
+<tr><td>Support inbox</td><td>{% if biz.support_email %}<b>{{ biz.support_email }}</b>{% else %}<span class="pill UNTESTED">MISSING</span>{% endif %}</td><td class="small">contact page, privacy ("write to"), opt-out path</td></tr>
+<tr><td>Support phone</td><td>{% if biz.support_phone %}<b>{{ biz.support_phone }}</b>{% else %}<span class="small">not set (optional)</span>{% endif %}</td><td class="small">contact page only, when supplied</td></tr>
+</table>
+{% if biz.missing %}<p class="small" style="margin:6px 0 0"><b>Still missing:</b> {{ biz.missing|join(', ') }} — no public page prints a placeholder for these; they are simply omitted until supplied.</p>{% endif %}
+
+<h3 style="margin-top:18px">Launch blockers (same computation as <span style="font-family:monospace">launch_check.py</span>)</h3>
+{% set catcls = {'REQUIRES MY APPROVAL': 'NURTURE', 'REQUIRES CONFIGURATION': 'UNTESTED', 'REQUIRES EXTERNAL VERIFICATION': 'UNQUALIFIED'} %}
+<p class="small" style="margin:2px 0 8px">Base URL on record: <span style="font-family:monospace">{{ lbase }}</span></p>
+{% for k in lblock %}
+  {% if lblock[k] %}
+  <p style="margin:8px 0 2px"><b>{{ k }}</b> <span class="pill {{ catcls[lcat[k]] }}" title="Who can clear this: configuration you do in config/env, external verification you cannot do locally, or an approval only you can give">{{ lcat[k] }}</span></p>
+  <ul class="small" style="margin:2px 0 0">
+    {% for x in lblock[k] %}<li>{{ x }}</li>{% endfor %}
+  </ul>
+  {% else %}
+  <p style="margin:8px 0 2px"><b>{{ k }}</b> <span class="pill VALIDATED" title="verified in code/tests — nothing to configure">READY</span></p>
+  {% endif %}
+{% endfor %}
+
+<h3 style="margin-top:20px">Buyer readiness ladder (recorded state only)</h3>
+<p class="small" style="margin:2px 0 8px">Each buyer walks: <b>configured</b> (legal name + FL license + NPN + prices on file) → <b>verified</b> (independent license/NPN checks recorded) → <b>active</b> (operator activation) → <b>rehearsed</b> (a TEST lead actually landed on their desk) → <b>capable</b> (eligibility says routing CAN assign new real leads today). Demo/placeholder buyers are excluded from this table entirely.</p>
+{% if real %}<table><tr><th>Buyer</th><th>Ladder</th><th>Next concrete step</th></tr>
+{% for b in real %}<tr>
+<td>{{ b.name }}<br><span class="small">{{ b.id }}{% if not b.active %} · inactive{% endif %}</span></td>
+<td class="small">
+  <span class="pill {{ 'VALIDATED' if b.ladder.configured else 'UNTESTED' }}">{{ 'configured' if b.ladder.configured else 'not configured' }}</span>
+  <span class="pill {{ 'VALIDATED' if b.ladder.verified else 'UNTESTED' }}">{{ 'verified' if b.ladder.verified else 'not verified' }}</span>
+  <span class="pill {{ 'VALIDATED' if b.ladder.active else 'UNTESTED' }}">{{ 'active' if b.ladder.active else 'inactive' }}</span>
+  <span class="pill {{ 'VALIDATED' if b.ladder.rehearsed else 'UNTESTED' }}">{{ 'rehearsed' if b.ladder.rehearsed else 'no TEST delivery yet' }}</span>
+  <span class="pill {{ 'VALIDATED' if b.ladder.capable else 'NO_BUYER' }}" title="{% if b.blockers %}routing exclusions: {{ b.blockers|join('; ') }}{% else %}no recorded routing exclusions for new real leads{% endif %}">{{ 'capable' if b.ladder.capable else 'blocked' }}</span>
+</td>
+<td class="small">{% if b.next %}{{ b.next }}{% elif b.active %}receiving real leads (their desk is {{ (base + '/agent/' + b.portal_token) if b.portal_token else 'ready' }}){% else %}{% endif %}</td>
+</tr>{% endfor %}</table>
+{% else %}<p class="small">No buyers configured yet — the onboarding form on the Overview page is the first step.</p>{% endif %}
+
+<h3 style="margin-top:20px">Recorded activity — TEST vs real, side by side</h3>
+<p class="small" style="margin:2px 0 8px">Every number is a COUNT of recorded rows, nothing projected. TEST traffic never informs a real ledger; the two balances stay separate by design.</p>
+<table><tr><th></th><th>Submitted</th><th>Qualified</th><th>Delivered</th><th>Sold (outcome)</th><th>Returned</th><th>Ledger sum</th></tr>
+<tr><td><span class="pill TEST">TEST</span></td><td>{{ split[1].submitted }}</td><td>{{ split[1].qualified }}</td><td>{{ split[1].delivered }}</td><td>{{ split[1].sold }}</td><td>{{ split[1].returned }}</td><td>${{ '%.2f'|format(split[1].ledger) }} (TEST ledger)</td></tr>
+<tr><td><b>Real</b></td><td>{{ split[0].submitted }}</td><td>{{ split[0].qualified }}</td><td>{{ split[0].delivered }}</td><td>{{ split[0].sold }}</td><td>{{ split[0].returned }}</td><td>${{ '%.2f'|format(split[0].ledger) }} (real ledger)</td></tr>
+</table>
+
+<h3 style="margin-top:20px">Unmatched demand right now (real, qualified, consented)</h3>
+<p class="small" style="margin:2px 0 8px"><b>{{ unmatched_now }}</b> real qualified leads sit unmatched because no eligible buyer could take them when routed. That is demand the marketplace could not sell — adding capable buyers or headroom is how it gets converted, never a manual override.</p>
+{% if no_buyer_q %}<table><tr><th>When</th><th>Lead</th><th>Campaign</th><th>State / ZIP</th></tr>
+{% for l in no_buyer_q %}<tr><td class="small">{{ (l.created_at or '')[5:16].replace('T',' ') }}</td><td><a href="/admin/lead/{{ l.lead_id }}?token={{ token }}">{{ l.lead_id[-8:] }}</a></td><td>{{ l.campaign }}</td><td class="small">{{ l.state }} {{ l.zip }}</td></tr>{% endfor %}</table>
+{% else %}<p class="small">Nothing queued — every qualified real lead found a home or none exist yet.</p>{% endif %}
+
+<h3 style="margin-top:20px">Why leads were refused / withheld (recorded routing reasons)</h3>
+{% if reasons %}<table><tr><th>Decision</th><th>Reason</th><th>Count</th></tr>
+{% for r in reasons %}<tr><td class="small">{{ r.decision }}</td><td class="small">{{ r.reason or '(no reason recorded)' }}</td><td>{{ r.n }}</td></tr>{% endfor %}</table>
+{% else %}<p class="small">No refused-withheld routing decisions recorded yet.</p>{% endif %}
+<p class="mini" style="margin-top:30px">Read-only page: recompute happens every load. For actions — buyer changes, credits, sweeps — go to <a href="/admin?token={{ token }}">Overview</a>, <a href="/admin/credits?token={{ token }}">Credit queue</a>, <a href="/admin/pipeline?token={{ token }}">Pipeline</a>.</p>
+</div>{% endblock %}

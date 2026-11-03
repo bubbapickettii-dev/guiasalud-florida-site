@@ -1,0 +1,197 @@
+{
+ "system": "Scout",
+ "routes": [
+  {
+   "id": "R1-exit-pages-search",
+   "title": "Carrier-exit explainer pages (ES/EN) found via search + AI answers",
+   "opps": [
+    "OPP-01",
+    "HID-12",
+    "HID-15"
+   ],
+   "deadline": "2026-12-15",
+   "rungs": [
+    "identified",
+    "verified"
+   ],
+   "evidence": "Cigna exit confirmed by Quotit (369K members, 11 states incl FL); HealthCare.gov re-enroll rule; 8 pages written and reviewed 2026-10-08",
+   "blockers": [
+    {
+     "what": "Site not public: deployed at guiasalud-florida.higgsfield.app but unlisted/login-gated; nothing can reach a consumer",
+     "hard": true,
+     "who": "Bubba: approve publish (or choose host)"
+    },
+    {
+     "what": "Search needs a verified domain + Search Console",
+     "hard": false,
+     "who": "Bubba (domain verification)"
+    }
+   ],
+   "next_action": "On approval: publish site, submit sitemap in Search Console, log real visits per page."
+  },
+  {
+   "id": "R2-es-reels",
+   "title": "Spanish IG/TikTok reels (V1-V10) with per-concept tracked codes",
+   "opps": [
+    "OPP-01"
+   ],
+   "deadline": "2026-12-15",
+   "rungs": [
+    "identified",
+    "verified",
+    "outreach_prepared"
+   ],
+   "evidence": "10 faceless videos rendered; codes igescarta/igesdirecto/igesmedico tested locally; competitor gap (no Spanish carrier-exit video seen) per out/spanish_sfl_teardown_v1.md",
+   "blockers": [
+    {
+     "what": "Site not public: deployed at guiasalud-florida.higgsfield.app but unlisted/login-gated; nothing can reach a consumer",
+     "hard": true,
+     "who": "Bubba: approve publish (or choose host)"
+    },
+    {
+     "what": "No brand Instagram/TikTok account (cannot be created by Claude)",
+     "hard": true,
+     "who": "Bubba"
+    },
+    {
+     "what": "New codes not yet redeployed to hosted Worker",
+     "hard": false,
+     "who": "Claude, after publish approval"
+    }
+   ],
+   "next_action": "Redeploy Worker with new links; on approval post first reel from brand account; read clicks and Check starts after 7 days."
+  },
+  {
+   "id": "R3-careersource",
+   "title": "Workforce-board Rapid Response partner resource (WARN-triggered layoff cohorts)",
+   "opps": [
+    "OPP-02",
+    "HID-09",
+    "HID-08"
+   ],
+   "deadline": null,
+   "rungs": [
+    "identified",
+    "verified",
+    "route_established",
+    "outreach_prepared"
+   ],
+   "evidence": "2026-10-16 VERIFIED at source: CareerSource Broward outplacement page says presentations from community partners can be arranged on request, links a Retirement and Health Care Coverage Q&A (EN/ES), employer contact Johneil Beckford (954) 202-3830 x3009, jbeckford@CareerSourceBroward.com; FloridaCommerce REACT page says state Rapid Response gives workers information on layoff impact on health coverage and refers to community agencies (coordinator Christina Omran 850-245-7477, no email listed). Trigger signal: WARN notices (aggregator layofftracker.us lists Hialeah x2 (60+60), Plantation 272, Ft Lauderdale 80, Plant City 178 in Oct 2026; NOT cross-checked against the official list). Not found: Miami-Dade (CareerSource South Florida) Rapid Response contact. Earlier note that Broward had no partner route is superseded.",
+   "blockers": [
+    {
+     "what": "Approval to send the Broward outreach email (draft at out/scout/engine2_rapid_response.md); nothing sent",
+     "hard": true,
+     "who": "Bubba"
+    },
+    {
+     "what": "QR/link on the handout needs a public site; handout works without it (official links only)",
+     "hard": false,
+     "who": "Bubba: publish decision"
+    },
+    {
+     "what": "Miami-Dade board Rapid Response contact not found on an official page yet",
+     "hard": false,
+     "who": "Claude: next scan"
+    }
+   ],
+   "next_action": "Bubba approves the Broward email; send with handout PDF; log outreach_sent. Daily scan keeps hunting Miami-Dade contact and new WARN notices."
+  },
+  {
+   "id": "R4-es-media",
+   "title": "Spanish-language media pitch: 'te pasan a una compañía que no escogiste'",
+   "opps": [
+    "OPP-01",
+    "HID-12"
+   ],
+   "deadline": null,
+   "rungs": [
+    "identified",
+    "verified",
+    "outreach_prepared"
+   ],
+   "evidence": "Pitch drafted in distribution.json (pt-media-es). Diario Las Americas lists only a general Contactenos page; no tips email found",
+   "blockers": [
+    {
+     "what": "Site not public: deployed at guiasalud-florida.higgsfield.app but unlisted/login-gated; nothing can reach a consumer",
+     "hard": true,
+     "who": "Bubba: approve publish (or choose host)"
+    },
+    {
+     "what": "Approval to send",
+     "hard": true,
+     "who": "Bubba"
+    }
+   ],
+   "next_action": "Verify a direct newsroom route for 3 outlets from their own contact pages before any send."
+  },
+  {
+   "id": "R5-cobra-wave",
+   "title": "COBRA 18-month exhaustion pages (spring-2025 layoff cohort)",
+   "opps": [
+    "HID-08"
+   ],
+   "deadline": "2027-01-31",
+   "rungs": [
+    "identified",
+    "verified"
+   ],
+   "evidence": "Pages built; 322 FL WARN notices / 20,423 workers in 2025 (per DISCOVERY_REPORT)",
+   "blockers": [
+    {
+     "what": "Site not public: deployed at guiasalud-florida.higgsfield.app but unlisted/login-gated; nothing can reach a consumer",
+     "hard": true,
+     "who": "Bubba: approve publish (or choose host)"
+    }
+   ],
+   "next_action": "Ride on R1 publish; add outbound mentions from layoff pages."
+  },
+  {
+   "id": "R6-warn-pages",
+   "title": "Per-employer WARN pages (Hialeah/South Dade first, Spanish)",
+   "opps": [
+    "OPP-02",
+    "HID-10"
+   ],
+   "deadline": null,
+   "rungs": [
+    "identified",
+    "verified"
+   ],
+   "evidence": "Hialeah notices Oct 2026 (Nearly Natural 60, Temco 60) per DISCOVERY_REPORT",
+   "blockers": [
+    {
+     "what": "Site not public: deployed at guiasalud-florida.higgsfield.app but unlisted/login-gated; nothing can reach a consumer",
+     "hard": true,
+     "who": "Bubba: approve publish (or choose host)"
+    },
+    {
+     "what": "FloridaCommerce WARN export unreachable from sandbox; needs a CSV download",
+     "hard": false,
+     "who": "Bubba or a scheduled run with web access"
+    }
+   ],
+   "next_action": "Run tools/warn_watch.py on a fresh CSV."
+  },
+  {
+   "id": "R7-jan-network-shock",
+   "title": "January 'te cambiaron de seguro' window (Jan 1-15)",
+   "opps": [
+    "OPP-01B"
+   ],
+   "deadline": "2027-01-15",
+   "rungs": [
+    "identified",
+    "verified"
+   ],
+   "evidence": "Pages built; scheduled placement fb-groups-jan-es (post Jan 2-14)",
+   "blockers": [
+    {
+     "what": "Site not public: deployed at guiasalud-florida.higgsfield.app but unlisted/login-gated; nothing can reach a consumer",
+     "hard": true,
+     "who": "Bubba: approve publish (or choose host)"
+    }
+   ],
+   "next_action": "Hold until Dec 16; needs admin OKs for groups."
+  }
+ ]
+}

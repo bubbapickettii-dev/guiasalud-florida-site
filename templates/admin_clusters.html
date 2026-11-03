@@ -1,0 +1,61 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1300px;padding:16px 16px 40px">
+<h2>Signal clusters — recurring public intent → opportunity feed</h2>
+<p class="small"><b>What this is:</b> collected public signals, deduplicated and grouped by
+topic + language, then distilled by the <b>local Ollama model</b> into prioritized clusters.
+<b>Not leads, not contact targets:</b> every row cites only public post titles and computed
+totals — no author handles, no permalinks in the model prompt, no outreach action exists.</p>
+<p class="small"><b>Facts vs inference, by construction:</b> <i>facts</i> = post counts, mean
+decision-point strength, languages, communities and cited titles (recorded data). The model's
+<i>title / why / category / lens</i> text is stored as <b>labeled inference</b> — treat it as a
+hypothesis until the linked thesis card's evidence standard is met. Each cluster links to the
+existing <a href="/admin/opportunities?token={{ token }}">opportunity ladder</a> theses the topic
+map already grants — nothing here is a parallel opportunity system.</p>
+<p class="small"><b>Totals:</b> {{ c.get('NEW', 0) }} new · {{ c.get('REVIEWED', 0) }} reviewed ·
+{{ c.get('DISMISSED', 0) }} dismissed
+{% if msg %} · <b>{{ msg }}</b>{% endif %}</p>
+<p class="small"><b>Build:</b> operator-triggered only —
+<code>python tools/collect.py clusters-build</code> (uses the local model; refuses when Ollama is
+unavailable). Never scheduled, never a live sweep.</p>
+<div class="tabs">
+{% for s,label in [('', 'ALL'), ('NEW','NEW (' ~ c.get('NEW',0) ~ ')'), ('REVIEWED','REVIEWED (' ~ c.get('REVIEWED',0) ~ ')'), ('DISMISSED','DISMISSED (' ~ c.get('DISMISSED',0) ~ ')')] %}
+<a class="{{ 'on' if status==s }}" href="/admin/intel/clusters?status={{ s }}&token={{ token }}">{{ label }}</a>{% endfor %}
+</div>
+{% if not rows %}
+<p class="small" style="margin-top:12px">No clusters yet. Collect
+(<code>python tools/collect.py status</code> to check the store), then run
+<code>python tools/collect.py clusters-build</code>.</p>
+{% endif %}
+<table style="margin-top:12px">
+<tr><th>Cluster (facts)</th><th>Distillation (inference)</th><th>Linked theses</th><th>Decision</th></tr>
+{% for r in rows %}
+<tr>
+ <td class="small" style="max-width:280px">
+   <b>{{ r.cluster_key }}</b><br>
+   posts: <b>{{ r.n_signals }}</b> · mean intent: <b>{{ r.mean_intent }}</b> · max: {{ r.max_intent }}<br>
+   domains: {{ r.lens }}<br>langs: {{ r.langs }}<br>communities: {{ r.communities }}<br>
+   first/last observed: {{ r.first_observed }} → {{ r.last_observed }}<br>
+   {% for t in (r.top_titles | fromjson)[:3] %}<span style="display:block">«{{ t }}»</span>{% endfor %}
+ </td>
+ <td class="small" style="max-width:460px">
+   <b>title (inference):</b> {{ r.title or '— model unavailable —' }}<br>
+   <b>why (inference):</b> {{ r.why or '—' }}<br>
+   category: {{ r.category }} · lens: {{ r.lens }} · model: {{ r.model or 'none' }}
+ </td>
+ <td class="small">{% for th in (r.theses | fromjson) %}
+   <a href="/admin/opportunities?token={{ token }}">{{ th }}</a><br>{% endfor %}
+   {% if not r.theses or r.theses == '[]' %}<i>none mapped</i>{% endif %}
+ </td>
+ <td style="min-width:260px">
+   <span class="small"><b>{{ r.status }}</b>{% if r.review_note %} — {{ r.review_note }}{% endif %}</span>
+   <form method="post" action="/admin/intel/clusters/{{ r.id }}/status" style="margin-top:6px">
+     <input type="hidden" name="token" value="{{ token }}">
+     <button class="btn" name="status" value="REVIEWED">Reviewed</button>
+     <input class="wide" style="width:150px" name="note" placeholder="note (required to dismiss)">
+     <button class="btn secondary" name="status" value="DISMISSED">Dismiss</button>
+   </form>
+ </td>
+</tr>
+{% endfor %}
+</table>
+</div>{% endblock %}

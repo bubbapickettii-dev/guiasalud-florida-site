@@ -1,0 +1,30 @@
+{% extends "admin_base.html" %}{% block title %}Credit queue - Lead Engine Admin{% endblock %}
+{% block body %}<div class="wrap adm" style="max-width:1100px;padding:16px 16px 40px">
+<h2>Credit requests (buyer returns that got no automatic credit)</h2>
+<p class="small" style="margin:2px 0 10px">Evidence first: each row is a DELIVERED lead whose buyer marked it RETURNED and the configured return policy refused the automatic credit (&ldquo;no credit: &hellip;&rdquo; in the lead's history). Granting reuses the same once-only ledger credit; denying records only the reasoning. A returned lead that WAS credited within the rules never appears here.</p>
+{% if request.args.get('err') %}<div class="note" style="border-left:4px solid #b00">{{ request.args.get('err') }}</div>{% endif %}
+{% if request.args.get('saved') %}<div class="note">Saved: {{ request.args.get('saved') }}</div>{% endif %}
+{% if rows %}<table><tr><th>Refused when</th><th>Lead</th><th>Buyer</th><th>Price</th><th>Delivery</th><th>Why no credit</th><th>Decision</th></tr>
+{% for r in rows %}<tr>
+<td class="small">{{ (r.delivered_at or '?')[5:16].replace('T',' ') }}</td>
+<td><a href="/admin/lead/{{ r.lead_id }}?token={{ token }}">{{ r.lead_id[-8:] }}</a> {% if r.is_test %}<span class="pill TEST">TEST</span>{% endif %}</td>
+<td>{{ r.buyer_id }}</td>
+<td>${{ '%.2f'|format(r.price or 0) }}</td>
+<td>{{ (r.delivered_at or '')[11:16] }} UTC</td>
+<td class="small">{{ r.refusal_note }}</td>
+<td><form method="post" action="/admin/lead/{{ r.lead_id }}/credit_decision?token={{ token }}" style="display:flex;gap:4px;align-items:center;margin:0">
+  <input type="hidden" name="decision" value="grant"><input name="note" placeholder="reason (required) — e.g. goodwill after the buyer's verifiable claim" required style="max-width:210px"><button title="Credit the price back through the SAME once-per-lead+buyer ledger credit as an in-policy return — never a second credit, never an unscoped adjustment">Grant credit</button></form>
+  <form method="post" action="/admin/lead/{{ r.lead_id }}/credit_decision?token={{ token }}" style="display:flex;gap:4px;align-items:center;margin:2px 0 0">
+  <input type="hidden" name="decision" value="deny"><input name="note" placeholder="reason (required) — e.g. outside the return window, buyer unreacheable" required style="max-width:210px"><button class="bad" title="Record the refusal with its reason; the ledger is untouched and the request leaves the queue">Deny</button></form></td>
+</tr>{% endfor %}</table>
+{% else %}<p class="small">Queue is empty — no refused account adjustments are waiting.</p>{% endif %}
+
+<h3 style="margin-top:20px">Decision audit trail (newest first)</h3>
+{% if trail %}<table><tr><th>When</th><th>Lead</th><th>Buyer</th><th>Price</th><th>Decision</th><th>Ledger result</th></tr>
+{% for t in trail %}<tr><td class="small">{{ t.ts[5:16].replace('T',' ') }}</td>
+<td><a href="/admin/lead/{{ t.lead_id }}?token={{ token }}">{{ t.lead_id[-8:] }}</a>{% if t.is_test %} <span class="pill TEST">TEST</span>{% endif %}</td>
+<td>{{ t.buyer_id }}</td><td>${{ '%.2f'|format(t.price or 0) }}</td>
+<td class="small">{{ t.note }}</td>
+<td>{% if t.outcome == 'grant' %}credited{% elif t.outcome == 'deny' %}denied{% else %}{{ t.outcome }}{% endif %}</td></tr>{% endfor %}</table>
+{% else %}<p class="small">No credit decisions recorded yet.</p>{% endif %}
+</div>{% endblock %}

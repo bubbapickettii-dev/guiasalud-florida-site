@@ -1,0 +1,154 @@
+{% extends "admin_base.html" %}
+{% block body %}<div class="wrap adm" style="max-width:1300px;padding:16px 16px 40px">
+<h2>Prospect database{% if wl %} <span class="small" style="font-weight:400">· {{ '{:,}'.format(wl.on_list if wl.on_list is defined else wl.working_list) }} callable business records</span>{% endif %}</h2>
+<p class="small" style="max-width:960px">Public business records — self-employed professionals, health practices,
+storefronts and trades — kept in their own registry, separate from consumer leads.
+<b>These are prospects, not customers:</b> nobody here has been contacted or verified, and a
+prospect never becomes a buyer or a consumer lead automatically. Click a name for the full
+record, its source and its history.</p>
+<div class="note mini" style="max-width:960px">Businesses, health practices and individual
+professionals are separate audiences with separate conversations. Rows excluded from the call
+list (no phone or email, duplicates, non-business places) stay in the registry but are labelled
+as excluded — they are never presented as qualified prospects.</div>
+
+<h3 style="margin-top:14px">Working list — what is actually callable</h3>
+{% if wl %}
+<p class="small">Every one of the {{ '{:,}'.format(wl.examined) }} registry rows lands in exactly
+one bucket below (working segments plus exclusions equal the registry total).
+<b>{{ '{:,}'.format(wl.working_list) }}</b> are callable. Nothing has been contacted — outreach
+status is <b>not contacted</b> on every row — and every row stays <b>unverified</b> until an
+operator records a named check. Each CSV carries the record ID, priority, phone evidence and
+the original source.</p>
+<table>
+<tr><th>Segment</th><th>Rows</th><th>Direct lines</th><th>Download</th></tr>
+<tr><td><b>1. Named owner + usable phone</b><br><span class="mini">{{ '{:,}'.format(wl.segments_by_audience[seg_owner].professional) }} individual professionals ·
+  {{ '{:,}'.format(wl.segments_by_audience[seg_owner].health_practice) }} health practices ·
+  {{ '{:,}'.format(wl.segments_by_audience[seg_owner].business) }} other businesses</span></td>
+ <td>{{ '{:,}'.format(wl.segments[seg_owner]) }}</td><td>{{ '{:,}'.format(wl.owner_named_phone_direct) }}</td>
+ <td class="small"><a href="/admin/prospects.csv?segment={{ seg_owner }}&audience=professional&token={{ token }}">professionals</a> ·
+  <a href="/admin/prospects.csv?segment={{ seg_owner }}&audience=health_practice&token={{ token }}">health practices</a> ·
+  <a href="/admin/prospects.csv?segment={{ seg_owner }}&audience=business&token={{ token }}">businesses</a></td></tr>
+<tr><td><b>2. Business phone, no named owner</b></td><td>{{ '{:,}'.format(wl.segments[seg_phone]) }}</td>
+ <td>{{ '{:,}'.format(wl.phone_no_owner_direct) }}</td>
+ <td class="small"><a href="/admin/prospects.csv?segment={{ seg_phone }}&token={{ token }}">CSV</a></td></tr>
+<tr><td><b>3. Email only (no phone)</b></td><td>{{ '{:,}'.format(wl.segments[seg_email]) }}</td><td>—</td>
+ <td class="small"><a href="/admin/prospects.csv?segment={{ seg_email }}&token={{ token }}">CSV</a></td></tr>
+{% for k, v in wl.exclusions.items() %}
+<tr><td class="small">Not callable — {{ k|replace('_',' ') }}{% if k=='incomplete' %}: no phone and no email{% elif k=='duplicate' %}: thinner copy of a business already listed{% elif k=='irrelevant' %}: not a business (place of worship, NGO, community facility){% endif %}</td>
+ <td>{{ '{:,}'.format(v) }}</td><td>—</td>
+ <td class="small"><a href="/admin/prospects.csv?segment={{ k }}&token={{ token }}">CSV</a></td></tr>
+{% endfor %}
+</table>
+<p class="small">Priority 1 = named person, a line they are not sharing with other records, and a
+Miami-Dade address ({{ '{:,}'.format(wl.by_priority[1]) }} rows). Priority 4 = the named person's
+number is also published by 3+ records, i.e. a switchboard (<code>phone_shared_by</code> in the
+CSV). Biggest measured gap: {{ '{:,}'.format(wl.owner_no_channel) }} rows name an owner but
+publish no phone and no email, and {{ '{:,}'.format(wl.phone_no_owner) }} publish a phone with no
+owner — names and numbers sit in different public files, which is the one real limit of this
+list.</p>
+{% endif %}
+
+<details style="margin:16px 0"><summary>Lifecycle of records being worked as buyers — {{ '{:,}'.format(stage_counts.get('NEW', 0)) }} new</summary>
+<p class="mini" style="margin:8px 0 0">Only records an operator deliberately moves through the buyer-onboarding
+stages leave “new”. This is the buyer-acquisition funnel, separate from the call list above.</p>
+<div class="kpis" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin:8px 0">
+{% for s in ['NEW','RESEARCHED','QUALIFIED','DISQUALIFIED','READY_FOR_ONBOARDING','ONBOARDING_STARTED','ACTIVATED'] %}
+<div class="kpi"><span>{{ stage_label[s] }}</span><b style="font-size:20px">{{ stage_counts.get(s, 0) }}</b></div>
+{% endfor %}
+</div>
+</details>
+
+<details style="margin:18px 0"><summary>Where these records come from — {{ psrc|length }} public sources (open for the provenance detail)</summary>
+<table style="margin-top:10px"><tr><th>Path</th><th>Status</th><th>Cost</th><th>How it runs</th></tr>
+{% for s in psrc %}
+<tr><td><b>{{ s.label }}</b></td><td><span class="pill">{{ s.status }}</span></td>
+<td class="small">{{ s.cost }}</td><td class="small"><code>{{ s.how }}</code><br>{{ s.notes }}</td></tr>
+{% endfor %}</table>
+</details>
+
+<h3>Records <span class="mini">· showing {{ rows|length }}{% if rows|length >= 200 %} (first 200 — narrow with the filters){% endif %}</span></h3>
+<form method="get" action="/admin/prospects" class="small" style="margin:8px 0">
+ <select name="stage"><option value="">any stage</option>
+ {% for s in ['NEW','RESEARCHED','QUALIFIED','DISQUALIFIED','READY_FOR_ONBOARDING','ONBOARDING_STARTED','ONBOARDED','ACTIVATED'] %}
+ <option value="{{ s }}" {{ 'selected' if stage==s }}>{{ s }}</option>{% endfor %}</select>
+ <select name="decision"><option value="">any decision</option>
+ {% for d in (facets.decision or ['NEW','UNDER_REVIEW','PRIORITIZED','QUALIFIED','NOT_A_FIT','ARCHIVED','CONTACTS_AGREEMENT_DRAFTED'])|unique %}
+ <option value="{{ d }}" {{ 'selected' if f.decision==d }}>{{ d }}</option>{% endfor %}</select>
+ <select name="verify_state"><option value="">any verification</option>
+ {% for v in (facets.verify or ['UNVERIFIED','PUBLIC_DETAILS_CHECKED','OPERATOR_VERIFIED','DENIED'])|unique %}
+ <option value="{{ v }}" {{ 'selected' if f.verify_state==v }}>{{ v }}</option>{% endfor %}</select>
+ <select name="segment"><option value="">any segment</option>
+ {% for v, label in [(seg_owner,'1 · named owner + phone'),(seg_phone,'2 · phone, no owner'),(seg_email,'3 · email only')] %}
+ <option value="{{ v }}" {{ 'selected' if f.segment==v }}>{{ label }}</option>{% endfor %}</select>
+ <select name="priority"><option value="">any priority</option>
+ {% for p in [1,2,3,4,5,6] %}<option value="{{ p }}" {{ 'selected' if prio==p }}>priority {{ p }}</option>{% endfor %}</select>
+ <select name="source"><option value="">any source</option>
+ {% for s in (facets.source or [])|unique %}<option value="{{ s }}" {{ 'selected' if f.source==s }}>{{ s }}</option>{% endfor %}</select>
+ <input name="state" placeholder="state" value="{{ f.state }}" size="4">
+ <input name="q" placeholder="name/website/city" value="{{ f.q }}" size="18">
+ <select name="sort">
+  <option value="priority" {{ 'selected' if sort=='priority' }}>best prospects first</option>
+  <option value="next" {{ 'selected' if sort=='next' }}>due + most-qualified first</option>
+  <option value="stage" {{ 'selected' if sort=='stage' }}>lifecycle stage</option>
+  <option value="updated" {{ 'selected' if sort=='updated' }}>recently touched</option>
+  <option value="name" {{ 'selected' if sort=='name' }}>name A→Z</option>
+ </select>
+ <label style="white-space:nowrap"><input type="checkbox" name="due" value="1" {{ 'checked' if due_only }}> follow-up due</label>
+ <label style="white-space:nowrap"><input type="checkbox" name="attention" value="1" {{ 'checked' if att_only }}> needs attention</label>
+ <label style="white-space:nowrap"><input type="checkbox" name="needs_verify" value="1" {{ 'checked' if verify_only }}> verify pending</label>
+ <button type="submit">filter</button>
+ <a href="/admin/prospects.csv?token={{ token }}">export CSV</a>
+</form>
+{% if msg %}<p class="small"><b>{{ msg }}</b></p>{% endif %}
+<table>
+<tr><th>#</th><th>Prospect / stage</th><th>Public details</th><th>Commercial record</th><th>Status</th><th>Needs attention</th><th>Actions</th></tr>
+{% for r in rows %}
+<tr {% if r._gaps %}style="background:#fdf6e3"{% endif %}>
+ <td class="small">{{ r.id }}</td>
+ <td><a href="/admin/prospects/{{ r.id }}?token={{ token }}"><b>{{ r.name }}</b></a><br>
+     <span class="small">{{ r.category or '—' }}</span><br>
+     <span class="pill">{{ (r.stage or 'NEW')|replace('_',' ')|lower }}</span>
+     {% if r.buyer_id %}<br><span class="mini">buyer draft: <code>{{ r.buyer_id }}</code></span>{% endif %}</td>
+ <td class="small">{% if r.website %}{{ r.website }}<br>{% endif %}{{ r.address or '—' }}<br>{{ [r.city, r.state, r.zip5]|join(', ') if r.city or r.state or r.zip5 }}<br>{% if r.public_phone %}phone {{ r.public_phone|pphone }}{% else %}<span class="mini">no phone published</span>{% endif %}{% if r.contact_person or r.biz_email %}<br>{{ r.contact_person or '—' }}{% if r.biz_email %} · {{ r.biz_email }}{% endif %}{% endif %}</td>
+ <td class="small">{% set _com = [] %}{% if r.interested %}{% set _ = _com.append('interest: ' ~ r.interested) %}{% endif %}{% if r.lead_types %}{% set _ = _com.append('lead types: ' ~ r.lead_types) %}{% endif %}{% if r.service_territory %}{% set _ = _com.append('territory: ' ~ r.service_territory) %}{% endif %}{% if r.stated_weekly_volume or r.stated_frequency %}{% set _ = _com.append('volume: ' ~ (r.stated_weekly_volume or '—') ~ ' / ' ~ (r.stated_frequency or '—')) %}{% endif %}{% if r.stated_budget_usd %}{% set _ = _com.append('budget: ' ~ r.stated_budget_usd) %}{% endif %}{% if r.delivery_pref %}{% set _ = _com.append('delivery: ' ~ r.delivery_pref) %}{% endif %}{% if r.agreed_price or r.proposed_price %}{% set _ = _com.append('price: ' ~ (r.proposed_price or '—') ~ ' / ' ~ (r.agreed_price or '—')) %}{% endif %}{% if r.agreement_status %}{% set _ = _com.append('agreement: ' ~ r.agreement_status) %}{% endif %}{% if _com %}{% for c in _com %}· {{ c }}<br>{% endfor %}{% else %}<span class="mini">no commercial record yet</span>{% endif %}</td>
+ <td class="small">{{ r.decision }}<br>{{ r.verify_state }}
+  {% if r.segment %}<br><span class="mini">p{{ r.priority }} · {{ r.segment|replace('_',' ') }}{% if r.phone_evidence %} · {{ r.phone_evidence }}{% endif %}</span>{% endif %}
+  {% if r._reason %}<br><span class="mini">recorded why: {{ r._reason }}</span>{% endif %}
+  {% if r._verify_pending %}<br><span class="pill" style="background:#fff3cd">verify pending</span>{% endif %}
+  {% if r._ready %}<br><span class="pill done">ready for handoff</span>{% endif %}
+  {% if r.buyer_id %}<br><span class="pill">handed off{% if stage=='ACTIVATED' or r.buyer_id %}{% endif %}</span>{% endif %}
+ </td>
+ <td class="small">{% if r._gaps %}{% for g in r._gaps %}· {{ g }}<br>{% endfor %}{% else %}—{% endif %}
+     {% if r._due %}<br><span class="pill bad">follow-up due</span>{% endif %}
+     {% if r.next_action %}<br><b>next: {{ r.next_action }}</b>{% if r.next_action_date %} ({{ r.next_action_date }}){% endif %}{% endif %}</td>
+ <td class="small">
+  <form method="post" action="/admin/prospects/{{ r.id }}/decision" style="margin-bottom:4px">
+   <select name="decision">
+    {% for d in ['NEW','UNDER_REVIEW','PRIORITIZED','QUALIFIED','NOT_A_FIT','ARCHIVED','CONTACTS_AGREEMENT_DRAFTED'] %}
+    <option value="{{ d }}" {{ 'selected' if r.decision==d }}>{{ d }}</option>{% endfor %}</select>
+   <input name="note" placeholder="why (required to move off NEW)" size="22">
+   <button type="submit">decide</button>
+  </form>
+  <form method="post" action="/admin/prospects/{{ r.id }}/verify">
+   <select name="verify_state">
+    {% for v in ['UNVERIFIED','PUBLIC_DETAILS_CHECKED','OPERATOR_VERIFIED','DENIED'] %}
+    <option value="{{ v }}" {{ 'selected' if r.verify_state==v }}>{{ v }}</option>{% endfor %}</select>
+   <input name="note" placeholder="where checked (required)" size="22">
+   <button type="submit">record verification</button>
+  </form>
+  <a class="small" href="/admin/prospects/{{ r.id }}?token={{ token }}">full record →</a>
+ </td>
+</tr>
+{% endfor %}
+</table>
+{% if not rows %}<p class="small"><b>No prospects match these filters.</b> Clear the filters to see the
+full registry, or import public business records with the prospects importer. A prospect becomes
+a buyer only through the onboarding and verification flow — never automatically.</p>{% endif %}
+<p class="small">Reminder: the <b>google-maps-scraper-kit</b> method (headless browser over
+Google Maps) is deliberately not integrated — its access method is against Google's ToS per
+its own documentation. The permitted alternative is the official Places API (needs a key +
+an explicit budget approval; refuses without either).</p>
+<p class="small">Fields marked <b>stated</b> / proposed are what a person CLAIMED — recorded
+as claims, never verified demand. Agreed pricing appears only when an actual agreement is
+recorded by the operator.</p>
+</div>{% endblock %}
