@@ -354,7 +354,10 @@ def inject():
         site = {**SITE, **NO_BUYER_DISC, "no_buyer": True}
     _lang_arg = (request.args.get("lang") or "").strip().lower()
     _angle_arg = (request.args.get("a") or "").strip().lower()
-    _es_req = ((request.path == "/" and _lang_arg != "en")
+    # Bare / is rendered in the visitor's PREFERRED language (home() calls _pref_lang), so the flag
+    # must come from that same decision — otherwise the header switch is built for a language the
+    # page is not actually showing (an English browser at / was offered "/?lang=en", i.e. itself).
+    _es_req = ((request.path == "/" and _lang_arg != "en" and _pref_lang() == "es")
                or _lang_arg == "es" or request.path.startswith("/aprende")
                or request.path in ("/privacidad", "/terminos", "/ayuda-gratis",
                                    "/inscripcion-abierta-2027", "/despidos"))
@@ -365,7 +368,12 @@ def inject():
             _es_req = _lang_arg == "es"
         else:
             _es_req = _pref_lang() == "es"  # cookie, then the visitor's own browser
-    alt = _alt_url(request.path, _es_req) if request.method == "GET" else ""
+    if request.path == "/" and _lang_arg != "en":
+        # The switch needs ?lang= to beat the sticky le_lang cookie set by home(): an English visitor
+        # at / is sent to the Spanish home, a Spanish visitor to the English twin URL.
+        alt = ("/?lang=en" if _es_req else "/?lang=es") if request.method == "GET" else ""
+    else:
+        alt = _alt_url(request.path, _es_req) if request.method == "GET" else ""
     _origin = _site_origin()                       # no absolute origin yet => no canonical tag at all
     canonical = (_origin + request.path) if _origin else ""
     if request.path == "/check":          # two languages share one path: the angle is what tells them apart

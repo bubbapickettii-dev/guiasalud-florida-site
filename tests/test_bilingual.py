@@ -164,3 +164,20 @@ def test_sitemap_lists_both_languages_with_their_twins():
         assert self_lang.group(2) in block.split("<xhtml:link")[0], "self alternate must be the loc"
         langs = set(re.findall(r'hreflang="(\w+)"', block))
         assert langs in ({"en"}, {"es"}, {"en", "es"}), (langs, block)
+
+
+def test_home_switch_follows_the_language_actually_rendered():
+    """Bare / is served in the visitor's PREFERRED language, so the header switch has to be built from
+    what was rendered, not from the path. An English browser at / was offered '/?lang=en' — the page it
+    was already on. It must reach the Spanish home instead, and a Spanish browser the English twin; the
+    explicit ?lang= is what beats the sticky one-year le_lang cookie."""
+    for header, expect_lang, expect_href in (("en-US,en", "en", "/?lang=es"),
+                                             ("es-MX,es", "es", "/?lang=en")):
+        body = fresh().get("/", headers={"Accept-Language": header}).get_data(as_text=True)
+        assert f'<html lang="{expect_lang}"' in body, header
+        assert f'<a class="langswitch" href="{expect_href}"' in body, header
+    # an explicit choice wins over the browser, and keeps its canonical twin (never a self-link)
+    body = fresh().get("/?lang=en", headers={"Accept-Language": "es"}).get_data(as_text=True)
+    assert '<html lang="en"' in body and '<a class="langswitch" href="/"' in body
+    body = fresh().get("/?lang=es", headers={"Accept-Language": "en"}).get_data(as_text=True)
+    assert '<html lang="es"' in body and '<a class="langswitch" href="/?lang=en"' in body
