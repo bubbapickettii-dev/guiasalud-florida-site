@@ -158,10 +158,13 @@ HealthCare.gov …` — no bracketed placeholder, no invented street address, no
 
 ## 8. Support inbox
 
-Preferred: **giasalud.support@gmail.com**, created through Google's normal sign-up.
+Done: **giasaludellc@gmail.com**, created through Google's normal sign-up (the earlier preferred
+`giasalud.support@gmail.com` was not the address actually registered, so it is not used anywhere).
 
-* Whether the address is free can only be established at sign-up; nothing in this repository can
-  check it, and no account has been created. It is **not** verified, and no page prints it yet.
+* It is set as `SUPPORT_EMAIL` on the live `giasalud` service (Dashboard > Environment). The value
+  stays out of the repository, as `render-free.yaml` declares it `sync: false`.
+* Google asks for its own device/phone check the first time the new account is opened in a browser.
+  That is the owner signing in, not a site setting; until it is done the mailbox may not be read.
 * Once you have it, set the value in one place — `SUPPORT_EMAIL` in the host environment, or
   `support_email` in `config/site.json` — and the contact page, privacy "write to", the opt-out path
   and the readiness screen all pick it up (env wins, including after an admin config reload).

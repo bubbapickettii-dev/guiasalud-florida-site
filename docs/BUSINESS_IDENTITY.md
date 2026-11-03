@@ -11,7 +11,7 @@ nothing has to be committed to the repo. Env always wins, including after an adm
 | Public location | `location` | `LOCATION` | **set: Miami, Florida** |
 | Founded | `founded` | `FOUNDED` | **set: Miami, Florida** |
 | Street / mailing address | `mailing_address` | `MAILING_ADDRESS` | empty — **not required for this website**; never invented |
-| Customer support inbox | `support_email` (alias `contact_email`) | `SUPPORT_EMAIL` / `CONTACT_EMAIL` | empty — **pending** until giasalud.support@gmail.com is verified |
+| Customer support inbox | `support_email` (alias `contact_email`) | `SUPPORT_EMAIL` / `CONTACT_EMAIL` | **set: giasaludellc@gmail.com** (host environment only, never in the repo) |
 | Public support phone | `support_phone` | `SUPPORT_PHONE` | empty (optional) |
 
 `app.business_identity()` is the single reading of these values. It treats a value as **not supplied**
@@ -59,14 +59,20 @@ One value, two possible places:
 
 ```bash
 # host environment (preferred — nothing real lands in the repo)
-SUPPORT_EMAIL=giasalud.support@gmail.com
+SUPPORT_EMAIL=giasaludellc@gmail.com
 ```
 
-or `config/site.json` → `"support_email": "giasalud.support@gmail.com"`.
+or `config/site.json` → `"support_email": "giasaludellc@gmail.com"`.
 
-That single change makes the contact page print the address next to the form, the privacy policy
-(both languages) and the opt-out page point at it instead of the on-site form, and the readiness
-screen stop listing it as missing. `python launch_check.py` confirms it.
+The live `giasalud` Render service already carries it (`SUPPORT_EMAIL`, set in Dashboard →
+Environment, kept out of the repository). The inbox is a fresh Google account
+(`giasaludellc@gmail.com`); Google still asks for its own device/phone check the first time it is
+opened in a new browser, which is a signing-in step for the owner, not a site setting.
+
+That single change makes the contact page print the address (`mailto:` next to the form) and the
+privacy policy in both languages say "write to giasaludellc@gmail.com"; `/optout` stays a form, since
+it has to collect the email or phone to stop, and links to the privacy page. The readiness screen
+stops listing the inbox as missing, and `python launch_check.py` confirms it.
 
 Nothing prints the address before it exists: the contact page falls back to the on-site form, which is
 real and already stores messages (on a persistent-disk deployment).
